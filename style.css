@@ -1,0 +1,364 @@
+/* ===========================
+   CeylonTourMate.lk - style.css
+   =========================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f5f5f0;
+    color: #2b2b2b;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ===========================
+   NAVBAR (table layout)
+   =========================== */
+
+.navbar {
+    background-color: #0f2a43;
+    width: 100%;
+}
+
+.navbar table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.navbar td {
+    padding: 14px 30px;
+    vertical-align: middle;
+}
+
+.logo-cell {
+    width: 30%;
+}
+
+.logo-text {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.logo-text span {
+    color: #65b89c;
+}
+
+.nav-links-cell {
+    width: 40%;
+    text-align: center;
+}
+
+.nav-links-cell a {
+    color: #e2e8f0;
+    font-size: 15px;
+    margin: 0 15px;
+    padding: 6px 4px;
+}
+
+.nav-links-cell a:hover {
+    color: #65b89c;
+}
+
+.nav-buttons-cell {
+    width: 30%;
+    text-align: right;
+}
+
+.btn {
+    display: inline-block;
+    padding: 9px 22px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-login {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    margin-right: 10px;
+}
+
+.btn-login:hover {
+    background-color: #ffffff;
+    color: #0f2a43;
+}
+
+.btn-signup {
+    background-color: #65b89c;
+    color: #0f2a43;
+}
+
+.btn-signup:hover {
+    background-color: #4f9c81;
+}
+
+/* ===========================
+   HERO SECTION (div layout)
+   =========================== */
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    background-image: url("images/hero-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-color: #0e3b5c; /* fallback shown until hero-bg.jpg is added */
+    display: flex;
+    align-items: center;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 42, 67, 0.55);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    margin-left: 60px;
+    color: #ffffff;
+}
+
+.hero-content h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+    line-height: 1.3;
+}
+
+.hero-content h1 span {
+    color: #65b89c;
+}
+
+.hero-content p {
+    font-size: 16px;
+    margin-bottom: 25px;
+    color: #e2e8f0;
+    line-height: 1.5;
+}
+
+.hero-buttons .btn {
+    padding: 12px 28px;
+    font-size: 15px;
+}
+
+.btn-primary {
+    background-color: #65b89c;
+    color: #0f2a43;
+    margin-right: 12px;
+}
+
+.btn-primary:hover {
+    background-color: #4f9c81;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.btn-secondary:hover {
+    background-color: #ffffff;
+    color: #0f2a43;
+}
+
+/* ===========================
+   SECTION WRAPPER (div layout)
+   =========================== */
+
+.section {
+    padding: 60px 60px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 28px;
+    color: #0f2a43;
+    margin-bottom: 10px;
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #6b6b6b;
+    margin-bottom: 40px;
+}
+
+/* ===========================
+   CATEGORY CARDS (div layout)
+   =========================== */
+
+.category-grid {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.category-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    width: 220px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.category-card:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
+}
+
+.category-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 0 auto 15px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4ede1;
+    font-size: 26px;
+}
+
+.category-card h3 {
+    font-size: 16px;
+    color: #0f2a43;
+    margin-bottom: 8px;
+}
+
+.category-card p {
+    font-size: 13px;
+    color: #6b6b6b;
+    line-height: 1.4;
+}
+
+/* ===========================
+   ABOUT US SECTION (table layout)
+   =========================== */
+
+.about-section {
+    background-color: #ffffff;
+    padding: 60px;
+}
+
+.about-table {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.about-table td {
+    vertical-align: middle;
+    padding: 20px;
+}
+
+.about-text-cell {
+    width: 55%;
+}
+
+.about-text-cell h2 {
+    font-size: 26px;
+    color: #0f2a43;
+    margin-bottom: 15px;
+}
+
+.about-text-cell p {
+    font-size: 14.5px;
+    color: #444444;
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+
+.about-stats-cell {
+    width: 45%;
+}
+
+.about-stats-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.about-stats-table td {
+    text-align: center;
+    padding: 18px 10px;
+    background-color: #f4ede1;
+    border-radius: 8px;
+}
+
+.about-stat-number {
+    font-size: 28px;
+    font-weight: bold;
+    color: #0f2a43;
+    display: block;
+}
+
+.about-stat-label {
+    font-size: 12.5px;
+    color: #6b6b6b;
+}
+
+/* ===========================
+   FOOTER (table layout)
+   =========================== */
+
+.footer {
+    background-color: #0f2a43;
+    color: #cbd5e1;
+    padding: 40px 60px 20px 60px;
+}
+
+.footer-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.footer-table td {
+    vertical-align: top;
+    padding: 10px 20px;
+}
+
+.footer-table h4 {
+    color: #ffffff;
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.footer-table p, .footer-table a {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #cbd5e1;
+    display: block;
+}
+
+.footer-table a:hover {
+    color: #65b89c;
+}
+
+.footer-bottom {
+    text-align: center;
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #1e3a52;
+}
