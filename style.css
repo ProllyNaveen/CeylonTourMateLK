@@ -487,3 +487,243 @@ a {
     font-weight: bold;
     margin-bottom: 5px;
 }
+/* ===========================
+   ADMIN NAVBAR EXTRAS
+   =========================== */
+
+.admin-badge {
+    background-color: #65b89c;
+    color: #0f2a43;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 14px;
+    border-radius: 20px;
+}
+
+.admin-welcome {
+    color: #e2e8f0;
+    font-size: 14px;
+    margin-right: 16px;
+}
+
+/* ===========================
+   ADMIN SECTION (div layout)
+   =========================== */
+
+.admin-section {
+    padding: 50px 60px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.admin-page-title {
+    font-size: 24px;
+    color: #0f2a43;
+    margin-bottom: 6px;
+}
+
+.admin-page-subtitle {
+    font-size: 13.5px;
+    color: #6b6b6b;
+    margin-bottom: 30px;
+}
+
+.admin-section-spacer {
+    margin-top: 50px;
+}
+
+/* ===========================
+   STAT CARDS
+   =========================== */
+
+.stat-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stat-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 280px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.stat-icon-blue { background-color: #e6f1fb; }
+.stat-icon-teal { background-color: #e1f5ee; }
+.stat-icon-amber { background-color: #faeeda; }
+.stat-icon-coral { background-color: #faece7; }
+.stat-icon-green { background-color: #eaf3de; }
+.stat-icon-purple { background-color: #eeedfe; }
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #0f2a43;
+}
+
+.stat-label {
+    font-size: 12.5px;
+    color: #6b6b6b;
+    margin-top: 2px;
+}
+
+/* ===========================
+   ADMIN QUICK ACTION CARDS
+   =========================== */
+
+.action-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.action-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 25px;
+    width: 270px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    display: block;
+}
+
+.action-card:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.action-icon {
+    font-size: 26px;
+    margin-bottom: 12px;
+}
+
+.action-card h3 {
+    font-size: 16px;
+    color: #0f2a43;
+    margin-bottom: 6px;
+}
+
+.action-card p {
+    font-size: 13px;
+    color: #6b6b6b;
+    line-height: 1.5;
+}
+/* ===========================
+   ADMIN SUB-PAGE EXTRAS
+   =========================== */
+
+.back-link {
+    display: inline-block;
+    font-size: 13px;
+    color: #1c7293;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.admin-subsection-title {
+    font-size: 18px;
+    color: #0f2a43;
+    margin-bottom: 15px;
+}
+
+.commission-form-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 25px;
+    max-width: 450px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.commission-form-card label {
+    display: block;
+    font-size: 13px;
+    color: #2b2b2b;
+    margin-bottom: 6px;
+}
+
+.commission-form-card input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d6d6d6;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.form-note {
+    font-size: 12px;
+    color: #6b6b6b;
+    margin-top: 15px;
+    line-height: 1.5;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.admin-table th {
+    background-color: #0f2a43;
+    color: #ffffff;
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 13px;
+}
+
+.admin-table td {
+    padding: 12px 16px;
+    font-size: 13.5px;
+    border-bottom: 1px solid #eee;
+    color: #2b2b2b;
+}
+
+.table-empty {
+    text-align: center;
+    color: #999999;
+    padding: 30px;
+}
+
+.success {
+    background-color: #eaf3de;
+    color: #3b6d11;
+    padding: 10px 14px;
+    border-radius: 5px;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.error {
+    background-color: #faece7;
+    color: #993c1d;
+    padding: 10px 14px;
+    border-radius: 5px;
+    font-size: 13px;
+    margin-bottom: 15px;
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - CeylonTourMate.lk</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<!-- ADMIN NAVBAR -->
+<div class="navbar">
+    <table>
+        <tr>
+            <td class="logo-cell">
+                <a href="admindashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+            </td>
+            <td class="nav-links-cell">
+                <span class="admin-badge">Admin Panel</span>
+            </td>
+            <td class="nav-buttons-cell">
+                <!-- PHP: echo admin's firstname from session -->
+                <span class="admin-welcome">Welcome, Admin</span>
+                <a href="logout.php"><button class="btn btn-login">Logout</button></a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- DASHBOARD CONTENT -->
+<div class="admin-section">
+
+    <h2 class="admin-page-title">Dashboard Overview</h2>
+    <p class="admin-page-subtitle">A quick snapshot of CeylonTourMate.lk</p>
+
+    <!-- STAT CARDS -->
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-blue">&#128101;</div>
+            <div class="stat-info">
+                <!-- PHP: echo COUNT(*) FROM users -->
+                <span class="stat-number">0</span>
+                <span class="stat-label">Total Users</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-teal">&#127968;</div>
+            <div class="stat-info">
+                <!-- PHP: echo COUNT(*) FROM listings WHERE status='approved' -->
+                <span class="stat-number">0</span>
+                <span class="stat-label">Active Listings</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-amber">&#128203;</div>
+            <div class="stat-info">
+                <!-- PHP: echo COUNT(*) FROM listings WHERE status='pending' -->
+                <span class="stat-number">0</span>
+                <span class="stat-label">Pending Listings</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-coral">&#128197;</div>
+            <div class="stat-info">
+                <!-- PHP: echo COUNT(*) FROM bookings -->
+                <span class="stat-number">0</span>
+                <span class="stat-label">Total Bookings</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-green">&#128176;</div>
+            <div class="stat-info">
+                <!-- PHP: echo SUM(commission_amount) FROM bookings -->
+                <span class="stat-number">Rs. 0</span>
+                <span class="stat-label">Total Commission Earned</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-purple">&#9888;&#65039;</div>
+            <div class="stat-info">
+                <!-- PHP: echo COUNT(*) FROM users WHERE is_approved=0 AND role != 'tourist' -->
+                <span class="stat-number">0</span>
+                <span class="stat-label">Pending Registrations</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN QUICK ACTIONS -->
+    <h2 class="admin-page-title admin-section-spacer">Manage Platform</h2>
+
+    <div class="action-grid">
+
+        <a href="viewuseraccounts.html" class="action-card">
+            <div class="action-icon">&#128100;</div>
+            <h3>User Accounts</h3>
+            <p>View, suspend or delete tourist and partner accounts</p>
+        </a>
+
+        <a href="viewpendingrequests.html" class="action-card">
+            <div class="action-icon">&#128221;</div>
+            <h3>Partner Registrations</h3>
+            <p>Review and approve or reject new partner sign-ups</p>
+        </a>
+
+        <a href="viewlistingrequests.html" class="action-card">
+            <div class="action-icon">&#9989;</div>
+            <h3>Listing Approvals</h3>
+            <p>Approve or reject newly submitted listings</p>
+        </a>
+
+        <a href="viewallbookings.html" class="action-card">
+            <div class="action-icon">&#128197;</div>
+            <h3>All Bookings</h3>
+            <p>View every booking made across the platform</p>
+        </a>
+
+        <a href="manageadminaccounts.html" class="action-card">
+            <div class="action-icon">&#128272;</div>
+            <h3>Admin Accounts</h3>
+            <p>Add or remove other admin accounts</p>
+        </a>
+
+        <a href="commissionoverview.html" class="action-card">
+            <div class="action-icon">&#128181;</div>
+            <h3>Commission &amp; Fees</h3>
+            <p>View earnings and change the commission rate</p>
+        </a>
+
+        <a href="sendnotifications.html" class="action-card">
+            <div class="action-icon">&#128276;</div>
+            <h3>Send Notifications</h3>
+            <p>Send a notice or warning to platform users</p>
+        </a>
+
+        <a href="editprofile.html" class="action-card">
+            <div class="action-icon">&#9881;&#65039;</div>
+            <h3>My Profile</h3>
+            <p>Update your own admin account details</p>
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
