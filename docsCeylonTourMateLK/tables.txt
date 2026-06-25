@@ -1,0 +1,159 @@
+users
+- id (PK, AUTO_INCREMENT)
+- firstname
+- lastname
+- username
+- email
+- password
+- phone
+- profile_pic
+- role (tourist, tour_guide, shop_owner, hotel_owner, experience_provider, admin)
+- is_suspended (0 or 1)
+- is_approved (0 or 1)
+- created_at
+
+listings (parent)
+- id (PK, AUTO_INCREMENT)
+- user_id (FK → users)
+- title
+- description
+- location
+- city
+- price
+- status (pending, approved, rejected)
+- created_at
+
+tourguide_listings (child)
+- id (PK, AUTO_INCREMENT)
+- listing_id (FK → listings)
+- languages
+- specialization
+- experience_years
+- availability
+
+shop_listings (child)
+- id (PK, AUTO_INCREMENT)
+- listing_id (FK → listings)
+- shop_type
+- open_time
+- close_time
+
+hotel_listings (child)
+- id (PK, AUTO_INCREMENT)
+- listing_id (FK → listings)
+- star_rating
+- amenities
+- total_rooms
+- check_in_time
+- check_out_time
+
+experience_listings (child)
+- id (PK, AUTO_INCREMENT)
+- listing_id (FK → listings)
+- experience_type
+- duration
+- max_group_size
+- availability
+
+listing_images
+- id (PK, AUTO_INCREMENT)
+- listing_id (FK → listings)
+- image_path
+
+rooms
+- id (PK, AUTO_INCREMENT)
+- hotel_listing_id (FK → hotel_listings)
+- description
+- room_type (single, double, suite, family)
+- price_per_night
+- capacity
+- is_available (0 or 1)
+
+bookings (parent)
+- id (PK, AUTO_INCREMENT)
+- tourist_id (FK → users)
+- listing_id (FK → listings)
+- status (pending, confirmed, cancelled, completed)
+- total_price
+- commission_amount
+- created_at
+
+tourguide_bookings (child)
+- id (PK, AUTO_INCREMENT)
+- booking_id (FK → bookings)
+- booking_date
+- start_time
+- end_time
+
+hotel_bookings (child)
+- id (PK, AUTO_INCREMENT)
+- booking_id (FK → bookings)
+- room_id (FK → rooms)
+- check_in_date
+- check_out_date
+
+experience_bookings (child)
+- id (PK, AUTO_INCREMENT)
+- booking_id (FK → bookings)
+- booking_date
+- start_time
+- group_size
+
+
+payments (parent)
+- id (PK, AUTO_INCREMENT)
+- user_id (FK → users)
+- amount
+- payment_status (pending, completed, failed)
+- payment_date
+
+booking_payments (child)
+- id (PK, AUTO_INCREMENT)
+- payment_id (FK → payments)
+- booking_id (FK → bookings)
+
+listing_fee_payments (child)
+- id (PK, AUTO_INCREMENT)
+- payment_id (FK → payments)
+- month
+- year
+
+reviews
+- id (PK, AUTO_INCREMENT)
+- tourist_id (FK → users)
+- listing_id (FK → listings)
+- booking_id (FK → bookings)
+- rating (1-5)
+- comment
+- created_at
+
+messages
+- id (PK, AUTO_INCREMENT)
+- sender_id (FK → users)
+- listing_id 
+- receiver_id (FK → users)
+- message
+- is_read (0 or 1)
+- created_at
+
+notifications
+- id (PK, AUTO_INCREMENT)
+- sender_id (FK → users)
+- receiver_id (FK → users)
+- message
+- is_read (0 or 1)
+- created_at
+
+commission
+- id (PK, AUTO_INCREMENT)
+- rate (e.g. 5.00)
+- updated_by (FK → users)
+- updated_at
+
+licenses
+- id (PK, AUTO_INCREMENT)
+- user_id (FK → users)
+- license_number
+- license_image
+- status (pending, approved, rejected)
+- submitted_at
