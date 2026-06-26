@@ -814,3 +814,41 @@ a {
 
 .status-active { background-color: #eaf3de; color: #3b6d11; }
 .status-suspended { background-color: #faece7; color: #993c1d; }
+.status-pending { background-color: #faeeda; color: #7a5200; }
+.status-confirmed { background-color: #e1f5ee; color: #1a6645; }
+.status-completed { background-color: #e6f1fb; color: #1c5a8a; }
+.status-cancelled { background-color: #faece7; color: #993c1d; }
+.commission-form-card select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d6d6d6;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+}
+
+.commission-form-card label {
+    display: block;
+    font-size: 13px;
+    color: #2b2b2b;
+    margin-bottom: 6px;
+    margin-top: 10px;
+}
+/* ===========================
+   PROFILE PIC SECTION
+   =========================== */
+
+.profile-pic-section {
+    margin-bottom: 25px;
+}
+
+.profile-pic-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #d6d6d6;
+    display: block;
+    margin-bottom: 8px;
+}
