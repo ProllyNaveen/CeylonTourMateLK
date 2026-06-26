@@ -1038,3 +1038,7 @@ a {
     font-size: 11px;
     color: #6b6b6b;
 }
+.experience-badge {
+    background-color: #f4a261;
+    color: #0f2a43;
+}
