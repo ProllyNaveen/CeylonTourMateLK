@@ -727,3 +727,90 @@ a {
     font-size: 13px;
     margin-bottom: 15px;
 }
+/* ===========================
+   FILTER BAR
+   =========================== */
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.filter-btn {
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    border: 1px solid #d6d6d6;
+    background-color: #ffffff;
+    color: #2b2b2b;
+}
+
+.filter-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.filter-btn.active {
+    background-color: #0f2a43;
+    color: #ffffff;
+    border-color: #0f2a43;
+}
+
+/* ===========================
+   TABLE ACTION BUTTONS
+   =========================== */
+
+.action-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.tbl-btn {
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.tbl-btn-green {
+    background-color: #eaf3de;
+    color: #3b6d11;
+}
+
+.tbl-btn-amber {
+    background-color: #faeeda;
+    color: #7a5200;
+}
+
+.tbl-btn-red {
+    background-color: #faece7;
+    color: #993c1d;
+}
+
+/* ===========================
+   ROLE & STATUS BADGES
+   =========================== */
+
+.role-badge {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.role-tourist { background-color: #e6f1fb; color: #1c5a8a; }
+.role-tour_guide { background-color: #e1f5ee; color: #1a6645; }
+.role-hotel_owner { background-color: #faeeda; color: #7a5200; }
+.role-shop_owner { background-color: #eeedfe; color: #4a2d8a; }
+.role-experience_provider { background-color: #faece7; color: #993c1d; }
+
+.status-badge {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.status-active { background-color: #eaf3de; color: #3b6d11; }
+.status-suspended { background-color: #faece7; color: #993c1d; }
