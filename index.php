@@ -17,13 +17,13 @@
                 <span class="logo-text">Ceylon<span>TourMate</span>.lk</span>
             </td>
             <td class="nav-links-cell">
-                <a href="index.html">Home</a>
+                <a href="index.php">Home</a>
                 <a href="#explore">Explore</a>
                 <a href="#about">About Us</a>
             </td>
             <td class="nav-buttons-cell">
-                <a href="login.html"><button class="btn btn-login">Login</button></a>
-                <a href="regform.html"><button class="btn btn-signup">Sign Up</button></a>
+                <a href="login.php"><button class="btn btn-login">Login</button></a>
+                <a href="regform.php"><button class="btn btn-signup">Sign Up</button></a>
             </td>
         </tr>
     </table>
@@ -42,7 +42,7 @@
         </p>
         <div class="hero-buttons">
             <a href="#explore"><button class="btn btn-primary">Start Exploring</button></a>
-            <a href="regform.html"><button class="btn btn-secondary">Join as a Partner</button></a>
+            <a href="regform.php"><button class="btn btn-secondary">Join as a Partner</button></a>
         </div>
     </div>
 </div>
@@ -146,12 +146,12 @@
             <td style="width:20%">
                 <h4>Company</h4>
                 <a href="#about">About Us</a>
-                <a href="regform.html">Become a Partner</a>
+                <a href="regform.php">Become a Partner</a>
             </td>
             <td style="width:30%">
                 <h4>Account</h4>
-                <a href="login.html">Login</a>
-                <a href="regform.html">Sign Up</a>
+                <a href="login.php">Login</a>
+                <a href="regform.php">Sign Up</a>
             </td>
         </tr>
     </table>

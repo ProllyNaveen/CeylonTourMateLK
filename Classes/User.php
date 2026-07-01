@@ -20,18 +20,18 @@ class User {
     public function __construct($firstname, $lastname, $username, $email, $password,
                                 $phone, $profilePic, $role, $isSuspended, $isApproved,
                                 $securityQuestion, $securityAnswer) {
-        $this->firstname       = $firstname;
-        $this->lastname        = $lastname;
-        $this->username        = $username;
-        $this->email           = $email;
-        $this->password        = $password;
-        $this->phone           = $phone;
-        $this->profilePic      = $profilePic;
-        $this->role            = $role;
-        $this->isSuspended     = $isSuspended;
-        $this->isApproved      = $isApproved;
+        $this->firstname        = $firstname;
+        $this->lastname         = $lastname;
+        $this->username         = $username;
+        $this->email            = $email;
+        $this->password         = $password;
+        $this->phone            = $phone;
+        $this->profilePic       = $profilePic;
+        $this->role             = $role;
+        $this->isSuspended      = $isSuspended;
+        $this->isApproved       = $isApproved;
         $this->securityQuestion = $securityQuestion;
-        $this->securityAnswer  = $securityAnswer;
+        $this->securityAnswer   = $securityAnswer;
     }
 
     // ===========================
@@ -57,11 +57,19 @@ class User {
                 profile_pic, role, is_suspended, is_approved, security_question, security_answer)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssssssssiss",
-            $this->firstname, $this->lastname, $this->username, $this->email,
-            $hashedPassword, $this->phone, $this->profilePic, $this->role,
-            $this->isSuspended, $this->isApproved,
-            $this->securityQuestion, $this->securityAnswer
+        $stmt->bind_param("ssssssssiiss",
+            $this->firstname,
+            $this->lastname,
+            $this->username,
+            $this->email,
+            $hashedPassword,
+            $this->phone,
+            $this->profilePic,
+            $this->role,
+            $this->isSuspended,
+            $this->isApproved,
+            $this->securityQuestion,
+            $this->securityAnswer
         );
 
         if ($stmt->execute()) {
@@ -96,9 +104,9 @@ class User {
 
             if (password_verify($this->password, $user['password'])) {
                 session_start();
-                $_SESSION['user_id']  = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['role']     = $user['role'];
+                $_SESSION['user_id']   = $user['id'];
+                $_SESSION['username']  = $user['username'];
+                $_SESSION['role']      = $user['role'];
                 $_SESSION['firstname'] = $user['firstname'];
                 return "success";
             } else {
@@ -125,7 +133,6 @@ class User {
     public function editProfile($currentPassword, $newPassword) {
         $conn = DBconnection::getInstance()->getConnection();
 
-        // check username or email not taken by another user
         $checkSql = "SELECT id FROM users WHERE (username = ? OR email = ?) AND id != ?";
         $checkStmt = $conn->prepare($checkSql);
         $checkStmt->bind_param("ssi", $this->username, $this->email, $this->id);
@@ -136,7 +143,6 @@ class User {
             return "exists";
         }
 
-        // if changing password verify current password first
         if ($newPassword != "") {
             $getSql = "SELECT password FROM users WHERE id = ?";
             $getStmt = $conn->prepare($getSql);
@@ -341,7 +347,7 @@ class User {
     // ===========================
     // GETTERS
     // ===========================
-    public function getId()       { return $this->id; }
+    public function getId()        { return $this->id; }
     public function getFirstname() { return $this->firstname; }
     public function getLastname()  { return $this->lastname; }
     public function getUsername()  { return $this->username; }

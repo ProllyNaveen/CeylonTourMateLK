@@ -13,16 +13,16 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="index.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="index.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
-                <a href="index.html">Home</a>
-                <a href="index.html#explore">Explore</a>
-                <a href="index.html#about">About Us</a>
+                <a href="index.php">Home</a>
+                <a href="index.php#explore">Explore</a>
+                <a href="index.php#about">About Us</a>
             </td>
             <td class="nav-buttons-cell">
-                <a href="login.html"><button class="btn btn-login">Login</button></a>
-                <a href="regform.html"><button class="btn btn-signup">Sign Up</button></a>
+                <a href="login.php"><button class="btn btn-login">Login</button></a>
+                <a href="regform.php"><button class="btn btn-signup">Sign Up</button></a>
             </td>
         </tr>
     </table>
@@ -33,7 +33,9 @@
     <div class="auth-card auth-card-narrow">
         <h2>Set a new password</h2>
         <p class="auth-subtitle">Identity confirmed. Choose a new password for your account.</p>
-
+		<?php if(isset($_GET['error'])) { ?>
+		<p class="error">Something went wrong. Please try again.</p>
+		<?php } ?>
         <form name="resetform" method="post" action="resetpasswordbackend.php" onsubmit="return validateResetPassword();">
 
             <label>New Password</label>
@@ -45,7 +47,7 @@
             <button type="submit" class="btn btn-primary btn-full">Reset Password</button>
         </form>
 
-        <p class="auth-switch"><a href="login.html">Back to Login</a></p>
+        <p class="auth-switch"><a href="login.php">Back to Login</a></p>
     </div>
 </div>
 

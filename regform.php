@@ -13,16 +13,16 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="index.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="index.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
-                <a href="index.html">Home</a>
-                <a href="index.html#explore">Explore</a>
-                <a href="index.html#about">About Us</a>
+                <a href="index.php">Home</a>
+                <a href="index.php#explore">Explore</a>
+                <a href="index.php#about">About Us</a>
             </td>
             <td class="nav-buttons-cell">
-                <a href="login.html"><button class="btn btn-login">Login</button></a>
-                <a href="regform.html"><button class="btn btn-signup">Sign Up</button></a>
+                <a href="login.php"><button class="btn btn-login">Login</button></a>
+                <a href="regform.php"><button class="btn btn-signup">Sign Up</button></a>
             </td>
         </tr>
     </table>
@@ -111,7 +111,7 @@
             <button type="submit" class="btn btn-primary btn-full">Create Account</button>
         </form>
 
-        <p class="auth-switch">Already have an account? <a href="login.html">Login here</a></p>
+        <p class="auth-switch">Already have an account? <a href="login.php">Login here</a></p>
     </div>
 </div>
 
