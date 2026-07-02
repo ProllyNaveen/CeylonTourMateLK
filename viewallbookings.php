@@ -12,7 +12,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="admindashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="admindashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="admin-badge">Admin Panel</span>
@@ -28,7 +28,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="admindashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="admindashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">All Bookings</h2>
     <p class="admin-page-subtitle">View every booking made across the platform</p>

@@ -12,7 +12,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="admindashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="admindashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="admin-badge">Admin Panel</span>
@@ -94,55 +94,55 @@
 
     <div class="action-grid">
 
-        <a href="viewuseraccounts.html" class="action-card">
+        <a href="viewuseraccounts.php" class="action-card">
             <div class="action-icon">&#128100;</div>
             <h3>User Accounts</h3>
             <p>View, suspend or delete tourist and partner accounts</p>
         </a>
 
-        <a href="viewpendingrequests.html" class="action-card">
+        <a href="viewpendingrequests.php" class="action-card">
             <div class="action-icon">&#128221;</div>
             <h3>Partner Registrations</h3>
             <p>Review and approve or reject new partner sign-ups</p>
         </a>
 
-        <a href="viewlistingrequests.html" class="action-card">
+        <a href="viewlistingrequests.php" class="action-card">
             <div class="action-icon">&#9989;</div>
             <h3>Listing Approvals</h3>
             <p>Approve or reject newly submitted listings</p>
         </a>
 
-        <a href="viewallbookings.html" class="action-card">
+        <a href="viewallbookings.php" class="action-card">
             <div class="action-icon">&#128197;</div>
             <h3>All Bookings</h3>
             <p>View every booking made across the platform</p>
         </a>
 
-        <a href="manageadminaccounts.html" class="action-card">
+        <a href="manageadminaccounts.php" class="action-card">
             <div class="action-icon">&#128272;</div>
             <h3>Admin Accounts</h3>
             <p>Add or remove other admin accounts</p>
         </a>
 
-        <a href="commissionoverview.html" class="action-card">
+        <a href="commissionoverview.php" class="action-card">
             <div class="action-icon">&#128181;</div>
             <h3>Commission &amp; Fees</h3>
             <p>View earnings and change the commission rate</p>
         </a>
 
-        <a href="sendnotifications.html" class="action-card">
+        <a href="sendnotifications.php" class="action-card">
             <div class="action-icon">&#128276;</div>
             <h3>Send Notifications</h3>
             <p>Send a notice or warning to platform users</p>
         </a>
 
-        <a href="editprofile.html" class="action-card">
+        <a href="editprofile.php" class="action-card">
             <div class="action-icon">&#9881;&#65039;</div>
             <h3>My Profile</h3>
             <p>Update your own admin account details</p>
         </a>
 		
-		<a href="reports.html" class="action-card">
+		<a href="reports.php" class="action-card">
             <div class="action-icon">&#128202;</div>
             <h3>Reports</h3>
             <p>Generate platform reports for bookings, revenue and listings</p>

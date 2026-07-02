@@ -9,9 +9,7 @@ try {
 
     $username = trim($_POST['username']);
     $password = $_POST['password'];
-    $isAdmin  = isset($_POST['is_admin']);
 
-    // create User object with just username and password
     $user = new User(
         null, null, $username, null, $password,
         null, null, null, null, null, null, null
@@ -21,15 +19,6 @@ try {
 
     switch ($result) {
         case "success":
-            // if admin checkbox ticked but user is not admin, reject
-            if ($isAdmin && $_SESSION['role'] != 'admin') {
-                session_unset();
-                session_destroy();
-                header("Location: login.php?notadmin=1");
-                exit();
-            }
-
-            // redirect based on role
             switch ($_SESSION['role']) {
                 case 'admin':
                     header("Location: admindashboard.php");
@@ -54,23 +43,18 @@ try {
                     break;
             }
             break;
-
         case "suspended":
             header("Location: login.php?suspended=1");
             break;
-
         case "notapproved":
             header("Location: login.php?notapproved=1");
             break;
-
         case "wrongpassword":
             header("Location: login.php?wrongpassword=1");
             break;
-
         case "notfound":
             header("Location: login.php?notfound=1");
             break;
-
         default:
             header("Location: login.php?error=1");
             break;

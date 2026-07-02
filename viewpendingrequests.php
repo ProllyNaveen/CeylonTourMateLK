@@ -1,3 +1,17 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['admin']);
+
+require_once 'Classes/User.php';
+
+$role = isset($_GET['role']) ? $_GET['role'] : null;
+
+$user     = new User(null, null, null, null, null, null, null, null, null, null, null, null);
+$requests = $user->viewPendingRequests($role);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +26,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="admindashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="admindashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="admin-badge">Admin Panel</span>
@@ -28,7 +42,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="admindashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="admindashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">Partner Registrations</h2>
     <p class="admin-page-subtitle">Review and approve or reject new partner sign-up requests</p>
@@ -51,67 +65,57 @@
 
     <!-- PENDING REQUESTS TABLE -->
     <table class="admin-table">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Role</th>
+        <th>License</th>
+        <th>Joined</th>
+        <th>Actions</th>
+    </tr>
+
+    <?php if(empty($requests)) { ?>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Role</th>
-            <th>License</th>
-            <th>Joined</th>
-            <th>Actions</th>
+            <td colspan="9" class="table-empty">No pending registrations</td>
         </tr>
-
-        <!-- PHP:
-            if(isset($_GET['role'])) {
-                $role = $_GET['role'];
-                $sql = "SELECT u.*, tl.license_image, tl.license_number
-                        FROM users u
-                        LEFT JOIN tourguide_licenses tl ON u.id = tl.user_id
-                        WHERE u.is_approved = 0 AND u.role = ?
-                        ORDER BY u.created_at DESC";
-            } else {
-                $sql = "SELECT u.*, tl.license_image, tl.license_number
-                        FROM users u
-                        LEFT JOIN tourguide_licenses tl ON u.id = tl.user_id
-                        WHERE u.is_approved = 0 AND u.role != 'tourist' AND u.role != 'admin'
-                        ORDER BY u.created_at DESC";
-            }
-            loop through results and echo each row
-        -->
-
-        <!-- Example populated row: -->
-        <!--
+    <?php } else { ?>
+        <?php foreach($requests as $req) { ?>
         <tr>
-            <td><?php echo $user['id']; ?></td>
-            <td><?php echo $user['firstname'] . ' ' . $user['lastname']; ?></td>
-            <td><?php echo $user['username']; ?></td>
-            <td><?php echo $user['email']; ?></td>
-            <td><?php echo $user['phone']; ?></td>
-            <td><span class="role-badge role-<?php echo $user['role']; ?>"><?php echo ucfirst(str_replace('_', ' ', $user['role'])); ?></span></td>
+            <td><?php echo $req['id']; ?></td>
+            <td><?php echo $req['firstname'] . ' ' . $req['lastname']; ?></td>
+            <td><?php echo $req['username']; ?></td>
+            <td><?php echo $req['email']; ?></td>
+            <td><?php echo $req['phone']; ?></td>
             <td>
-                <?php if($user['license_image']) { ?>
-                    <a href="<?php echo $user['license_image']; ?>" target="_blank" class="tbl-btn tbl-btn-green">View License</a>
+                <span class="role-badge role-<?php echo $req['role']; ?>">
+                    <?php echo ucfirst(str_replace('_', ' ', $req['role'])); ?>
+                </span>
+            </td>
+            <td>
+                <?php if($req['license_image']) { ?>
+                    <a href="<?php echo $req['license_image']; ?>" target="_blank" class="tbl-btn tbl-btn-green">View License</a>
                 <?php } else { ?>
                     <span style="color:#999; font-size:12px;">N/A</span>
                 <?php } ?>
             </td>
-            <td><?php echo date('d M Y', strtotime($user['created_at'])); ?></td>
+            <td><?php echo date('d M Y', strtotime($req['created_at'])); ?></td>
             <td>
                 <div class="action-btns">
-                    <a href="approveregbackend.php?id=<?php echo $user['id']; ?>&action=approve" class="tbl-btn tbl-btn-green">Approve</a>
-                    <a href="approveregbackend.php?id=<?php echo $user['id']; ?>&action=reject" class="tbl-btn tbl-btn-red" onclick="return confirm('Are you sure you want to reject this registration?')">Reject</a>
+                    <a href="approveregbackend.php?id=<?php echo $req['id']; ?>&action=approve"
+                       class="tbl-btn tbl-btn-green">Approve</a>
+                    <a href="approveregbackend.php?id=<?php echo $req['id']; ?>&action=reject"
+                       class="tbl-btn tbl-btn-red"
+                       onclick="return confirm('Are you sure you want to reject this registration?')">Reject</a>
                 </div>
             </td>
         </tr>
-        -->
+        <?php } ?>
+    <?php } ?>
 
-        <tr>
-            <td colspan="9" class="table-empty">No pending registrations</td>
-        </tr>
-
-    </table>
+</table>
 
 </div>
 

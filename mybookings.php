@@ -43,6 +43,18 @@
     <?php if(isset($_GET['error'])) { ?>
         <p class="error">Something went wrong. Please try again.</p>
     <?php } ?>
+	<?php if(isset($_GET['paidsuccess'])) { ?>
+    <p class="success">Payment completed successfully!</p>
+<?php } ?>
+<?php if(isset($_GET['notconfirmed'])) { ?>
+    <p class="error">Your booking has not been confirmed by the partner yet.</p>
+<?php } ?>
+<?php if(isset($_GET['cannotcancel'])) { ?>
+    <p class="error">This booking cannot be cancelled.</p>
+<?php } ?>
+<?php if(isset($_GET['reviewsuccess'])) { ?>
+    <p class="success">Review submitted successfully. Thank you!</p>
+<?php } ?>
 
     <!-- FILTER BY STATUS -->
     <div class="filter-bar">

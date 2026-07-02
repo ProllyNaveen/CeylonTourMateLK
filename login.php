@@ -53,9 +53,6 @@
         <?php if(isset($_GET['error'])) { ?>
             <p class="error">Something went wrong. Please try again.</p>
         <?php } ?>
-		<?php if(isset($_GET['notadmin'])) { ?>
-			<p class="error">You do not have admin access.</p>
-		<?php } ?>
 		<?php if(isset($_GET['resetdone'])) { ?>
 			<p class="success">Password reset successful! You can now log in.</p>
 		<?php } ?>
@@ -68,10 +65,6 @@
             <label>Password</label>
             <input type="password" name="password">
             <div class="login-extra-row">
-                <label class="admin-check-label">
-                    <input type="checkbox" name="is_admin" style="width:auto; margin-right:6px;">
-                    Login as Admin
-                </label>
                 <a href="forgotpassword.php" class="forgot-link">Forgot password?</a>
             </div>
             <button type="submit" class="btn btn-primary btn-full">Login</button>

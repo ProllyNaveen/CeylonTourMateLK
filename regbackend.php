@@ -20,7 +20,7 @@ try {
     $securityAnswer   = trim($_POST['security_answer']);
 
     // handle profile pic upload
-    $profilePic = 'images/default.png';
+    $profilePic = 'uploads/profiles/default.png';
     if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
         $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
         $fileType = $_FILES['profile_pic']['type'];

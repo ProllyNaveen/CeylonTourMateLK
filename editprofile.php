@@ -1,3 +1,20 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['admin']);
+
+require_once 'Classes/DBconnection.php';
+
+$conn   = DBconnection::getInstance()->getConnection();
+$sql    = "SELECT * FROM users WHERE id = ?";
+$stmt   = $conn->prepare($sql);
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$admin  = $result->fetch_assoc();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +30,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="admindashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="admindashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="admin-badge">Admin Panel</span>
@@ -29,7 +46,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="admindashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="admindashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">My Profile</h2>
     <p class="admin-page-subtitle">Update your admin account details</p>
@@ -48,35 +65,29 @@
     <?php } ?>
 
     <!-- PROFILE PICTURE -->
-    <div class="profile-pic-section">
-        <!-- PHP: echo admin's profile pic or default -->
-        <img src="images/default.png" alt="Profile Picture" class="profile-pic-preview" id="profilePicPreview">
-        <p class="form-note">Click below to change your profile picture</p>
-    </div>
+	<div class="profile-pic-section">
+		<img src="<?php echo $admin['profile_pic']; ?>" alt="Profile Picture" class="profile-pic-preview" id="profilePicPreview">
+		<p class="form-note">Click below to change your profile picture</p>
+	</div>
 
     <!-- EDIT PROFILE FORM -->
     <div class="commission-form-card" style="max-width: 550px;">
         <form name="editprofileform" method="post" action="editprofilebackend.php" enctype="multipart/form-data" onsubmit="return validateEditProfile();">
 
-            <label>First Name</label>
-            <!-- PHP: value="<?php echo $admin['firstname']; ?>" -->
-            <input type="text" name="firstname" placeholder="Enter first name" value="">
+			<label>First Name</label>
+			<input type="text" name="firstname" placeholder="Enter first name" value="<?php echo $admin['firstname']; ?>">
 
-            <label>Last Name</label>
-            <!-- PHP: value="<?php echo $admin['lastname']; ?>" -->
-            <input type="text" name="lastname" placeholder="Enter last name" value="">
+			<label>Last Name</label>
+			<input type="text" name="lastname" placeholder="Enter last name" value="<?php echo $admin['lastname']; ?>">
 
-            <label>Username</label>
-            <!-- PHP: value="<?php echo $admin['username']; ?>" -->
-            <input type="text" name="username" placeholder="Enter username" value="">
+			<label>Username</label>
+			<input type="text" name="username" placeholder="Enter username" value="<?php echo $admin['username']; ?>">
 
-            <label>Email</label>
-            <!-- PHP: value="<?php echo $admin['email']; ?>" -->
-            <input type="email" name="email" placeholder="Enter email" value="">
+			<label>Email</label>
+			<input type="email" name="email" placeholder="Enter email" value="<?php echo $admin['email']; ?>">
 
-            <label>Phone</label>
-            <!-- PHP: value="<?php echo $admin['phone']; ?>" -->
-            <input type="text" name="phone" placeholder="Enter phone number" value="">
+			<label>Phone</label>
+			<input type="text" name="phone" placeholder="Enter phone number" value="<?php echo $admin['phone']; ?>">
 
             <label>Profile Picture</label>
             <input type="file" name="profile_pic" accept="image/*" onchange="previewImage(this)">
