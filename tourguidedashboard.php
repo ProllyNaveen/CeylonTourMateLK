@@ -12,7 +12,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="tourguidedashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="tourguidedashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="partner-badge tourguide-badge">Tour Guide</span>
@@ -100,37 +100,37 @@
 
     <div class="action-grid">
 
-        <a href="tourguideaddlisting.html" class="action-card">
+        <a href="tourguideaddlisting.php" class="action-card">
             <div class="action-icon">&#10133;</div>
             <h3>Add New Listing</h3>
             <p>Submit a new tour guide listing for admin approval</p>
         </a>
 
-        <a href="tourguidemanagelistings.html" class="action-card">
+        <a href="tourguidemanagelistings.php" class="action-card">
             <div class="action-icon">&#127759;</div>
             <h3>My Listings</h3>
             <p>View, edit or delete your tour guide listings</p>
         </a>
 
-        <a href="tourguidemybookings.html" class="action-card">
+        <a href="tourguidemybookings.php" class="action-card">
             <div class="action-icon">&#128197;</div>
             <h3>My Bookings</h3>
             <p>View and manage bookings made for your tours</p>
         </a>
 
-        <a href="tourguidemessages.html" class="action-card">
+        <a href="tourguidemessages.php" class="action-card">
             <div class="action-icon">&#128172;</div>
             <h3>Messages</h3>
             <p>View and reply to messages from tourists</p>
         </a>
 
-        <a href="tourguidenotifications.html" class="action-card">
+        <a href="tourguidenotifications.php" class="action-card">
             <div class="action-icon">&#128276;</div>
             <h3>Notifications</h3>
             <p>View notices and updates from the platform</p>
         </a>
 
-        <a href="tourguideeditprofile.html" class="action-card">
+        <a href="tourguideeditprofile.php" class="action-card">
             <div class="action-icon">&#9881;&#65039;</div>
             <h3>My Profile</h3>
             <p>Update your account details</p>

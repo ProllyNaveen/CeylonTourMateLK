@@ -12,13 +12,13 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="index.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="index.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
-                <a href="explore.html" class="nav-link">Explore</a>
-                <a href="mybookings.html" class="nav-link">My Bookings</a>
-                <a href="touristmessages.html" class="nav-link">Messages</a>
-                <a href="touristnotifications.html" class="nav-link">Notifications</a>
+                <a href="explore.php" class="nav-link">Explore</a>
+                <a href="mybookings.php" class="nav-link">My Bookings</a>
+                <a href="touristmessages.php" class="nav-link">Messages</a>
+                <a href="touristnotifications.php" class="nav-link">Notifications</a>
             </td>
             <td class="nav-buttons-cell">
                 <!-- PHP: echo tourist's firstname from session -->
@@ -99,31 +99,31 @@
 
     <div class="action-grid">
 
-        <a href="explore.html" class="action-card">
+        <a href="explore.php" class="action-card">
             <div class="action-icon">&#127758;</div>
             <h3>Explore</h3>
             <p>Browse and search for tour guides, hotels, shops and experiences</p>
         </a>
 
-        <a href="mybookings.html" class="action-card">
+        <a href="mybookings.php" class="action-card">
             <div class="action-icon">&#128197;</div>
             <h3>My Bookings</h3>
             <p>View and manage your bookings</p>
         </a>
 
-        <a href="touristmessages.html" class="action-card">
+        <a href="touristmessages.php" class="action-card">
             <div class="action-icon">&#128172;</div>
             <h3>Messages</h3>
             <p>View and reply to messages from partners</p>
         </a>
 
-        <a href="touristnotifications.html" class="action-card">
+        <a href="touristnotifications.php" class="action-card">
             <div class="action-icon">&#128276;</div>
             <h3>Notifications</h3>
             <p>View notices and updates from the platform</p>
         </a>
 
-        <a href="touristeditprofile.html" class="action-card">
+        <a href="touristeditprofile.php" class="action-card">
             <div class="action-icon">&#9881;&#65039;</div>
             <h3>My Profile</h3>
             <p>Update your account details</p>

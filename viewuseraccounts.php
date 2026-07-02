@@ -1,3 +1,17 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['admin']);
+
+require_once 'Classes/User.php';
+
+$role = isset($_GET['role']) ? $_GET['role'] : null;
+
+$user  = new User(null, null, null, null, null, null, null, null, null, null, null, null);
+$users = $user->manageUserAccounts($role);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,61 +66,60 @@
 
     <!-- USERS TABLE -->
     <table class="admin-table">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Joined</th>
+        <th>Actions</th>
+    </tr>
+
+    <?php if(empty($users)) { ?>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>Joined</th>
-            <th>Actions</th>
+            <td colspan="8" class="table-empty">No users found</td>
         </tr>
-
-        <!-- PHP: 
-            if(isset($_GET['role'])) {
-                $role = $_GET['role'];
-                $sql = "SELECT * FROM users WHERE role = ? AND role != 'admin' ORDER BY created_at DESC";
-            } else {
-                $sql = "SELECT * FROM users WHERE role != 'admin' ORDER BY created_at DESC";
-            }
-            loop through results and echo each row
-        -->
-
-        <!-- Example populated row: -->
-        <!--
+    <?php } else { ?>
+        <?php foreach($users as $u) { ?>
         <tr>
-            <td><?php echo $user['id']; ?></td>
-            <td><?php echo $user['firstname'] . ' ' . $user['lastname']; ?></td>
-            <td><?php echo $user['username']; ?></td>
-            <td><?php echo $user['email']; ?></td>
-            <td><span class="role-badge role-<?php echo $user['role']; ?>"><?php echo ucfirst(str_replace('_', ' ', $user['role'])); ?></span></td>
+            <td><?php echo $u['id']; ?></td>
+            <td><?php echo $u['firstname'] . ' ' . $u['lastname']; ?></td>
+            <td><?php echo $u['username']; ?></td>
+            <td><?php echo $u['email']; ?></td>
             <td>
-                <?php if($user['is_suspended'] == 1) { ?>
+                <span class="role-badge role-<?php echo $u['role']; ?>">
+                    <?php echo ucfirst(str_replace('_', ' ', $u['role'])); ?>
+                </span>
+            </td>
+            <td>
+                <?php if($u['is_suspended'] == 1) { ?>
                     <span class="status-badge status-suspended">Suspended</span>
                 <?php } else { ?>
                     <span class="status-badge status-active">Active</span>
                 <?php } ?>
             </td>
-            <td><?php echo date('d M Y', strtotime($user['created_at'])); ?></td>
+            <td><?php echo date('d M Y', strtotime($u['created_at'])); ?></td>
             <td>
                 <div class="action-btns">
-                    <?php if($user['is_suspended'] == 1) { ?>
-                        <a href="suspenduserbackend.php?id=<?php echo $user['id']; ?>&action=unsuspend" class="tbl-btn tbl-btn-green">Unsuspend</a>
+                    <?php if($u['is_suspended'] == 1) { ?>
+                        <a href="suspenduserbackend.php?id=<?php echo $u['id']; ?>&action=unsuspend"
+                           class="tbl-btn tbl-btn-green">Unsuspend</a>
                     <?php } else { ?>
-                        <a href="suspenduserbackend.php?id=<?php echo $user['id']; ?>&action=suspend" class="tbl-btn tbl-btn-amber">Suspend</a>
+                        <a href="suspenduserbackend.php?id=<?php echo $u['id']; ?>&action=suspend"
+                           class="tbl-btn tbl-btn-amber">Suspend</a>
                     <?php } ?>
-                    <a href="deleteuserbackend.php?id=<?php echo $user['id']; ?>" class="tbl-btn tbl-btn-red" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+                    <a href="deleteuserbackend.php?id=<?php echo $u['id']; ?>"
+                       class="tbl-btn tbl-btn-red"
+                       onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
                 </div>
             </td>
         </tr>
-        -->
+        <?php } ?>
+    <?php } ?>
 
-        <tr>
-            <td colspan="8" class="table-empty">No users found</td>
-        </tr>
-
-    </table>
+</table>
 
 </div>
 

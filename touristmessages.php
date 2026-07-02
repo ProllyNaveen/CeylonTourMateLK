@@ -13,13 +13,13 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="index.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="index.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
-                <a href="explore.html" class="nav-link">Explore</a>
-                <a href="mybookings.html" class="nav-link">My Bookings</a>
-                <a href="touristmessages.html" class="nav-link">Messages</a>
-                <a href="touristnotifications.html" class="nav-link">Notifications</a>
+                <a href="explore.php" class="nav-link">Explore</a>
+                <a href="mybookings.php" class="nav-link">My Bookings</a>
+                <a href="touristmessages.php" class="nav-link">Messages</a>
+                <a href="touristnotifications.php" class="nav-link">Notifications</a>
             </td>
             <td class="nav-buttons-cell">
                 <span class="admin-welcome">Welcome, Tourist</span>
@@ -32,7 +32,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="touristdashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="touristdashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">Messages</h2>
     <p class="admin-page-subtitle">View and reply to messages from partners</p>
