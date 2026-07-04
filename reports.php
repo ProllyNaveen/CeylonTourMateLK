@@ -12,7 +12,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="admindashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="admindashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="admin-badge">Admin Panel</span>
@@ -28,38 +28,38 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="admindashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="admindashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">Reports</h2>
     <p class="admin-page-subtitle">Generate and view platform reports</p>
 
     <div class="action-grid">
 
-        <a href="report_revenue.html" class="action-card">
+        <a href="report_revenue.php" class="action-card">
             <div class="action-icon">&#128176;</div>
             <h3>Revenue Report</h3>
             <p>View total commission earned and listing fees collected by date range</p>
         </a>
 
-        <a href="report_bookings.html" class="action-card">
+        <a href="report_bookings.php" class="action-card">
             <div class="action-icon">&#128197;</div>
             <h3>Bookings Report</h3>
             <p>View bookings filtered by date range, listing type and status</p>
         </a>
 
-        <a href="report_users.html" class="action-card">
+        <a href="report_users.php" class="action-card">
             <div class="action-icon">&#128101;</div>
             <h3>Users Report</h3>
             <p>View registered users by role and date range</p>
         </a>
 
-        <a href="report_listings.html" class="action-card">
+        <a href="report_listings.php" class="action-card">
             <div class="action-icon">&#127968;</div>
             <h3>Listings Report</h3>
             <p>View listings by type, status and approval date</p>
         </a>
 
-        <a href="report_unpaidshops.html" class="action-card">
+        <a href="report_unpaidshops.php" class="action-card">
             <div class="action-icon">&#9888;&#65039;</div>
             <h3>Unpaid Shop Fees</h3>
             <p>View shop listings that have not paid their monthly listing fee</p>

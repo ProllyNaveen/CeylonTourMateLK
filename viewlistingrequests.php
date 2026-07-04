@@ -1,3 +1,15 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['admin']);
+
+require_once 'Classes/Listing.php';
+
+$type     = isset($_GET['type']) ? $_GET['type'] : null;
+$listings = Listing::getPendingListings($type);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,47 +74,36 @@
             <th>Actions</th>
         </tr>
 
-        <!-- PHP:
-            if(isset($_GET['type'])) {
-                $type = $_GET['type'];
-                $sql = "SELECT l.*, u.firstname, u.lastname
-                        FROM listings l
-                        JOIN users u ON l.user_id = u.id
-                        WHERE l.status = 'pending' AND l.type = ?
-                        ORDER BY l.created_at DESC";
-            } else {
-                $sql = "SELECT l.*, u.firstname, u.lastname
-                        FROM listings l
-                        JOIN users u ON l.user_id = u.id
-                        WHERE l.status = 'pending'
-                        ORDER BY l.created_at DESC";
-            }
-            loop through results and echo each row
-        -->
-
-        <!-- Example populated row: -->
-        <!--
-        <tr>
-            <td><?php echo $listing['id']; ?></td>
-            <td><?php echo $listing['title']; ?></td>
-            <td><?php echo $listing['firstname'] . ' ' . $listing['lastname']; ?></td>
-            <td><span class="role-badge role-<?php echo $listing['type']; ?>"><?php echo ucfirst(str_replace('_', ' ', $listing['type'])); ?></span></td>
-            <td><?php echo $listing['city']; ?></td>
-            <td><?php echo number_format($listing['price'], 2); ?></td>
-            <td><?php echo date('d M Y', strtotime($listing['created_at'])); ?></td>
-            <td>
-                <div class="action-btns">
-                    <a href="viewlistingdetailadmin.php?id=<?php echo $listing['id']; ?>" class="tbl-btn tbl-btn-amber">View</a>
-                    <a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=approve" class="tbl-btn tbl-btn-green">Approve</a>
-                    <a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=reject" class="tbl-btn tbl-btn-red" onclick="return confirm('Are you sure you want to reject this listing?')">Reject</a>
-                </div>
-            </td>
-        </tr>
-        -->
-
-        <tr>
-            <td colspan="8" class="table-empty">No pending listings</td>
-        </tr>
+        <?php if(empty($listings)) { ?>
+    <tr>
+        <td colspan="8" class="table-empty">No pending listings</td>
+    </tr>
+		<?php } else { ?>
+			<?php foreach($listings as $listing) { ?>
+			<tr>
+				<td><?php echo $listing['id']; ?></td>
+				<td><?php echo $listing['title']; ?></td>
+				<td><?php echo $listing['firstname'] . ' ' . $listing['lastname']; ?></td>
+				<td>
+					<span class="role-badge role-<?php echo $listing['type']; ?>">
+						<?php echo ucfirst(str_replace('_', ' ', $listing['type'])); ?>
+					</span>
+				</td>
+				<td><?php echo $listing['city']; ?></td>
+				<td><?php echo number_format($listing['price'], 2); ?></td>
+				<td><?php echo date('d M Y', strtotime($listing['created_at'])); ?></td>
+				<td>
+					<div class="action-btns">
+						<a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=approve"
+						   class="tbl-btn tbl-btn-green">Approve</a>
+						<a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=reject"
+						   class="tbl-btn tbl-btn-red"
+						   onclick="return confirm('Are you sure you want to reject this listing?')">Reject</a>
+					</div>
+				</td>
+			</tr>
+			<?php } ?>
+		<?php } ?>
 
     </table>
 

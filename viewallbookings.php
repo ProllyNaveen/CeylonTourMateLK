@@ -1,3 +1,15 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['admin']);
+
+require_once 'Classes/Booking.php';
+
+$status   = isset($_GET['status']) ? $_GET['status'] : null;
+$bookings = Booking::viewAllBookings($status);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,58 +74,37 @@
             <th>Total (Rs.)</th>
             <th>Commission (Rs.)</th>
             <th>Status</th>
-            <th>Actions</th>
+            
         </tr>
 
-        <!-- PHP:
-            if(isset($_GET['status'])) {
-                $status = $_GET['status'];
-                $sql = "SELECT b.*, u.firstname, u.lastname, l.title, l.type
-                        FROM bookings b
-                        JOIN users u ON b.tourist_id = u.id
-                        JOIN listings l ON b.listing_id = l.id
-                        WHERE b.status = ?
-                        ORDER BY b.created_at DESC";
-            } else {
-                $sql = "SELECT b.*, u.firstname, u.lastname, l.title, l.type
-                        FROM bookings b
-                        JOIN users u ON b.tourist_id = u.id
-                        JOIN listings l ON b.listing_id = l.id
-                        ORDER BY b.created_at DESC";
-            }
-            loop through results and echo each row
-        -->
-
-        <!-- Example populated row: -->
-        <!--
-        <tr>
-            <td><?php echo $booking['id']; ?></td>
-            <td><?php echo $booking['firstname'] . ' ' . $booking['lastname']; ?></td>
-            <td><?php echo $booking['title']; ?></td>
-            <td><span class="role-badge role-<?php echo $booking['type']; ?>"><?php echo ucfirst(str_replace('_', ' ', $booking['type'])); ?></span></td>
-            <td><?php echo date('d M Y H:i', strtotime($booking['start_datetime'])); ?></td>
-            <td><?php echo date('d M Y H:i', strtotime($booking['end_datetime'])); ?></td>
-            <td><?php echo $booking['guest_count']; ?></td>
-            <td><?php echo number_format($booking['total_price'], 2); ?></td>
-            <td><?php echo number_format($booking['commission_amount'], 2); ?></td>
-            <td>
-                <span class="status-badge status-<?php echo $booking['status']; ?>">
-                    <?php echo ucfirst($booking['status']); ?>
-                </span>
-            </td>
-            <td>
-                <?php if($booking['status'] == 'pending' || $booking['status'] == 'confirmed') { ?>
-                    <a href="cancelbookingbackend.php?id=<?php echo $booking['id']; ?>" class="tbl-btn tbl-btn-red" onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel</a>
-                <?php } else { ?>
-                    <span style="color:#999; font-size:12px;">—</span>
-                <?php } ?>
-            </td>
-        </tr>
-        -->
-
-        <tr>
-            <td colspan="11" class="table-empty">No bookings found</td>
-        </tr>
+        <?php if(empty($bookings)) { ?>
+    <tr>
+        <td colspan="10" class="table-empty">No bookings found</td>
+    </tr>
+<?php } else { ?>
+    <?php foreach($bookings as $booking) { ?>
+    <tr>
+        <td><?php echo $booking['id']; ?></td>
+        <td><?php echo $booking['firstname'] . ' ' . $booking['lastname']; ?></td>
+        <td><?php echo $booking['title']; ?></td>
+        <td>
+            <span class="role-badge role-<?php echo $booking['type']; ?>">
+                <?php echo ucfirst(str_replace('_', ' ', $booking['type'])); ?>
+            </span>
+        </td>
+        <td><?php echo date('d M Y H:i', strtotime($booking['start_datetime'])); ?></td>
+        <td><?php echo date('d M Y H:i', strtotime($booking['end_datetime'])); ?></td>
+        <td><?php echo $booking['guest_count']; ?></td>
+        <td><?php echo number_format($booking['total_price'], 2); ?></td>
+        <td><?php echo number_format($booking['commission_amount'], 2); ?></td>
+        <td>
+            <span class="status-badge status-<?php echo $booking['status']; ?>">
+                <?php echo ucfirst($booking['status']); ?>
+            </span>
+        </td>
+    </tr>
+    <?php } ?>
+<?php } ?>
 
     </table>
 

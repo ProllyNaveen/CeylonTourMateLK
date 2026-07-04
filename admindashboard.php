@@ -1,3 +1,50 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['admin']);
+
+require_once 'Classes/DBconnection.php';
+
+$conn = DBconnection::getInstance()->getConnection();
+
+// total users
+$sql1  = "SELECT COUNT(*) as total FROM users WHERE role != 'admin'";
+$stmt1 = $conn->prepare($sql1);
+$stmt1->execute();
+$totalUsers = $stmt1->get_result()->fetch_assoc()['total'];
+
+// active listings
+$sql2  = "SELECT COUNT(*) as total FROM listings WHERE status = 'approved'";
+$stmt2 = $conn->prepare($sql2);
+$stmt2->execute();
+$activeListings = $stmt2->get_result()->fetch_assoc()['total'];
+
+// pending listings
+$sql3  = "SELECT COUNT(*) as total FROM listings WHERE status = 'pending'";
+$stmt3 = $conn->prepare($sql3);
+$stmt3->execute();
+$pendingListings = $stmt3->get_result()->fetch_assoc()['total'];
+
+// total bookings
+$sql4  = "SELECT COUNT(*) as total FROM bookings";
+$stmt4 = $conn->prepare($sql4);
+$stmt4->execute();
+$totalBookings = $stmt4->get_result()->fetch_assoc()['total'];
+
+// total commission
+$sql5  = "SELECT COALESCE(SUM(commission_amount), 0) as total FROM bookings WHERE status = 'completed'";
+$stmt5 = $conn->prepare($sql5);
+$stmt5->execute();
+$totalCommission = $stmt5->get_result()->fetch_assoc()['total'];
+
+// pending registrations
+$sql6  = "SELECT COUNT(*) as total FROM users WHERE is_approved = 0 AND role != 'tourist' AND role != 'admin'";
+$stmt6 = $conn->prepare($sql6);
+$stmt6->execute();
+$pendingReg = $stmt6->get_result()->fetch_assoc()['total'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +85,7 @@
             <div class="stat-icon stat-icon-blue">&#128101;</div>
             <div class="stat-info">
                 <!-- PHP: echo COUNT(*) FROM users -->
-                <span class="stat-number">0</span>
+                <span class="stat-number"><?php echo $totalUsers; ?></span>
                 <span class="stat-label">Total Users</span>
             </div>
         </div>
@@ -47,7 +94,7 @@
             <div class="stat-icon stat-icon-teal">&#127968;</div>
             <div class="stat-info">
                 <!-- PHP: echo COUNT(*) FROM listings WHERE status='approved' -->
-                <span class="stat-number">0</span>
+                <span class="stat-number"><?php echo $activeListings; ?></span>
                 <span class="stat-label">Active Listings</span>
             </div>
         </div>
@@ -56,7 +103,7 @@
             <div class="stat-icon stat-icon-amber">&#128203;</div>
             <div class="stat-info">
                 <!-- PHP: echo COUNT(*) FROM listings WHERE status='pending' -->
-                <span class="stat-number">0</span>
+                <span class="stat-number"><?php echo $pendingListings; ?></span>
                 <span class="stat-label">Pending Listings</span>
             </div>
         </div>
@@ -65,7 +112,7 @@
             <div class="stat-icon stat-icon-coral">&#128197;</div>
             <div class="stat-info">
                 <!-- PHP: echo COUNT(*) FROM bookings -->
-                <span class="stat-number">0</span>
+                <span class="stat-number"><?php echo $totalBookings; ?></span>
                 <span class="stat-label">Total Bookings</span>
             </div>
         </div>
@@ -74,7 +121,7 @@
             <div class="stat-icon stat-icon-green">&#128176;</div>
             <div class="stat-info">
                 <!-- PHP: echo SUM(commission_amount) FROM bookings -->
-                <span class="stat-number">Rs. 0</span>
+                <span class="stat-number">Rs. <?php echo number_format($totalCommission, 2); ?></span>
                 <span class="stat-label">Total Commission Earned</span>
             </div>
         </div>
@@ -83,7 +130,7 @@
             <div class="stat-icon stat-icon-purple">&#9888;&#65039;</div>
             <div class="stat-info">
                 <!-- PHP: echo COUNT(*) FROM users WHERE is_approved=0 AND role != 'tourist' -->
-                <span class="stat-number">0</span>
+                <span class="stat-number"><?php echo $pendingReg; ?></span>
                 <span class="stat-label">Pending Registrations</span>
             </div>
         </div>

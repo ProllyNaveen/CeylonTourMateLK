@@ -1,3 +1,13 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['admin']);
+
+require_once 'Classes/Commission.php';
+$overview = Commission::viewCommissionOverview();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +50,7 @@
             <div class="stat-icon stat-icon-green">&#128176;</div>
             <div class="stat-info">
                 <!-- PHP: echo SUM(commission_amount) FROM bookings -->
-                <span class="stat-number">Rs. 0</span>
+                <span class="stat-number">Rs. <?php echo number_format($overview['total_commission'], 2); ?></span>
                 <span class="stat-label">Total Commission from Bookings</span>
             </div>
         </div>
@@ -49,7 +59,7 @@
             <div class="stat-icon stat-icon-teal">&#128181;</div>
             <div class="stat-info">
                 <!-- PHP: echo SUM(amount) FROM payments WHERE type='listing_fee' AND payment_status='completed' -->
-                <span class="stat-number">Rs. 0</span>
+                <span class="stat-number">Rs. <?php echo number_format($overview['total_fees'], 2); ?></span>
                 <span class="stat-label">Total Listing Fees Collected</span>
             </div>
         </div>
@@ -58,7 +68,7 @@
             <div class="stat-icon stat-icon-amber">&#128202;</div>
             <div class="stat-info">
                 <!-- PHP: echo current rate FROM commission ORDER BY updated_at DESC LIMIT 1 -->
-                <span class="stat-number">5%</span>
+                <span class="stat-number"><?php echo $overview['current_rate']; ?>%</span>
                 <span class="stat-label">Current Commission Rate</span>
             </div>
         </div>
@@ -93,18 +103,19 @@
             <th>Changed By</th>
             <th>Date</th>
         </tr>
-        <!-- PHP: loop through commission table ORDER BY updated_at DESC -->
-        <tr>
-            <td colspan="3" class="table-empty">No commission history yet</td>
-        </tr>
-        <!--
-        Example of a populated row:
-        <tr>
-            <td>5.00%</td>
-            <td><?php echo $admin_firstname; ?></td>
-            <td><?php echo $updated_at; ?></td>
-        </tr>
-        -->
+        <?php if(empty($overview['history'])) { ?>
+		<tr>
+			<td colspan="3" class="table-empty">No commission history yet</td>
+		</tr>
+	<?php } else { ?>
+		<?php foreach($overview['history'] as $row) { ?>
+		<tr>
+			<td><?php echo $row['rate']; ?>%</td>
+			<td><?php echo $row['firstname'] . ' ' . $row['lastname']; ?></td>
+			<td><?php echo date('d M Y h:i A', strtotime($row['updated_at'])); ?></td>
+		</tr>
+		<?php } ?>
+<?php } ?>
     </table>
 
 </div>

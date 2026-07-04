@@ -1,3 +1,32 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['admin']);
+
+require_once 'Classes/DBconnection.php';
+require_once 'Classes/Notification.php';
+
+$conn     = DBconnection::getInstance()->getConnection();
+
+// fetch all non-admin users for specific user dropdown
+$usersSql  = "SELECT id, firstname, lastname, username, role FROM users WHERE role != 'admin' ORDER BY firstname ASC";
+$usersStmt = $conn->prepare($usersSql);
+$usersStmt->execute();
+$allUsers  = $usersStmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+// fetch notification history
+$histSql  = "SELECT n.*, CONCAT(s.firstname, ' ', s.lastname) as sender_name,
+              CONCAT(r.firstname, ' ', r.lastname) as receiver_name
+              FROM notifications n
+              JOIN users s ON n.sender_id = s.id
+              JOIN users r ON n.receiver_id = r.id
+              ORDER BY n.id DESC";
+$histStmt = $conn->prepare($histSql);
+$histStmt->execute();
+$history  = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +42,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="admindashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="admindashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="admin-badge">Admin Panel</span>
@@ -29,7 +58,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="admindashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="admindashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">Send Notifications</h2>
     <p class="admin-page-subtitle">Send a notice or warning to platform users</p>
@@ -62,15 +91,11 @@
                 <label>Select User</label>
                 <select name="receiver_id">
                     <option value="">-- Select a user --</option>
-                    <!-- PHP:
-                        $sql = "SELECT id, firstname, lastname, username, role FROM users WHERE role != 'admin' ORDER BY firstname ASC";
-                        loop and echo options
-                    -->
-                    <!-- Example:
-                    <option value="<?php echo $user['id']; ?>">
-                        <?php echo $user['firstname'] . ' ' . $user['lastname'] . ' (' . $user['username'] . ' - ' . $user['role'] . ')'; ?>
-                    </option>
-                    -->
+                    <?php foreach($allUsers as $u) { ?>
+					<option value="<?php echo $u['id']; ?>">
+						<?php echo $u['firstname'] . ' ' . $u['lastname'] . ' (' . $u['username'] . ' - ' . str_replace('_', ' ', $u['role']) . ')'; ?>
+					</option>
+				<?php } ?>
                 </select>
             </div>
 
@@ -95,38 +120,28 @@
             <th>Date</th>
         </tr>
 
-        <!-- PHP:
-            $sql = "SELECT n.*, 
-                    CONCAT(s.firstname, ' ', s.lastname) as sender_name,
-                    CONCAT(r.firstname, ' ', r.lastname) as receiver_name
-                    FROM notifications n
-                    JOIN users s ON n.sender_id = s.id
-                    JOIN users r ON n.receiver_id = r.id
-                    ORDER BY n.id DESC";
-            loop through results and echo each row
-        -->
-
-        <!-- Example populated row: -->
-        <!--
-        <tr>
-            <td><?php echo $notif['id']; ?></td>
-            <td><?php echo $notif['sender_name']; ?></td>
-            <td><?php echo $notif['receiver_name']; ?></td>
-            <td><?php echo $notif['message']; ?></td>
-            <td>
-                <?php if($notif['is_read'] == 1) { ?>
-                    <span class="status-badge status-confirmed">Read</span>
-                <?php } else { ?>
-                    <span class="status-badge status-pending">Unread</span>
-                <?php } ?>
-            </td>
-            <td><?php echo date('d M Y', strtotime($notif['created_at'])); ?></td>
-        </tr>
-        -->
-
-        <tr>
-            <td colspan="6" class="table-empty">No notifications sent yet</td>
-        </tr>
+        <?php if(empty($history)) { ?>
+    <tr>
+        <td colspan="6" class="table-empty">No notifications sent yet</td>
+    </tr>
+<?php } else { ?>
+    <?php foreach($history as $notif) { ?>
+    <tr>
+        <td><?php echo $notif['id']; ?></td>
+        <td><?php echo $notif['sender_name']; ?></td>
+        <td><?php echo $notif['receiver_name']; ?></td>
+        <td><?php echo $notif['message']; ?></td>
+        <td>
+            <?php if($notif['is_read'] == 1) { ?>
+                <span class="status-badge status-confirmed">Read</span>
+            <?php } else { ?>
+                <span class="status-badge status-pending">Unread</span>
+            <?php } ?>
+        </td>
+        <td><?php echo date('d M Y', strtotime($notif['created_at'])); ?></td>
+    </tr>
+    <?php } ?>
+<?php } ?>
 
     </table>
 
