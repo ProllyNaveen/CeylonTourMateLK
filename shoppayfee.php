@@ -1,3 +1,46 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['shop_owner']);
+
+require_once 'Classes/DBconnection.php';
+
+$conn         = DBconnection::getInstance()->getConnection();
+$userId       = $_SESSION['user_id'];
+$currentMonth = date('n');
+$currentYear  = date('Y');
+
+// fetch listings with fee status
+$sql  = "SELECT l.id, l.title, l.city, sl.id as shop_listing_id, sl.shop_type,
+          p.id as payment_id, p.payment_status
+          FROM listings l
+          JOIN shop_listings sl ON l.id = sl.listing_id
+          LEFT JOIN payments p ON p.shop_listing_id = sl.id
+              AND p.type = 'listing_fee'
+              AND p.payment_status = 'completed'
+              AND p.fee_month = ?
+              AND p.fee_year = ?
+          WHERE l.user_id = ? AND l.status = 'approved'
+          ORDER BY l.created_at DESC";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("iii", $currentMonth, $currentYear, $userId);
+$stmt->execute();
+$feeListings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+// fetch payment history
+$histSql  = "SELECT p.*, l.title
+              FROM payments p
+              JOIN shop_listings sl ON p.shop_listing_id = sl.id
+              JOIN listings l ON sl.listing_id = l.id
+              WHERE l.user_id = ? AND p.type = 'listing_fee'
+              ORDER BY p.payment_date DESC";
+$histStmt = $conn->prepare($histSql);
+$histStmt->bind_param("i", $userId);
+$histStmt->execute();
+$paymentHistory = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +56,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="shopownerdashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="shopownerdashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="partner-badge">Shop Owner</span>
@@ -29,7 +72,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="shopownerdashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="shopownerdashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">Pay Listing Fee</h2>
     <p class="admin-page-subtitle">Pay your monthly listing fee for your active shop listings</p>
@@ -56,52 +99,36 @@
             <th>Action</th>
         </tr>
 
-        <!-- PHP:
-            $currentMonth = date('n');
-            $currentYear = date('Y');
-            $sql = "SELECT l.id, l.title, l.city, sl.id as shop_listing_id, sl.shop_type,
-                    p.id as payment_id, p.payment_status
-                    FROM listings l
-                    JOIN shop_listings sl ON l.id = sl.listing_id
-                    LEFT JOIN payments p ON p.shop_listing_id = sl.id
-                        AND p.type = 'listing_fee'
-                        AND p.payment_status = 'completed'
-                        AND p.fee_month = ?
-                        AND p.fee_year = ?
-                    WHERE l.user_id = ? AND l.status = 'approved'
-                    ORDER BY l.created_at DESC";
-            loop through results and echo each row
-        -->
-
-        <!-- Example populated row: -->
-        <!--
-        <tr>
-            <td><?php echo $listing['title']; ?></td>
-            <td><?php echo $listing['shop_type']; ?></td>
-            <td><?php echo $listing['city']; ?></td>
-            <td>
-                <?php if($listing['payment_id']) { ?>
-                    <span class="status-badge status-confirmed">Paid</span>
-                <?php } else { ?>
-                    <span class="status-badge status-cancelled">Unpaid</span>
-                <?php } ?>
-            </td>
-            <td>
-                <?php if(!$listing['payment_id']) { ?>
-                    <button class="tbl-btn tbl-btn-green"
-                            onclick="selectListing(<?php echo $listing['shop_listing_id']; ?>, '<?php echo $listing['title']; ?>')">
-                        Pay Now
-                    </button>
-                <?php } else { ?>
-                    <span style="color:#999; font-size:12px;">Already Paid</span>
-                <?php } ?>
-            </td>
-        </tr>
-        -->
-
-        <tr>
-            <td colspan="5" class="table-empty">No active listings found</td>
-        </tr>
+        <?php if(empty($feeListings)) { ?>
+    <tr>
+        <td colspan="5" class="table-empty">No active listings found</td>
+    </tr>
+<?php } else { ?>
+    <?php foreach($feeListings as $listing) { ?>
+    <tr>
+        <td><?php echo $listing['title']; ?></td>
+        <td><?php echo $listing['shop_type']; ?></td>
+        <td><?php echo $listing['city']; ?></td>
+        <td>
+            <?php if($listing['payment_id']) { ?>
+                <span class="status-badge status-confirmed">Paid</span>
+            <?php } else { ?>
+                <span class="status-badge status-cancelled">Unpaid</span>
+            <?php } ?>
+        </td>
+        <td>
+            <?php if(!$listing['payment_id']) { ?>
+                <button class="tbl-btn tbl-btn-green"
+                        onclick="selectListing(<?php echo $listing['shop_listing_id']; ?>, '<?php echo $listing['title']; ?>', 500)">
+                    Pay Now
+                </button>
+            <?php } else { ?>
+                <span style="color:#999; font-size:12px;">Already Paid</span>
+            <?php } ?>
+        </td>
+    </tr>
+    <?php } ?>
+<?php } ?>
 
     </table>
 
@@ -148,35 +175,22 @@
             <th>Date Paid</th>
         </tr>
 
-        <!-- PHP:
-            $sql = "SELECT p.*, l.title
-                    FROM payments p
-                    JOIN shop_listings sl ON p.shop_listing_id = sl.id
-                    JOIN listings l ON sl.listing_id = l.id
-                    WHERE l.user_id = ? AND p.type = 'listing_fee'
-                    ORDER BY p.payment_date DESC";
-            loop through results and echo each row
-        -->
-
-        <!-- Example populated row: -->
-        <!--
-        <tr>
-            <td><?php echo $payment['title']; ?></td>
-            <td><?php echo number_format($payment['amount'], 2); ?></td>
-            <td><?php echo date('F', mktime(0, 0, 0, $payment['fee_month'], 1)); ?></td>
-            <td><?php echo $payment['fee_year']; ?></td>
-            <td>
-                <span class="status-badge status-confirmed">
-                    <?php echo ucfirst($payment['payment_status']); ?>
-                </span>
-            </td>
-            <td><?php echo date('d M Y', strtotime($payment['payment_date'])); ?></td>
-        </tr>
-        -->
-
-        <tr>
-            <td colspan="6" class="table-empty">No payment history found</td>
-        </tr>
+        <?php if(empty($paymentHistory)) { ?>
+    <tr>
+        <td colspan="6" class="table-empty">No payment history found</td>
+    </tr>
+<?php } else { ?>
+    <?php foreach($paymentHistory as $payment) { ?>
+    <tr>
+        <td><?php echo $payment['title']; ?></td>
+        <td>Rs. <?php echo number_format($payment['amount'], 2); ?></td>
+        <td><?php echo date('F', mktime(0, 0, 0, $payment['fee_month'], 1)); ?></td>
+        <td><?php echo $payment['fee_year']; ?></td>
+        <td><span class="status-badge status-confirmed">Completed</span></td>
+        <td><?php echo date('d M Y', strtotime($payment['payment_date'])); ?></td>
+    </tr>
+    <?php } ?>
+<?php } ?>
 
     </table>
 

@@ -13,7 +13,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="shopownerdashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="shopownerdashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="partner-badge">Shop Owner</span>
@@ -29,7 +29,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="shopownerdashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="shopownerdashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">Add New Listing</h2>
     <p class="admin-page-subtitle">Submit a new shop listing for admin approval</p>

@@ -1,3 +1,20 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['shop_owner']);
+
+require_once 'Classes/DBconnection.php';
+
+$conn   = DBconnection::getInstance()->getConnection();
+$sql    = "SELECT * FROM users WHERE id = ?";
+$stmt   = $conn->prepare($sql);
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$user   = $result->fetch_assoc();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +30,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="shopownerdashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="shopownerdashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="partner-badge">Shop Owner</span>
@@ -29,7 +46,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="shopownerdashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="shopownerdashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">My Profile</h2>
     <p class="admin-page-subtitle">Update your account details</p>
@@ -50,7 +67,7 @@
     <!-- PROFILE PICTURE -->
     <div class="profile-pic-section">
         <!-- PHP: echo shop owner's profile pic or default -->
-        <img src="images/default.png" alt="Profile Picture" class="profile-pic-preview" id="profilePicPreview">
+        <img src="<?php echo $user['profile_pic']; ?>" alt="Profile Picture" class="profile-pic-preview" id="profilePicPreview">
         <p class="form-note">Click below to change your profile picture</p>
     </div>
 
@@ -59,47 +76,43 @@
         <form name="shopeditprofileform" method="post" action="shopeditprofilebackend.php" enctype="multipart/form-data" onsubmit="return validateShopEditProfile();">
 
             <label>First Name</label>
-            <!-- PHP: value="<?php echo $user['firstname']; ?>" -->
-            <input type="text" name="firstname" placeholder="Enter first name" value="">
+			<input type="text" name="firstname" placeholder="Enter first name" value="<?php echo $user['firstname']; ?>">
 
-            <label>Last Name</label>
-            <!-- PHP: value="<?php echo $user['lastname']; ?>" -->
-            <input type="text" name="lastname" placeholder="Enter last name" value="">
+			<label>Last Name</label>
+			<input type="text" name="lastname" placeholder="Enter last name" value="<?php echo $user['lastname']; ?>">
 
-            <label>Username</label>
-            <!-- PHP: value="<?php echo $user['username']; ?>" -->
-            <input type="text" name="username" placeholder="Enter username" value="">
+			<label>Username</label>
+			<input type="text" name="username" placeholder="Enter username" value="<?php echo $user['username']; ?>">
 
-            <label>Email</label>
-            <!-- PHP: value="<?php echo $user['email']; ?>" -->
-            <input type="email" name="email" placeholder="Enter email" value="">
+			<label>Email</label>
+			<input type="email" name="email" placeholder="Enter email" value="<?php echo $user['email']; ?>">
 
-            <label>Phone</label>
-            <!-- PHP: value="<?php echo $user['phone']; ?>" -->
-            <input type="text" name="phone" placeholder="Enter phone number" value="">
+			<label>Phone</label>
+			<input type="text" name="phone" placeholder="Enter phone number" value="<?php echo $user['phone']; ?>">
 
-            <label>Profile Picture</label>
-            <input type="file" name="profile_pic" accept="image/*" onchange="previewImage(this)">
+			<label>Profile Picture</label>
+			<input type="file" name="profile_pic" accept="image/*" onchange="previewImage(this)">
 
-            <hr style="border:none; border-top:1px solid #eee; margin:20px 0;">
+			<hr style="border:none; border-top:1px solid #eee; margin:20px 0;">
 
-            <p class="form-note" style="margin-bottom:15px;">Leave password fields empty if you don't want to change your password.</p>
+			<p class="form-note" style="margin-bottom:15px;">Leave password fields empty if you don't want to change your password.</p>
 
-            <label>Current Password</label>
-            <input type="password" name="current_password" placeholder="Enter current password">
+			<label>Current Password</label>
+			<input type="password" name="current_password" placeholder="Enter current password">
 
-            <label>New Password</label>
-            <input type="password" name="new_password" placeholder="Enter new password">
+			<label>New Password</label>
+			<input type="password" name="new_password" placeholder="Enter new password">
 
-            <label>Confirm New Password</label>
-            <input type="password" name="confirm_password" placeholder="Confirm new password">
+			<label>Confirm New Password</label>
+			<input type="password" name="confirm_password" placeholder="Confirm new password">
 
-            <button type="submit" class="btn btn-primary" style="margin-top:10px;">Save Changes</button>
+			<button type="submit" class="btn btn-primary" style="margin-top:10px;">Save Changes</button>
 
         </form>
     </div>
 
 </div>
 
+</body>
 </body>
 </html>
