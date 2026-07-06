@@ -13,7 +13,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="experiencedashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="experiencedashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="partner-badge experience-badge">Experience Provider</span>
@@ -29,7 +29,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="experiencedashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="experiencedashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">Add New Listing</h2>
     <p class="admin-page-subtitle">Submit a new experience listing for admin approval</p>

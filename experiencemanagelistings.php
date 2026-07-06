@@ -1,3 +1,36 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['experience_provider']);
+
+require_once 'Classes/DBconnection.php';
+
+$conn   = DBconnection::getInstance()->getConnection();
+$userId = $_SESSION['user_id'];
+$status = isset($_GET['status']) ? $_GET['status'] : null;
+
+if ($status) {
+    $sql  = "SELECT l.*, el.experience_type, el.duration, el.max_group_size, el.availability
+             FROM listings l
+             JOIN experience_listings el ON l.id = el.listing_id
+             WHERE l.user_id = ? AND l.status = ?
+             ORDER BY l.created_at DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("is", $userId, $status);
+} else {
+    $sql  = "SELECT l.*, el.experience_type, el.duration, el.max_group_size, el.availability
+             FROM listings l
+             JOIN experience_listings el ON l.id = el.listing_id
+             WHERE l.user_id = ?
+             ORDER BY l.created_at DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $userId);
+}
+$stmt->execute();
+$listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +45,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="experiencedashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="experiencedashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="partner-badge experience-badge">Experience Provider</span>
@@ -28,7 +61,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="experiencedashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="experiencedashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">My Listings</h2>
     <p class="admin-page-subtitle">View, edit or delete your experience listings</p>
@@ -63,54 +96,38 @@
             <th>Actions</th>
         </tr>
 
-        <!-- PHP:
-            if(isset($_GET['status'])) {
-                $status = $_GET['status'];
-                $sql = "SELECT l.*, el.experience_type, el.duration, el.max_group_size, el.availability
-                        FROM listings l
-                        JOIN experience_listings el ON l.id = el.listing_id
-                        WHERE l.user_id = ? AND l.status = ?
-                        ORDER BY l.created_at DESC";
-            } else {
-                $sql = "SELECT l.*, el.experience_type, el.duration, el.max_group_size, el.availability
-                        FROM listings l
-                        JOIN experience_listings el ON l.id = el.listing_id
-                        WHERE l.user_id = ?
-                        ORDER BY l.created_at DESC";
-            }
-            loop through results and echo each row
-        -->
-
-        <!-- Example populated row: -->
-        <!--
-        <tr>
-            <td><?php echo $listing['id']; ?></td>
-            <td><?php echo $listing['title']; ?></td>
-            <td><?php echo $listing['experience_type']; ?></td>
-            <td><?php echo $listing['duration']; ?></td>
-            <td><?php echo $listing['max_group_size']; ?></td>
-            <td><?php echo number_format($listing['price'], 2); ?></td>
-            <td><?php echo $listing['city']; ?></td>
-            <td><?php echo $listing['availability']; ?></td>
-            <td>
-                <span class="status-badge status-<?php echo $listing['status']; ?>">
-                    <?php echo ucfirst($listing['status']); ?>
-                </span>
-            </td>
-            <td>
-                <div class="action-btns">
-                    <a href="experienceeditlisting.php?id=<?php echo $listing['id']; ?>" class="tbl-btn tbl-btn-amber">Edit</a>
-                    <a href="experiencedeletelistingbackend.php?id=<?php echo $listing['id']; ?>"
-                       class="tbl-btn tbl-btn-red"
-                       onclick="return confirm('Are you sure you want to delete this listing?')">Delete</a>
-                </div>
-            </td>
-        </tr>
-        -->
-
-        <tr>
-            <td colspan="10" class="table-empty">No listings found</td>
-        </tr>
+        <?php if(empty($listings)) { ?>
+    <tr>
+        <td colspan="10" class="table-empty">No listings found</td>
+    </tr>
+<?php } else { ?>
+    <?php foreach($listings as $listing) { ?>
+    <tr>
+        <td><?php echo $listing['id']; ?></td>
+        <td><?php echo $listing['title']; ?></td>
+        <td><?php echo $listing['experience_type']; ?></td>
+        <td><?php echo $listing['duration']; ?></td>
+        <td><?php echo $listing['max_group_size']; ?></td>
+        <td>Rs. <?php echo number_format($listing['price'], 2); ?></td>
+        <td><?php echo $listing['city']; ?></td>
+        <td><?php echo $listing['availability']; ?></td>
+        <td>
+            <span class="status-badge status-<?php echo $listing['status']; ?>">
+                <?php echo ucfirst($listing['status']); ?>
+            </span>
+        </td>
+        <td>
+            <div class="action-btns">
+                <a href="experienceeditlisting.php?id=<?php echo $listing['id']; ?>"
+                   class="tbl-btn tbl-btn-amber">Edit</a>
+                <a href="experiencedeletelistingbackend.php?id=<?php echo $listing['id']; ?>"
+                   class="tbl-btn tbl-btn-red"
+                   onclick="return confirm('Are you sure you want to delete this listing?')">Delete</a>
+            </div>
+        </td>
+    </tr>
+    <?php } ?>
+<?php } ?>
 
     </table>
 
