@@ -164,7 +164,7 @@ $unreadNotifications = $stmt6->get_result()->fetch_assoc()['total'];
             <p>View, edit or delete your hotel listings</p>
         </a>
 
-        <a href="hotelownermanagerooms.php" class="action-card">
+        <a href="hotelownermanagelistings.php" class="action-card">
             <div class="action-icon">&#128716;</div>
             <h3>Manage Rooms</h3>
             <p>Add, edit or remove rooms from your hotel listings</p>
