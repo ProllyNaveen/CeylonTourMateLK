@@ -1,3 +1,34 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['hotel_owner']);
+
+require_once 'Classes/DBconnection.php';
+require_once 'Classes/Room.php';
+
+$hotelListingId = $_GET['hotel_listing_id'];
+$userId         = $_SESSION['user_id'];
+$conn           = DBconnection::getInstance()->getConnection();
+
+// verify this hotel listing belongs to this user
+$chkSql  = "SELECT l.title FROM hotel_listings hl
+             JOIN listings l ON hl.listing_id = l.id
+             WHERE hl.id = ? AND l.user_id = ?";
+$chkStmt = $conn->prepare($chkSql);
+$chkStmt->bind_param("ii", $hotelListingId, $userId);
+$chkStmt->execute();
+$chkResult = $chkStmt->get_result();
+
+if ($chkResult->num_rows == 0) {
+    header("Location: hotelownermanagelistings.php?error=1");
+    exit();
+}
+
+$hotelTitle = $chkResult->fetch_assoc()['title'];
+$rooms      = Room::getRoomsByHotelListing($hotelListingId);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +44,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="hotelownerdashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="hotelownerdashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="partner-badge hotel-badge">Hotel Owner</span>
@@ -29,11 +60,10 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="hotelownermanagelistings.html" class="back-link">&larr; Back to My Listings</a>
+    <a href="hotelownermanagelistings.php" class="back-link">&larr; Back to My Listings</a>
 
     <h2 class="admin-page-title">Manage Rooms</h2>
-    <!-- PHP: echo "for " . $listing['title']; -->
-    <p class="admin-page-subtitle">Add, edit or remove rooms for this hotel listing</p>
+    <p class="admin-page-subtitle">Manage rooms for: <strong><?php echo $hotelTitle; ?></strong></p>
 
     <?php if(isset($_GET['success'])) { ?>
         <p class="success">Action completed successfully.</p>
@@ -88,49 +118,44 @@
             <th>Actions</th>
         </tr>
 
-        <!-- PHP:
-            $sql = "SELECT * FROM rooms WHERE hotel_listing_id = ?
-                    ORDER BY room_type ASC";
-            loop through results and echo each row
-        -->
-
-        <!-- Example populated row: -->
-        <!--
-        <tr>
-            <td><?php echo $room['id']; ?></td>
-            <td><?php echo ucfirst($room['room_type']); ?></td>
-            <td><?php echo $room['description']; ?></td>
-            <td><?php echo number_format($room['price_per_night'], 2); ?></td>
-            <td><?php echo $room['capacity']; ?></td>
-            <td>
+        <?php if(empty($rooms)) { ?>
+    <tr>
+        <td colspan="7" class="table-empty">No rooms added yet</td>
+    </tr>
+<?php } else { ?>
+    <?php foreach($rooms as $room) { ?>
+    <tr>
+        <td><?php echo $room['id']; ?></td>
+        <td><?php echo ucfirst($room['room_type']); ?></td>
+        <td><?php echo $room['description']; ?></td>
+        <td>Rs. <?php echo number_format($room['price_per_night'], 2); ?></td>
+        <td><?php echo $room['capacity']; ?> persons</td>
+        <td>
+            <?php if($room['is_available'] == 1) { ?>
+                <span class="status-badge status-confirmed">Yes</span>
+            <?php } else { ?>
+                <span class="status-badge status-cancelled">No</span>
+            <?php } ?>
+        </td>
+        <td>
+            <div class="action-btns">
                 <?php if($room['is_available'] == 1) { ?>
-                    <span class="status-badge status-confirmed">Yes</span>
+                    <a href="hotelownerroomavailbackend.php?id=<?php echo $room['id']; ?>&action=unavailable&hotel_listing_id=<?php echo $hotelListingId; ?>"
+                       class="tbl-btn tbl-btn-amber">Mark Unavailable</a>
                 <?php } else { ?>
-                    <span class="status-badge status-cancelled">No</span>
+                    <a href="hotelownerroomavailbackend.php?id=<?php echo $room['id']; ?>&action=available&hotel_listing_id=<?php echo $hotelListingId; ?>"
+                       class="tbl-btn tbl-btn-green">Mark Available</a>
                 <?php } ?>
-            </td>
-            <td>
-                <div class="action-btns">
-                    <?php if($room['is_available'] == 1) { ?>
-                        <a href="hotelownerroomavailbackend.php?id=<?php echo $room['id']; ?>&action=unavailable&hotel_listing_id=<?php echo $_GET['hotel_listing_id']; ?>"
-                           class="tbl-btn tbl-btn-amber">Mark Unavailable</a>
-                    <?php } else { ?>
-                        <a href="hotelownerroomavailbackend.php?id=<?php echo $room['id']; ?>&action=available&hotel_listing_id=<?php echo $_GET['hotel_listing_id']; ?>"
-                           class="tbl-btn tbl-btn-green">Mark Available</a>
-                    <?php } ?>
-                    <a href="hotelownereditroom.php?id=<?php echo $room['id']; ?>&hotel_listing_id=<?php echo $_GET['hotel_listing_id']; ?>"
-                       class="tbl-btn tbl-btn-amber">Edit</a>
-                    <a href="hotelownerdeleteroombackend.php?id=<?php echo $room['id']; ?>&hotel_listing_id=<?php echo $_GET['hotel_listing_id']; ?>"
-                       class="tbl-btn tbl-btn-red"
-                       onclick="return confirm('Are you sure you want to delete this room?')">Delete</a>
-                </div>
-            </td>
-        </tr>
-        -->
-
-        <tr>
-            <td colspan="7" class="table-empty">No rooms added yet</td>
-        </tr>
+                <a href="hotelownereditroom.php?id=<?php echo $room['id']; ?>&hotel_listing_id=<?php echo $hotelListingId; ?>"
+                   class="tbl-btn tbl-btn-amber">Edit</a>
+                <a href="hotelownerdeleteroombackend.php?id=<?php echo $room['id']; ?>&hotel_listing_id=<?php echo $hotelListingId; ?>"
+                   class="tbl-btn tbl-btn-red"
+                   onclick="return confirm('Are you sure you want to delete this room?')">Delete</a>
+            </div>
+        </td>
+    </tr>
+    <?php } ?>
+<?php } ?>
 
     </table>
 

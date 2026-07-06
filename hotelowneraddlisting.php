@@ -1,3 +1,10 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['hotel_owner']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +20,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="hotelownerdashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="hotelownerdashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="partner-badge hotel-badge">Hotel Owner</span>
@@ -29,7 +36,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="hotelownerdashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="hotelownerdashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">Add New Listing</h2>
     <p class="admin-page-subtitle">Submit a new hotel listing for admin approval</p>

@@ -1,3 +1,10 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['shop_owner']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

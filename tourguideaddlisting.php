@@ -1,3 +1,10 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['tour_guide']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +20,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="tourguidedashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="tourguidedashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="partner-badge tourguide-badge">Tour Guide</span>
@@ -29,7 +36,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="tourguidedashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="tourguidedashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">Add New Listing</h2>
     <p class="admin-page-subtitle">Submit a new tour guide listing for admin approval</p>

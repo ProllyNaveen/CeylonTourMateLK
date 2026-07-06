@@ -1,3 +1,24 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['tour_guide']);
+
+require_once 'Classes/DBconnection.php';
+require_once 'Classes/Notification.php';
+
+$userId = $_SESSION['user_id'];
+$filter = isset($_GET['filter']) ? $_GET['filter'] : null;
+
+$conn     = DBconnection::getInstance()->getConnection();
+$markSql  = "UPDATE notifications SET is_read = 1 WHERE receiver_id = ?";
+$markStmt = $conn->prepare($markSql);
+$markStmt->bind_param("i", $userId);
+$markStmt->execute();
+
+$notifications = Notification::getNotifications($userId, $filter);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +33,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="tourguidedashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="tourguidedashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="partner-badge tourguide-badge">Tour Guide</span>
@@ -28,7 +49,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="tourguidedashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="tourguidedashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">Notifications</h2>
     <p class="admin-page-subtitle">View notices and updates from the platform</p>
@@ -43,55 +64,31 @@
     <!-- NOTIFICATIONS LIST -->
     <div class="notifications-list">
 
-        <!-- PHP:
-            if(isset($_GET['filter']) && $_GET['filter'] == 'unread') {
-                $sql = "SELECT n.*, u.firstname, u.lastname, u.profile_pic
-                        FROM notifications n
-                        JOIN users u ON n.sender_id = u.id
-                        WHERE n.receiver_id = ? AND n.is_read = 0
-                        ORDER BY n.id DESC";
-            } elseif(isset($_GET['filter']) && $_GET['filter'] == 'read') {
-                $sql = "SELECT n.*, u.firstname, u.lastname, u.profile_pic
-                        FROM notifications n
-                        JOIN users u ON n.sender_id = u.id
-                        WHERE n.receiver_id = ? AND n.is_read = 1
-                        ORDER BY n.id DESC";
-            } else {
-                $sql = "SELECT n.*, u.firstname, u.lastname, u.profile_pic
-                        FROM notifications n
-                        JOIN users u ON n.sender_id = u.id
-                        WHERE n.receiver_id = ?
-                        ORDER BY n.id DESC";
-            }
-            // Mark all as read when page loads:
-            // UPDATE notifications SET is_read = 1 WHERE receiver_id = ?
-            loop through results and echo each notification
-        -->
-
-        <!-- Example notification item: -->
-        <!--
-        <div class="notification-item <?php echo $notif['is_read'] == 0 ? 'notif-unread' : ''; ?>">
-            <div class="notif-icon">&#128276;</div>
-            <div class="notif-content">
-                <p class="notif-message"><?php echo $notif['message']; ?></p>
-                <span class="notif-meta">
-                    From: <?php echo $notif['firstname'] . ' ' . $notif['lastname']; ?>
-                    &nbsp;|&nbsp;
-                    <?php echo date('d M Y h:i A', strtotime($notif['created_at'])); ?>
-                </span>
-            </div>
-            <?php if($notif['is_read'] == 0) { ?>
-                <span class="unread-badge">New</span>
-            <?php } ?>
+        <?php if(empty($notifications)) { ?>
+    <div class="notification-item">
+        <div class="notif-icon">&#128276;</div>
+        <div class="notif-content">
+            <p class="notif-message">No notifications yet.</p>
         </div>
-        -->
-
-        <div class="notification-item">
-            <div class="notif-icon">&#128276;</div>
-            <div class="notif-content">
-                <p class="notif-message">No notifications yet.</p>
-            </div>
+    </div>
+<?php } else { ?>
+    <?php foreach($notifications as $notif) { ?>
+    <div class="notification-item <?php echo $notif['is_read'] == 0 ? 'notif-unread' : ''; ?>">
+        <div class="notif-icon">&#128276;</div>
+        <div class="notif-content">
+            <p class="notif-message"><?php echo $notif['message']; ?></p>
+            <span class="notif-meta">
+                From: <?php echo $notif['firstname'] . ' ' . $notif['lastname']; ?>
+                &nbsp;|&nbsp;
+                <?php echo date('d M Y h:i A', strtotime($notif['created_at'])); ?>
+            </span>
         </div>
+        <?php if($notif['is_read'] == 0) { ?>
+            <span class="unread-badge">New</span>
+        <?php } ?>
+    </div>
+    <?php } ?>
+<?php } ?>
 
     </div>
 

@@ -1,3 +1,62 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['tour_guide']);
+
+require_once 'Classes/DBconnection.php';
+
+$conn   = DBconnection::getInstance()->getConnection();
+$userId = $_SESSION['user_id'];
+
+// active listings
+$sql1  = "SELECT COUNT(*) as total FROM listings WHERE user_id = ? AND status = 'approved'";
+$stmt1 = $conn->prepare($sql1);
+$stmt1->bind_param("i", $userId);
+$stmt1->execute();
+$activeListings = $stmt1->get_result()->fetch_assoc()['total'];
+
+// pending listings
+$sql2  = "SELECT COUNT(*) as total FROM listings WHERE user_id = ? AND status = 'pending'";
+$stmt2 = $conn->prepare($sql2);
+$stmt2->bind_param("i", $userId);
+$stmt2->execute();
+$pendingListings = $stmt2->get_result()->fetch_assoc()['total'];
+
+// pending bookings
+$sql3  = "SELECT COUNT(*) as total FROM bookings b
+           JOIN listings l ON b.listing_id = l.id
+           WHERE l.user_id = ? AND b.status = 'pending'";
+$stmt3 = $conn->prepare($sql3);
+$stmt3->bind_param("i", $userId);
+$stmt3->execute();
+$pendingBookings = $stmt3->get_result()->fetch_assoc()['total'];
+
+// total earnings
+$sql4  = "SELECT COALESCE(SUM(b.total_price - b.commission_amount), 0) as total
+           FROM bookings b
+           JOIN listings l ON b.listing_id = l.id
+           WHERE l.user_id = ? AND b.status = 'completed'";
+$stmt4 = $conn->prepare($sql4);
+$stmt4->bind_param("i", $userId);
+$stmt4->execute();
+$totalEarnings = $stmt4->get_result()->fetch_assoc()['total'];
+
+// unread messages
+$sql5  = "SELECT COUNT(*) as total FROM messages WHERE receiver_id = ? AND is_read = 0";
+$stmt5 = $conn->prepare($sql5);
+$stmt5->bind_param("i", $userId);
+$stmt5->execute();
+$unreadMessages = $stmt5->get_result()->fetch_assoc()['total'];
+
+// unread notifications
+$sql6  = "SELECT COUNT(*) as total FROM notifications WHERE receiver_id = ? AND is_read = 0";
+$stmt6 = $conn->prepare($sql6);
+$stmt6->bind_param("i", $userId);
+$stmt6->execute();
+$unreadNotifications = $stmt6->get_result()->fetch_assoc()['total'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,8 +97,7 @@
         <div class="stat-card">
             <div class="stat-icon stat-icon-teal">&#127759;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM listings WHERE user_id = $_SESSION['user_id'] AND status = 'approved' -->
-                <span class="stat-number">0</span>
+                <span class="stat-number"><?php echo $activeListings; ?></span>
                 <span class="stat-label">Active Listings</span>
             </div>
         </div>
@@ -47,8 +105,7 @@
         <div class="stat-card">
             <div class="stat-icon stat-icon-amber">&#128203;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM listings WHERE user_id = $_SESSION['user_id'] AND status = 'pending' -->
-                <span class="stat-number">0</span>
+                <span class="stat-number"><?php echo $pendingListings; ?></span>
                 <span class="stat-label">Pending Listings</span>
             </div>
         </div>
@@ -56,10 +113,7 @@
         <div class="stat-card">
             <div class="stat-icon stat-icon-blue">&#128197;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM bookings b
-                     JOIN listings l ON b.listing_id = l.id
-                     WHERE l.user_id = $_SESSION['user_id'] AND b.status = 'pending' -->
-                <span class="stat-number">0</span>
+                <span class="stat-number"><?php echo $pendingBookings; ?></span>
                 <span class="stat-label">Pending Bookings</span>
             </div>
         </div>
@@ -67,10 +121,7 @@
         <div class="stat-card">
             <div class="stat-icon stat-icon-green">&#128176;</div>
             <div class="stat-info">
-                <!-- PHP: echo SUM(b.total_price - b.commission_amount) FROM bookings b
-                     JOIN listings l ON b.listing_id = l.id
-                     WHERE l.user_id = $_SESSION['user_id'] AND b.status = 'completed' -->
-                <span class="stat-number">Rs. 0</span>
+                <span class="stat-number">Rs. <?php echo number_format($totalEarnings, 2); ?></span>
                 <span class="stat-label">Total Earnings</span>
             </div>
         </div>
@@ -78,8 +129,7 @@
         <div class="stat-card">
             <div class="stat-icon stat-icon-purple">&#128172;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM messages WHERE receiver_id = $_SESSION['user_id'] AND is_read = 0 -->
-                <span class="stat-number">0</span>
+                <span class="stat-number"><?php echo $unreadMessages; ?></span>
                 <span class="stat-label">Unread Messages</span>
             </div>
         </div>
@@ -87,8 +137,7 @@
         <div class="stat-card">
             <div class="stat-icon stat-icon-coral">&#128276;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM notifications WHERE receiver_id = $_SESSION['user_id'] AND is_read = 0 -->
-                <span class="stat-number">0</span>
+                <span class="stat-number"><?php echo $unreadNotifications; ?></span>
                 <span class="stat-label">Unread Notifications</span>
             </div>
         </div>

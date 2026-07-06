@@ -1,3 +1,19 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['tour_guide']);
+
+require_once 'Classes/DBconnection.php';
+
+$conn   = DBconnection::getInstance()->getConnection();
+$sql    = "SELECT * FROM users WHERE id = ?";
+$stmt   = $conn->prepare($sql);
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$user   = $stmt->get_result()->fetch_assoc();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +29,7 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="tourguidedashboard.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="tourguidedashboard.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
                 <span class="partner-badge tourguide-badge">Tour Guide</span>
@@ -29,7 +45,7 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="tourguidedashboard.html" class="back-link">&larr; Back to Dashboard</a>
+    <a href="tourguidedashboard.php" class="back-link">&larr; Back to Dashboard</a>
 
     <h2 class="admin-page-title">My Profile</h2>
     <p class="admin-page-subtitle">Update your account details</p>
@@ -49,8 +65,7 @@
 
     <!-- PROFILE PICTURE -->
     <div class="profile-pic-section">
-        <!-- PHP: echo tour guide's profile pic or default -->
-        <img src="images/default.png" alt="Profile Picture" class="profile-pic-preview" id="profilePicPreview">
+        <img src="<?php echo $user['profile_pic']; ?>" alt="Profile Picture" class="profile-pic-preview" id="profilePicPreview">
         <p class="form-note">Click below to change your profile picture</p>
     </div>
 
@@ -59,24 +74,21 @@
         <form name="tourguideeditprofileform" method="post" action="tourguideeditprofilebackend.php" enctype="multipart/form-data" onsubmit="return validateTourGuideEditProfile();">
 
             <label>First Name</label>
-            <!-- PHP: value="<?php echo $user['firstname']; ?>" -->
-            <input type="text" name="firstname" placeholder="Enter first name" value="">
+            <input type="text" name="firstname" placeholder="Enter first name" value="<?php echo $user['firstname']; ?>">
+
 
             <label>Last Name</label>
-            <!-- PHP: value="<?php echo $user['lastname']; ?>" -->
-            <input type="text" name="lastname" placeholder="Enter last name" value="">
+            <input type="text" name="lastname" placeholder="Enter last name" value="<?php echo $user['lastname']; ?>">
 
             <label>Username</label>
-            <!-- PHP: value="<?php echo $user['username']; ?>" -->
-            <input type="text" name="username" placeholder="Enter username" value="">
+            <input type="text" name="username" placeholder="Enter username" value="<?php echo $user['username']; ?>">
+
 
             <label>Email</label>
-            <!-- PHP: value="<?php echo $user['email']; ?>" -->
-            <input type="email" name="email" placeholder="Enter email" value="">
+            <input type="email" name="email" placeholder="Enter email" value="<?php echo $user['email']; ?>">
 
             <label>Phone</label>
-            <!-- PHP: value="<?php echo $user['phone']; ?>" -->
-            <input type="text" name="phone" placeholder="Enter phone number" value="">
+            <input type="text" name="phone" placeholder="Enter phone number" value="<?php echo $user['phone']; ?>">
 
             <label>Profile Picture</label>
             <input type="file" name="profile_pic" accept="image/*" onchange="previewImage(this)">
