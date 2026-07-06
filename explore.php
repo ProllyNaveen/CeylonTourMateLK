@@ -1,3 +1,19 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['tourist']);
+
+require_once 'Classes/Listing.php';
+
+$keyword  = isset($_GET['keyword']) ? trim($_GET['keyword']) : null;
+$type     = isset($_GET['type']) ? $_GET['type'] : null;
+$city     = isset($_GET['city']) ? $_GET['city'] : null;
+$sort     = isset($_GET['sort']) ? $_GET['sort'] : 'latest';
+
+$listings = Listing::searchListings($keyword, $type, $city, $sort);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,13 +28,13 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="index.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="index.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
-                <a href="explore.html" class="nav-link">Explore</a>
-                <a href="mybookings.html" class="nav-link">My Bookings</a>
-                <a href="touristmessages.html" class="nav-link">Messages</a>
-                <a href="touristnotifications.html" class="nav-link">Notifications</a>
+                <a href="explore.php" class="nav-link">Explore</a>
+                <a href="mybookings.php" class="nav-link">My Bookings</a>
+                <a href="touristmessages.php" class="nav-link">Messages</a>
+                <a href="touristnotifications.php" class="nav-link">Notifications</a>
             </td>
             <td class="nav-buttons-cell">
                 <span class="admin-welcome">Welcome, Tourist</span>
@@ -113,8 +129,12 @@
 
     <div class="listings-grid">
 
-        <!-- Example listing card: -->
-        <!--
+    <?php if(empty($listings)) { ?>
+        <p class="table-empty" style="padding:40px; text-align:center;">
+            No listings found. Try a different search.
+        </p>
+    <?php } else { ?>
+        <?php foreach($listings as $listing) { ?>
         <a href="listingdetail.php?id=<?php echo $listing['id']; ?>" class="listing-card">
             <div class="listing-card-img">
                 <?php if($listing['thumbnail']) { ?>
@@ -129,7 +149,9 @@
             <div class="listing-card-body">
                 <h3 class="listing-card-title"><?php echo $listing['title']; ?></h3>
                 <p class="listing-card-location">&#128205; <?php echo $listing['city']; ?></p>
-                <p class="listing-card-desc"><?php echo substr($listing['description'], 0, 80) . '...'; ?></p>
+                <p class="listing-card-desc">
+                    <?php echo substr($listing['description'], 0, 80) . '...'; ?>
+                </p>
                 <div class="listing-card-footer">
                     <span class="listing-card-price">Rs. <?php echo number_format($listing['price'], 2); ?></span>
                     <span class="listing-card-rating">
@@ -139,11 +161,10 @@
                 </div>
             </div>
         </a>
-        -->
+        <?php } ?>
+    <?php } ?>
 
-        <p class="table-empty" style="padding:40px; text-align:center;">No listings found. Try a different search.</p>
-
-    </div>
+</div>
 
 </div>
 

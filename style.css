@@ -1350,3 +1350,43 @@ a {
 .star-label:hover ~ label.star-label {
     filter: grayscale(0%);
 }
+/* ===========================
+   FORM INPUTS INSIDE LISTING DETAIL SECTION
+   =========================== */
+
+.listing-detail-section input[type="datetime-local"],
+.listing-detail-section input[type="date"],
+.listing-detail-section input[type="time"],
+.listing-detail-section input[type="number"],
+.listing-detail-section input[type="text"],
+.listing-detail-section input[type="email"],
+.listing-detail-section input[type="password"],
+.listing-detail-section input[type="file"],
+.listing-detail-section textarea,
+.listing-detail-section select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d6d6d6;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    color: #2b2b2b;
+}
+
+.listing-detail-section input[type="datetime-local"]:focus,
+.listing-detail-section input[type="text"]:focus,
+.listing-detail-section input[type="number"]:focus,
+.listing-detail-section select:focus {
+    outline: none;
+    border-color: #1c7293;
+}
+
+.listing-detail-section label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: #2b2b2b;
+    margin-bottom: 6px;
+}

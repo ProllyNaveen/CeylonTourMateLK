@@ -24,23 +24,23 @@ try {
 
     $result = $booking->makeBooking($roomIds);
 
-    switch ($result) {
-        case "success":
-            header("Location: mybookings.php?success=1");
-            break;
-        case "invalidlisting":
-            header("Location: makebooking.php?listing_id=" . $listingId . "&error=1");
-            break;
-        case "noroomsselected":
-            header("Location: makebooking.php?listing_id=" . $listingId . "&noroomsselected=1");
-            break;
-        case "roomunavailable":
-            header("Location: makebooking.php?listing_id=" . $listingId . "&unavailable=1");
-            break;
-        default:
-            header("Location: makebooking.php?listing_id=" . $listingId . "&error=1");
-            break;
-    }
+switch ($result) {
+    case "success":
+        header("Location: payment.php?booking_id=" . $booking->getId());
+        break;
+    case "invalidlisting":
+        header("Location: makebooking.php?listing_id=" . $listingId . "&error=1");
+        break;
+    case "noroomsselected":
+        header("Location: makebooking.php?listing_id=" . $listingId . "&noroomsselected=1");
+        break;
+    case "roomunavailable":
+        header("Location: makebooking.php?listing_id=" . $listingId . "&unavailable=1");
+        break;
+    default:
+        header("Location: makebooking.php?listing_id=" . $listingId . "&error=1");
+        break;
+}
     exit();
 
 } catch (Exception $e) {

@@ -1,3 +1,46 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['tourist']);
+
+require_once 'Classes/DBconnection.php';
+require_once 'Classes/Room.php';
+
+$listingId = $_GET['listing_id'];
+$userId    = $_SESSION['user_id'];
+$conn      = DBconnection::getInstance()->getConnection();
+
+// fetch listing details
+$sql  = "SELECT l.*, u.firstname, u.lastname
+          FROM listings l
+          JOIN users u ON l.user_id = u.id
+          WHERE l.id = ? AND l.status = 'approved'";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $listingId);
+$stmt->execute();
+$listing = $stmt->get_result()->fetch_assoc();
+
+if (!$listing) {
+    header("Location: explore.php");
+    exit();
+}
+
+// fetch available rooms if hotel
+$rooms = [];
+if ($listing['type'] == 'hotel') {
+    $hotelSql  = "SELECT hl.id FROM hotel_listings hl WHERE hl.listing_id = ?";
+    $hotelStmt = $conn->prepare($hotelSql);
+    $hotelStmt->bind_param("i", $listingId);
+    $hotelStmt->execute();
+    $hotelResult = $hotelStmt->get_result()->fetch_assoc();
+
+    if ($hotelResult) {
+        $rooms = Room::getRoomsByHotelListing($hotelResult['id'], true);
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,13 +56,13 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="index.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="index.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
-                <a href="explore.html" class="nav-link">Explore</a>
-                <a href="mybookings.html" class="nav-link">My Bookings</a>
-                <a href="touristmessages.html" class="nav-link">Messages</a>
-                <a href="touristnotifications.html" class="nav-link">Notifications</a>
+                <a href="explore.php" class="nav-link">Explore</a>
+                <a href="mybookings.php" class="nav-link">My Bookings</a>
+                <a href="touristmessages.php" class="nav-link">Messages</a>
+                <a href="touristnotifications.php" class="nav-link">Notifications</a>
             </td>
             <td class="nav-buttons-cell">
                 <span class="admin-welcome">Welcome, Tourist</span>
@@ -39,19 +82,21 @@
                 WHERE l.id = ? AND l.status = 'approved'";
     -->
 
-    <a href="listingdetail.php?id=0" class="back-link">&larr; Back to Listing</a>
-    <!-- PHP: echo "listingdetail.php?id=" . $listing['id'] -->
+    <a href="listingdetail.php?id=<?php echo $listing['id']; ?>" class="back-link">&larr; Back to Listing</a>
 
     <h2 class="admin-page-title">Make a Booking</h2>
-    <!-- PHP: echo "Book: " . $listing['title']; -->
-    <p class="admin-page-subtitle">Fill in your booking details below</p>
+<p class="admin-page-subtitle">Book: <strong><?php echo $listing['title']; ?></strong></p>
+		
+		<?php if(isset($_GET['error'])) { ?>
+			<p class="error">Something went wrong. Please try again.</p>
+		<?php } ?>
+		<?php if(isset($_GET['noroomsselected'])) { ?>
+			<p class="error">Please select at least one room.</p>
+		<?php } ?>
+		<?php if(isset($_GET['unavailable'])) { ?>
+			<p class="error">Sorry, the selected rooms are not available for your chosen dates.</p>
+		<?php } ?>
 
-    <?php if(isset($_GET['error'])) { ?>
-        <p class="error">Something went wrong. Please try again.</p>
-    <?php } ?>
-    <?php if(isset($_GET['unavailable'])) { ?>
-        <p class="error">Sorry, the selected rooms are not available for your chosen dates.</p>
-    <?php } ?>
 
     <div class="listing-detail-layout">
 
@@ -61,11 +106,8 @@
 
                 <form name="makebookingform" method="post" action="makebookingbackend.php" onsubmit="return validateMakeBooking();">
 
-                    <input type="hidden" name="listing_id" value="">
-                    <!-- PHP: echo $listing['id'] -->
-
-                    <input type="hidden" name="listing_type" value="" id="listing_type">
-                    <!-- PHP: echo $listing['type'] -->
+                    <input type="hidden" name="listing_id" value="<?php echo $listing['id']; ?>">
+					<input type="hidden" name="listing_type" value="<?php echo $listing['type']; ?>" id="listing_type">
 
                     <label>Start Date & Time</label>
                     <input type="datetime-local" name="start_datetime" id="start_datetime">
@@ -77,39 +119,34 @@
                     <input type="number" name="guest_count" id="guest_count" placeholder="Enter number of guests" min="1">
 
                     <!-- ROOM SELECTION — only for hotel listings -->
-                    <!--
                     <?php if($listing['type'] == 'hotel') { ?>
-                    -->
-                    <div id="room-selection-div">
-                        <label>Select Rooms</label>
-                        <p class="form-note" style="margin-bottom:10px;">You can select multiple rooms</p>
-                        <table class="admin-table" style="margin-bottom:15px;">
-                            <tr>
-                                <th>Select</th>
-                                <th>Room Type</th>
-                                <th>Capacity</th>
-                                <th>Price Per Night (Rs.)</th>
-                            </tr>
-                            <!-- PHP:
-                                $sql = "SELECT * FROM rooms WHERE hotel_listing_id = ? AND is_available = 1";
-                                loop through rooms and echo each row
-                            -->
-                            <!-- Example room row:
-                            <tr>
-                                <td><input type="checkbox" name="room_ids[]" value="<?php echo $room['id']; ?>"></td>
-                                <td><?php echo ucfirst($room['room_type']); ?></td>
-                                <td><?php echo $room['capacity']; ?> persons</td>
-                                <td><?php echo number_format($room['price_per_night'], 2); ?></td>
-                            </tr>
-                            -->
-                            <tr>
-                                <td colspan="4" class="table-empty">No available rooms</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <!--
-                    <?php } ?>
-                    -->
+					<div id="room-selection-div">
+						<label>Select Rooms</label>
+						<p class="form-note" style="margin-bottom:10px;">You can select multiple rooms</p>
+						<table class="admin-table" style="margin-bottom:15px;">
+							<tr>
+								<th>Select</th>
+								<th>Room Type</th>
+								<th>Capacity</th>
+								<th>Price Per Night (Rs.)</th>
+							</tr>
+							<?php if(empty($rooms)) { ?>
+								<tr>
+									<td colspan="4" class="table-empty">No available rooms</td>
+								</tr>
+							<?php } else { ?>
+								<?php foreach($rooms as $room) { ?>
+								<tr>
+									<td><input type="checkbox" name="room_ids[]" value="<?php echo $room['id']; ?>"></td>
+									<td><?php echo ucfirst($room['room_type']); ?></td>
+									<td><?php echo $room['capacity']; ?> persons</td>
+									<td>Rs. <?php echo number_format($room['price_per_night'], 2); ?></td>
+								</tr>
+								<?php } ?>
+							<?php } ?>
+						</table>
+					</div>
+					<?php } ?>
 
                     <button type="submit" class="btn btn-primary" style="margin-top:10px;">Proceed to Payment</button>
 
@@ -123,29 +160,28 @@
             <div class="sidebar-card">
                 <h3 class="admin-subsection-title">Booking Summary</h3>
 
-                <!-- PHP: echo listing details -->
                 <table class="detail-table">
-                    <tr>
-                        <td>Listing</td>
-                        <td>Title here</td>
-                    </tr>
-                    <tr>
-                        <td>Type</td>
-                        <td>Type here</td>
-                    </tr>
-                    <tr>
-                        <td>Location</td>
-                        <td>City here</td>
-                    </tr>
-                    <tr>
-                        <td>Base Price</td>
-                        <td>Rs. 0.00</td>
-                    </tr>
-                    <tr>
-                        <td>Owner</td>
-                        <td>Name here</td>
-                    </tr>
-                </table>
+				<tr>
+					<td>Listing</td>
+					<td><?php echo $listing['title']; ?></td>
+				</tr>
+				<tr>
+					<td>Type</td>
+					<td><?php echo ucfirst(str_replace('_', ' ', $listing['type'])); ?></td>
+				</tr>
+				<tr>
+					<td>Location</td>
+					<td><?php echo $listing['city']; ?></td>
+				</tr>
+				<tr>
+					<td>Base Price</td>
+					<td>Rs. <?php echo number_format($listing['price'], 2); ?></td>
+				</tr>
+				<tr>
+					<td>Owner</td>
+					<td><?php echo $listing['firstname'] . ' ' . $listing['lastname']; ?></td>
+				</tr>
+			</table>
 
                 <p class="form-note" style="margin-top:15px;">
                     Total price will be calculated based on your selected dates, guests and rooms. You will see the final amount on the payment page.

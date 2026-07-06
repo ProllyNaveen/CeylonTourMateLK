@@ -19,7 +19,7 @@ class ListingImage {
     public function save() {
         $conn = DBconnection::getInstance()->getConnection();
 
-        $sql = "INSERT INTO listing_images (listing_id, image_path) VALUES (?, ?)";
+        $sql  = "INSERT INTO listing_images (listing_id, image_path) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("is", $this->listingId, $this->imagePath);
 
@@ -29,6 +29,39 @@ class ListingImage {
         } else {
             return "error";
         }
+    }
+
+    // ===========================
+    // GET IMAGES BY LISTING
+    // Static — used to display images on listing detail page
+    // ===========================
+    public static function getImagesByListing($listingId) {
+        $conn = DBconnection::getInstance()->getConnection();
+
+        $sql  = "SELECT * FROM listing_images WHERE listing_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $listingId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $images = [];
+        while ($row = $result->fetch_assoc()) {
+            $images[] = $row;
+        }
+        return $images;
+    }
+
+    // ===========================
+    // DELETE ALL FOR LISTING
+    // Called internally by Listing::deleteListing()
+    // ===========================
+    public static function deleteAllForListing($listingId) {
+        $conn = DBconnection::getInstance()->getConnection();
+
+        $sql  = "DELETE FROM listing_images WHERE listing_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $listingId);
+        $stmt->execute();
     }
 
     // ===========================

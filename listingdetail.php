@@ -1,3 +1,83 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['tourist']);
+
+require_once 'Classes/DBconnection.php';
+require_once 'Classes/Review.php';
+require_once 'Classes/ListingImage.php';
+
+$listingId = $_GET['id'];
+$userId    = $_SESSION['user_id'];
+$conn      = DBconnection::getInstance()->getConnection();
+
+// fetch listing with owner details and average rating
+$sql  = "SELECT l.*, u.firstname, u.lastname, u.profile_pic, u.phone,
+          AVG(r.rating) as avg_rating, COUNT(r.id) as review_count
+          FROM listings l
+          JOIN users u ON l.user_id = u.id
+          LEFT JOIN reviews r ON l.id = r.listing_id
+          WHERE l.id = ? AND l.status = 'approved'
+          GROUP BY l.id";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $listingId);
+$stmt->execute();
+$listing = $stmt->get_result()->fetch_assoc();
+
+if (!$listing) {
+    header("Location: explore.php");
+    exit();
+}
+
+// fetch subtype details
+$subDetails = null;
+$rooms      = [];
+
+if ($listing['type'] == 'tour_guide') {
+    $subSql  = "SELECT * FROM tourguide_listings WHERE listing_id = ?";
+    $subStmt = $conn->prepare($subSql);
+    $subStmt->bind_param("i", $listingId);
+    $subStmt->execute();
+    $subDetails = $subStmt->get_result()->fetch_assoc();
+
+} elseif ($listing['type'] == 'hotel') {
+    $subSql  = "SELECT * FROM hotel_listings WHERE listing_id = ?";
+    $subStmt = $conn->prepare($subSql);
+    $subStmt->bind_param("i", $listingId);
+    $subStmt->execute();
+    $subDetails = $subStmt->get_result()->fetch_assoc();
+
+    if ($subDetails) {
+        $roomSql  = "SELECT * FROM rooms WHERE hotel_listing_id = ? AND is_available = 1";
+        $roomStmt = $conn->prepare($roomSql);
+        $roomStmt->bind_param("i", $subDetails['id']);
+        $roomStmt->execute();
+        $rooms = $roomStmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+} elseif ($listing['type'] == 'shop') {
+    $subSql  = "SELECT * FROM shop_listings WHERE listing_id = ?";
+    $subStmt = $conn->prepare($subSql);
+    $subStmt->bind_param("i", $listingId);
+    $subStmt->execute();
+    $subDetails = $subStmt->get_result()->fetch_assoc();
+
+} elseif ($listing['type'] == 'experience') {
+    $subSql  = "SELECT * FROM experience_listings WHERE listing_id = ?";
+    $subStmt = $conn->prepare($subSql);
+    $subStmt->bind_param("i", $listingId);
+    $subStmt->execute();
+    $subDetails = $subStmt->get_result()->fetch_assoc();
+}
+
+// fetch images
+$images  = ListingImage::getImagesByListing($listingId);
+
+// fetch reviews
+$reviews = Review::getReviewsByListing($listingId);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,16 +93,16 @@
     <table>
         <tr>
             <td class="logo-cell">
-                <a href="index.html"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
+                <a href="index.php"><span class="logo-text">Ceylon<span>TourMate</span>.lk</span></a>
             </td>
             <td class="nav-links-cell">
-                <a href="explore.html" class="nav-link">Explore</a>
-                <a href="mybookings.html" class="nav-link">My Bookings</a>
-                <a href="touristmessages.html" class="nav-link">Messages</a>
-                <a href="touristnotifications.html" class="nav-link">Notifications</a>
+                <a href="explore.php" class="nav-link">Explore</a>
+                <a href="mybookings.php" class="nav-link">My Bookings</a>
+                <a href="touristmessages.php" class="nav-link">Messages</a>
+                <a href="touristnotifications.php" class="nav-link">Notifications</a>
             </td>
             <td class="nav-buttons-cell">
-                <span class="admin-welcome">Welcome, Tourist</span>
+                <span class="admin-welcome">Welcome, <?php echo $_SESSION['firstname']; ?></span>
                 <a href="logout.php"><button class="btn btn-login">Logout</button></a>
             </td>
         </tr>
@@ -32,46 +112,44 @@
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="explore.html" class="back-link">&larr; Back to Explore</a>
+    <a href="explore.php" class="back-link">&larr; Back to Explore</a>
 
-    <!-- PHP:
-        $sql = "SELECT l.*, u.firstname, u.lastname, u.profile_pic, u.phone,
-                AVG(r.rating) as avg_rating, COUNT(r.id) as review_count
-                FROM listings l
-                JOIN users u ON l.user_id = u.id
-                LEFT JOIN reviews r ON l.id = r.listing_id
-                WHERE l.id = ? AND l.status = 'approved'
-                GROUP BY l.id";
-    -->
+    <?php if(isset($_GET['msgsent'])) { ?>
+        <p class="success">Message sent successfully!</p>
+    <?php } ?>
+    <?php if(isset($_GET['error'])) { ?>
+        <p class="error">Something went wrong. Please try again.</p>
+    <?php } ?>
 
     <!-- LISTING HEADER -->
     <div class="listing-detail-header">
         <div>
-            <h2 class="admin-page-title">Listing Title Here</h2>
-            <!-- PHP: echo listing title -->
-            <p class="listing-card-location">&#128205; City Here &nbsp;|&nbsp;
-                <span class="listing-type-badge listing-type-tour_guide">Type Here</span>
+            <h2 class="admin-page-title"><?php echo $listing['title']; ?></h2>
+            <p class="listing-card-location">&#128205; <?php echo $listing['city']; ?> &nbsp;|&nbsp;
+                <span class="listing-type-badge listing-type-<?php echo $listing['type']; ?>">
+                    <?php echo ucfirst(str_replace('_', ' ', $listing['type'])); ?>
+                </span>
             </p>
             <p style="font-size:14px; color:#6b6b6b; margin-top:8px;">
-                &#11088; 0.0 (0 reviews)
+                &#11088; <?php echo $listing['avg_rating'] ? number_format($listing['avg_rating'], 1) : 'New'; ?>
+                (<?php echo $listing['review_count']; ?> reviews)
             </p>
         </div>
         <div class="listing-detail-price">
-            <span>Rs. 0.00</span>
+            <span>Rs. <?php echo number_format($listing['price'], 2); ?></span>
             <span style="font-size:13px; color:#6b6b6b;">per person / per night</span>
         </div>
     </div>
 
     <!-- LISTING IMAGES -->
     <div class="listing-images-row">
-        <!-- PHP:
-            $sql = "SELECT * FROM listing_images WHERE listing_id = ?";
-            loop through and echo each image
-        -->
-        <!-- Example:
-        <img src="<?php echo $img['image_path']; ?>" class="listing-detail-img" alt="listing image">
-        -->
-        <div class="listing-img-placeholder">&#127758; No images uploaded</div>
+        <?php if(empty($images)) { ?>
+            <div class="listing-img-placeholder">&#127758; No images uploaded</div>
+        <?php } else { ?>
+            <?php foreach($images as $image) { ?>
+                <img src="<?php echo $image['image_path']; ?>" class="listing-detail-img" alt="listing image">
+            <?php } ?>
+        <?php } ?>
     </div>
 
     <div class="listing-detail-layout">
@@ -82,43 +160,38 @@
             <!-- DESCRIPTION -->
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">About</h3>
-                <!-- PHP: echo $listing['description']; -->
-                <p style="font-size:14px; color:#2b2b2b; line-height:1.7;">Description here</p>
+                <p style="font-size:14px; color:#2b2b2b; line-height:1.7;"><?php echo $listing['description']; ?></p>
             </div>
 
             <!-- TYPE SPECIFIC DETAILS -->
-            <!-- PHP: show different fields based on $listing['type'] -->
-
-            <!-- TOUR GUIDE DETAILS -->
-            <!--
-            <?php if($listing['type'] == 'tour_guide') { ?>
+            <?php if($listing['type'] == 'tour_guide' && $subDetails) { ?>
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">Tour Guide Details</h3>
                 <table class="detail-table">
-                    <tr><td>Languages</td><td><?php echo $tg['languages']; ?></td></tr>
-                    <tr><td>Specialization</td><td><?php echo $tg['specialization']; ?></td></tr>
-                    <tr><td>Experience</td><td><?php echo $tg['experience_years']; ?> years</td></tr>
-                    <tr><td>Availability</td><td><?php echo $tg['availability']; ?></td></tr>
+                    <tr><td>Languages</td><td><?php echo $subDetails['languages']; ?></td></tr>
+                    <tr><td>Specialization</td><td><?php echo $subDetails['specialization']; ?></td></tr>
+                    <tr><td>Experience</td><td><?php echo $subDetails['experience_years']; ?> years</td></tr>
+                    <tr><td>Availability</td><td><?php echo $subDetails['availability']; ?></td></tr>
                 </table>
             </div>
             <?php } ?>
-            -->
 
-            <!-- HOTEL DETAILS -->
-            <!--
-            <?php if($listing['type'] == 'hotel') { ?>
+            <?php if($listing['type'] == 'hotel' && $subDetails) { ?>
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">Hotel Details</h3>
                 <table class="detail-table">
-                    <tr><td>Star Rating</td><td><?php echo str_repeat('&#11088;', $hotel['star_rating']); ?></td></tr>
-                    <tr><td>Amenities</td><td><?php echo $hotel['amenities']; ?></td></tr>
-                    <tr><td>Total Rooms</td><td><?php echo $hotel['total_rooms']; ?></td></tr>
-                    <tr><td>Check-in Time</td><td><?php echo date('h:i A', strtotime($hotel['check_in_time'])); ?></td></tr>
-                    <tr><td>Check-out Time</td><td><?php echo date('h:i A', strtotime($hotel['check_out_time'])); ?></td></tr>
+                    <tr><td>Star Rating</td><td><?php echo str_repeat('&#11088;', $subDetails['star_rating']); ?></td></tr>
+                    <tr><td>Amenities</td><td><?php echo $subDetails['amenities']; ?></td></tr>
+                    <tr><td>Total Rooms</td><td><?php echo $subDetails['total_rooms']; ?></td></tr>
+                    <tr><td>Check-in Time</td><td><?php echo date('h:i A', strtotime($subDetails['check_in_time'])); ?></td></tr>
+                    <tr><td>Check-out Time</td><td><?php echo date('h:i A', strtotime($subDetails['check_out_time'])); ?></td></tr>
                 </table>
             </div>
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">Available Rooms</h3>
+                <?php if(empty($rooms)) { ?>
+                    <p class="table-empty">No available rooms at the moment.</p>
+                <?php } else { ?>
                 <table class="admin-table">
                     <tr>
                         <th>Room Type</th>
@@ -135,69 +208,55 @@
                     </tr>
                     <?php } ?>
                 </table>
+                <?php } ?>
             </div>
             <?php } ?>
-            -->
 
-            <!-- SHOP DETAILS -->
-            <!--
-            <?php if($listing['type'] == 'shop') { ?>
+            <?php if($listing['type'] == 'shop' && $subDetails) { ?>
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">Shop Details</h3>
                 <table class="detail-table">
-                    <tr><td>Shop Type</td><td><?php echo $shop['shop_type']; ?></td></tr>
-                    <tr><td>Opening Time</td><td><?php echo date('h:i A', strtotime($shop['open_time'])); ?></td></tr>
-                    <tr><td>Closing Time</td><td><?php echo date('h:i A', strtotime($shop['close_time'])); ?></td></tr>
+                    <tr><td>Shop Type</td><td><?php echo $subDetails['shop_type']; ?></td></tr>
+                    <tr><td>Opening Time</td><td><?php echo date('h:i A', strtotime($subDetails['open_time'])); ?></td></tr>
+                    <tr><td>Closing Time</td><td><?php echo date('h:i A', strtotime($subDetails['close_time'])); ?></td></tr>
                 </table>
             </div>
             <?php } ?>
-            -->
 
-            <!-- EXPERIENCE DETAILS -->
-            <!--
-            <?php if($listing['type'] == 'experience') { ?>
+            <?php if($listing['type'] == 'experience' && $subDetails) { ?>
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">Experience Details</h3>
                 <table class="detail-table">
-                    <tr><td>Type</td><td><?php echo $exp['experience_type']; ?></td></tr>
-                    <tr><td>Duration</td><td><?php echo $exp['duration']; ?></td></tr>
-                    <tr><td>Max Group Size</td><td><?php echo $exp['max_group_size']; ?> persons</td></tr>
-                    <tr><td>Availability</td><td><?php echo $exp['availability']; ?></td></tr>
+                    <tr><td>Type</td><td><?php echo $subDetails['experience_type']; ?></td></tr>
+                    <tr><td>Duration</td><td><?php echo $subDetails['duration']; ?></td></tr>
+                    <tr><td>Max Group Size</td><td><?php echo $subDetails['max_group_size']; ?> persons</td></tr>
+                    <tr><td>Availability</td><td><?php echo $subDetails['availability']; ?></td></tr>
                 </table>
             </div>
             <?php } ?>
-            -->
 
             <!-- REVIEWS -->
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">Reviews</h3>
-
-                <!-- PHP:
-                    $sql = "SELECT r.*, u.firstname, u.lastname, u.profile_pic
-                            FROM reviews r
-                            JOIN users u ON r.tourist_id = u.id
-                            WHERE r.listing_id = ?
-                            ORDER BY r.created_at DESC";
-                    loop through and echo each review
-                -->
-
-                <!-- Example review: -->
-                <!--
-                <div class="review-item">
-                    <div class="review-header">
-                        <img src="<?php echo $review['profile_pic'] ?? 'images/default.png'; ?>" class="convo-avatar">
-                        <div>
-                            <span class="convo-name"><?php echo $review['firstname'] . ' ' . $review['lastname']; ?></span>
-                            <span style="font-size:12px; color:#6b6b6b; display:block;"><?php echo date('d M Y', strtotime($review['created_at'])); ?></span>
+                <?php if(empty($reviews)) { ?>
+                    <p class="table-empty" style="padding:20px; text-align:center;">No reviews yet</p>
+                <?php } else { ?>
+                    <?php foreach($reviews as $review) { ?>
+                    <div class="review-item">
+                        <div class="review-header">
+                            <img src="<?php echo $review['profile_pic'] ?? 'uploads/profiles/default.png'; ?>" class="convo-avatar">
+                            <div>
+                                <span class="convo-name"><?php echo $review['firstname'] . ' ' . $review['lastname']; ?></span>
+                                <span style="font-size:12px; color:#6b6b6b; display:block;">
+                                    <?php echo date('d M Y', strtotime($review['created_at'])); ?>
+                                </span>
+                            </div>
+                            <span class="review-stars"><?php echo str_repeat('&#11088;', $review['rating']); ?></span>
                         </div>
-                        <span class="review-stars"><?php echo str_repeat('&#11088;', $review['rating']); ?></span>
+                        <p class="review-comment"><?php echo $review['comment']; ?></p>
                     </div>
-                    <p class="review-comment"><?php echo $review['comment']; ?></p>
-                </div>
-                -->
-
-                <p class="table-empty" style="padding:20px; text-align:center;">No reviews yet</p>
-
+                    <?php } ?>
+                <?php } ?>
             </div>
 
         </div>
@@ -208,48 +267,33 @@
             <!-- OWNER INFO -->
             <div class="sidebar-card">
                 <h3 class="admin-subsection-title">About the Owner</h3>
-                <!-- PHP: echo owner profile pic, name -->
                 <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
-                    <img src="images/default.png" class="convo-avatar" alt="Owner">
+                    <img src="<?php echo $listing['profile_pic'] ?? 'uploads/profiles/default.png'; ?>" class="convo-avatar" alt="Owner">
                     <div>
-                        <span class="convo-name">Owner Name</span>
-                        <span class="convo-listing">&#128222; Phone here</span>
+                        <span class="convo-name"><?php echo $listing['firstname'] . ' ' . $listing['lastname']; ?></span>
+                        <span class="convo-listing">&#128222; <?php echo $listing['phone']; ?></span>
                     </div>
                 </div>
 
-                <!-- MESSAGE FORM — only for non-shop listings -->
-                <!--
-                <?php if($listing['type'] != 'shop') { ?>
-                -->
                 <form name="messageform" method="post" action="sendmessagebackend.php" onsubmit="return validateMessage();">
-                    <input type="hidden" name="receiver_id" value="">
-                    <!-- PHP: echo $listing['user_id'] -->
-                    <input type="hidden" name="listing_id" value="">
-                    <!-- PHP: echo $listing['id'] -->
+                    <input type="hidden" name="receiver_id" value="<?php echo $listing['user_id']; ?>">
+                    <input type="hidden" name="listing_id" value="<?php echo $listing['id']; ?>">
                     <label style="font-size:13px; color:#2b2b2b; margin-bottom:6px; display:block;">Send a Message</label>
                     <textarea name="message" id="messageText" placeholder="Ask about this listing..." rows="3" style="width:100%; padding:10px; border:1px solid #d6d6d6; border-radius:5px; font-size:13px; resize:none; margin-bottom:10px;"></textarea>
                     <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
                 </form>
-                <!--
-                <?php } ?>
-                -->
             </div>
 
             <!-- BOOK NOW — only for non-shop listings -->
-            <!--
             <?php if($listing['type'] != 'shop') { ?>
-            -->
             <div class="sidebar-card" style="margin-top:20px;">
                 <h3 class="admin-subsection-title">Book Now</h3>
                 <p style="font-size:13px; color:#6b6b6b; margin-bottom:15px;">Ready to book? Click below to proceed.</p>
-                <a href="makebooking.php?listing_id=0" class="btn btn-primary" style="display:block; text-align:center;">
-                    <!-- PHP: echo "makebooking.php?listing_id=" . $listing['id'] -->
+                <a href="makebooking.php?listing_id=<?php echo $listing['id']; ?>" class="btn btn-primary" style="display:block; text-align:center;">
                     Make a Booking
                 </a>
             </div>
-            <!--
             <?php } ?>
-            -->
 
         </div>
 

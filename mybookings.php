@@ -1,3 +1,17 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['tourist']);
+
+require_once 'Classes/Booking.php';
+require_once 'Classes/Review.php';
+
+$userId   = $_SESSION['user_id'];
+$status   = isset($_GET['status']) ? $_GET['status'] : null;
+$bookings = Booking::getBookingsForTourist($userId, $status);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,16 +49,16 @@
     <p class="admin-page-subtitle">View and manage all your bookings</p>
 
     <?php if(isset($_GET['success'])) { ?>
-        <p class="success">Payment completed successfully. Your booking is confirmed!</p>
-    <?php } ?>
-    <?php if(isset($_GET['cancelled'])) { ?>
-        <p class="success">Booking cancelled successfully.</p>
-    <?php } ?>
-    <?php if(isset($_GET['error'])) { ?>
-        <p class="error">Something went wrong. Please try again.</p>
-    <?php } ?>
-	<?php if(isset($_GET['paidsuccess'])) { ?>
+    <p class="success">Booking made successfully! Waiting for partner confirmation.</p>
+<?php } ?>
+<?php if(isset($_GET['paidsuccess'])) { ?>
     <p class="success">Payment completed successfully!</p>
+<?php } ?>
+<?php if(isset($_GET['cancelled'])) { ?>
+    <p class="success">Booking cancelled successfully.</p>
+<?php } ?>
+<?php if(isset($_GET['reviewsuccess'])) { ?>
+    <p class="success">Review submitted successfully. Thank you!</p>
 <?php } ?>
 <?php if(isset($_GET['notconfirmed'])) { ?>
     <p class="error">Your booking has not been confirmed by the partner yet.</p>
@@ -52,8 +66,8 @@
 <?php if(isset($_GET['cannotcancel'])) { ?>
     <p class="error">This booking cannot be cancelled.</p>
 <?php } ?>
-<?php if(isset($_GET['reviewsuccess'])) { ?>
-    <p class="success">Review submitted successfully. Thank you!</p>
+<?php if(isset($_GET['error'])) { ?>
+    <p class="error">Something went wrong. Please try again.</p>
 <?php } ?>
 
     <!-- FILTER BY STATUS -->
@@ -79,77 +93,60 @@
             <th>Actions</th>
         </tr>
 
-        <!-- PHP:
-            if(isset($_GET['status'])) {
-                $status = $_GET['status'];
-                $sql = "SELECT b.*, l.title, l.type
-                        FROM bookings b
-                        JOIN listings l ON b.listing_id = l.id
-                        WHERE b.tourist_id = ? AND b.status = ?
-                        ORDER BY b.created_at DESC";
-            } else {
-                $sql = "SELECT b.*, l.title, l.type
-                        FROM bookings b
-                        JOIN listings l ON b.listing_id = l.id
-                        WHERE b.tourist_id = ?
-                        ORDER BY b.created_at DESC";
-            }
-            loop through results and echo each row
-        -->
-
-        <!-- Example populated row: -->
-        <!--
-        <tr>
-            <td>#<?php echo $booking['id']; ?></td>
-            <td>
-                <a href="listingdetail.php?id=<?php echo $booking['listing_id']; ?>" style="color:#1c7293;">
-                    <?php echo $booking['title']; ?>
-                </a>
-            </td>
-            <td>
-                <span class="listing-type-badge listing-type-<?php echo $booking['type']; ?>">
-                    <?php echo ucfirst(str_replace('_', ' ', $booking['type'])); ?>
-                </span>
-            </td>
-            <td><?php echo date('d M Y h:i A', strtotime($booking['start_datetime'])); ?></td>
-            <td><?php echo date('d M Y h:i A', strtotime($booking['end_datetime'])); ?></td>
-            <td><?php echo $booking['guest_count']; ?></td>
-            <td><?php echo number_format($booking['total_price'], 2); ?></td>
-            <td>
-                <span class="status-badge status-<?php echo $booking['status']; ?>">
-                    <?php echo ucfirst($booking['status']); ?>
-                </span>
-            </td>
-            <td>
-                <div class="action-btns">
-                    <?php if($booking['status'] == 'pending') { ?>
-                        <a href="payment.php?booking_id=<?php echo $booking['id']; ?>"
-                           class="tbl-btn tbl-btn-green">Pay Now</a>
-                        <a href="touristcancelbookingbackend.php?id=<?php echo $booking['id']; ?>"
-                           class="tbl-btn tbl-btn-red"
-                           onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel</a>
-                    <?php } elseif($booking['status'] == 'completed') { ?>
-                        <?php
-                        // check if review already written for this booking
-                        $reviewCheck = "SELECT id FROM reviews WHERE booking_id = ? AND tourist_id = ?";
-                        ?>
-                        <?php if(!$reviewExists) { ?>
-                            <a href="writereview.php?booking_id=<?php echo $booking['id']; ?>"
-                               class="tbl-btn tbl-btn-amber">Write Review</a>
-                        <?php } else { ?>
-                            <span style="color:#999; font-size:12px;">Reviewed</span>
-                        <?php } ?>
+        <?php if(empty($bookings)) { ?>
+    <tr>
+        <td colspan="9" class="table-empty">No bookings found</td>
+    </tr>
+<?php } else { ?>
+    <?php foreach($bookings as $booking) { ?>
+    <tr>
+        <td>#<?php echo $booking['id']; ?></td>
+        <td>
+            <a href="listingdetail.php?id=<?php echo $booking['listing_id']; ?>" style="color:#1c7293;">
+                <?php echo $booking['title']; ?>
+            </a>
+        </td>
+        <td>
+            <span class="listing-type-badge listing-type-<?php echo $booking['type']; ?>">
+                <?php echo ucfirst(str_replace('_', ' ', $booking['type'])); ?>
+            </span>
+        </td>
+        <td><?php echo date('d M Y h:i A', strtotime($booking['start_datetime'])); ?></td>
+        <td><?php echo date('d M Y h:i A', strtotime($booking['end_datetime'])); ?></td>
+        <td><?php echo $booking['guest_count']; ?></td>
+        <td>Rs. <?php echo number_format($booking['total_price'], 2); ?></td>
+        <td>
+            <span class="status-badge status-<?php echo $booking['status']; ?>">
+                <?php echo ucfirst($booking['status']); ?>
+            </span>
+        </td>
+        <td>
+            <div class="action-btns">
+                <?php if($booking['status'] == 'confirmed') { ?>
+                    <a href="payment.php?booking_id=<?php echo $booking['id']; ?>"
+                       class="tbl-btn tbl-btn-green">Pay Now</a>
+                    <a href="touristcancelbookingbackend.php?id=<?php echo $booking['id']; ?>"
+                       class="tbl-btn tbl-btn-red"
+                       onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel</a>
+                <?php } elseif($booking['status'] == 'pending') { ?>
+                    <a href="touristcancelbookingbackend.php?id=<?php echo $booking['id']; ?>"
+                       class="tbl-btn tbl-btn-red"
+                       onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel</a>
+                <?php } elseif($booking['status'] == 'completed') { ?>
+                    <?php if(!Review::hasReviewed($booking['id'], $userId)) { ?>
+                        <a href="writereview.php?booking_id=<?php echo $booking['id']; ?>"
+                           class="tbl-btn tbl-btn-amber">Write Review</a>
                     <?php } else { ?>
-                        <span style="color:#999; font-size:12px;">—</span>
+                        <span style="color:#999; font-size:12px;">Reviewed</span>
                     <?php } ?>
-                </div>
-            </td>
-        </tr>
-        -->
-
-        <tr>
-            <td colspan="9" class="table-empty">No bookings found</td>
-        </tr>
+                <?php } else { ?>
+                    <span style="color:#999; font-size:12px;">—</span>
+                <?php } ?>
+            </div>
+        </td>
+    </tr>
+    <?php } ?>
+<?php } ?>
 
     </table>
 
