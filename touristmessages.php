@@ -1,3 +1,23 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['tourist']);
+
+require_once 'Classes/Message.php';
+
+$userId        = $_SESSION['user_id'];
+$conversations = Message::getConversations($userId);
+
+$thread = [];
+if (isset($_GET['user_id']) && isset($_GET['listing_id'])) {
+    $otherUserId = $_GET['user_id'];
+    $listingId   = $_GET['listing_id'];
+    $thread      = Message::getThread($userId, $otherUserId, $listingId);
+    Message::markThreadAsRead($userId, $otherUserId, $listingId);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,11 +58,11 @@
     <p class="admin-page-subtitle">View and reply to messages from partners</p>
 
     <?php if(isset($_GET['success'])) { ?>
-        <p class="success">Reply sent successfully.</p>
-    <?php } ?>
-    <?php if(isset($_GET['error'])) { ?>
-        <p class="error">Something went wrong. Please try again.</p>
-    <?php } ?>
+    <p class="success">Reply sent successfully.</p>
+<?php } ?>
+<?php if(isset($_GET['error'])) { ?>
+    <p class="error">Something went wrong. Please try again.</p>
+<?php } ?>
 
     <div class="messages-layout">
 
@@ -50,34 +70,23 @@
         <div class="conversations-list">
             <h3 class="admin-subsection-title">Conversations</h3>
 
-            <!-- PHP:
-                $sql = "SELECT m.*, u.firstname, u.lastname, u.profile_pic, l.title as listing_title,
-                        COUNT(CASE WHEN m.is_read = 0 AND m.receiver_id = ? THEN 1 END) as unread_count
-                        FROM messages m
-                        JOIN users u ON (m.sender_id = u.id AND m.sender_id != ?)
-                        JOIN listings l ON m.listing_id = l.id
-                        WHERE m.sender_id = ? OR m.receiver_id = ?
-                        GROUP BY m.sender_id, m.listing_id
-                        ORDER BY m.created_at DESC";
-                loop through results and echo each conversation
-            -->
-
-            <!-- Example conversation item: -->
-            <!--
-            <a href="touristmessages.php?user_id=<?php echo $convo['sender_id']; ?>&listing_id=<?php echo $convo['listing_id']; ?>"
-               class="conversation-item <?php echo $convo['unread_count'] > 0 ? 'unread' : ''; ?>">
-                <img src="<?php echo $convo['profile_pic'] ?? 'images/default.png'; ?>" class="convo-avatar">
-                <div class="convo-info">
-                    <span class="convo-name"><?php echo $convo['firstname'] . ' ' . $convo['lastname']; ?></span>
-                    <span class="convo-listing"><?php echo $convo['listing_title']; ?></span>
-                    <?php if($convo['unread_count'] > 0) { ?>
-                        <span class="unread-badge"><?php echo $convo['unread_count']; ?></span>
-                    <?php } ?>
-                </div>
-            </a>
-            -->
-
-            <p class="table-empty" style="padding:20px; text-align:center;">No conversations yet</p>
+            <?php if(empty($conversations)) { ?>
+    <p class="table-empty" style="padding:20px; text-align:center;">No conversations yet</p>
+<?php } else { ?>
+    <?php foreach($conversations as $convo) { ?>
+    <a href="touristmessages.php?user_id=<?php echo $convo['sender_id']; ?>&listing_id=<?php echo $convo['listing_id']; ?>"
+       class="conversation-item <?php echo $convo['unread_count'] > 0 ? 'unread' : ''; ?>">
+        <img src="<?php echo $convo['profile_pic'] ?? 'uploads/profiles/default.png'; ?>" class="convo-avatar">
+        <div class="convo-info">
+            <span class="convo-name"><?php echo $convo['firstname'] . ' ' . $convo['lastname']; ?></span>
+            <span class="convo-listing"><?php echo $convo['listing_title']; ?></span>
+            <?php if($convo['unread_count'] > 0) { ?>
+                <span class="unread-badge"><?php echo $convo['unread_count']; ?></span>
+            <?php } ?>
+        </div>
+    </a>
+    <?php } ?>
+<?php } ?>
 
         </div>
 
@@ -89,30 +98,16 @@
 
             <div class="message-bubble-container" id="messageBubbles">
 
-                <!-- PHP:
-                    if(isset($_GET['user_id']) && isset($_GET['listing_id'])) {
-                        $sql = "SELECT m.*, u.firstname, u.lastname, u.profile_pic
-                                FROM messages m
-                                JOIN users u ON m.sender_id = u.id
-                                WHERE ((m.sender_id = ? AND m.receiver_id = ?)
-                                OR (m.sender_id = ? AND m.receiver_id = ?))
-                                AND m.listing_id = ?
-                                ORDER BY m.created_at ASC";
-                        // also mark all as read:
-                        // UPDATE messages SET is_read = 1 WHERE receiver_id = ? AND sender_id = ? AND listing_id = ?
-                        loop and echo each bubble
-                    }
-                -->
-
-                <!-- Example message bubbles: -->
-                <!--
-                <div class="message-bubble <?php echo $msg['sender_id'] == $_SESSION['user_id'] ? 'bubble-sent' : 'bubble-received'; ?>">
-                    <p><?php echo $msg['message']; ?></p>
-                    <span class="bubble-time"><?php echo date('d M Y h:i A', strtotime($msg['created_at'])); ?></span>
-                </div>
-                -->
-
-                <p class="table-empty" style="padding:20px; text-align:center;">No messages to show</p>
+                <?php if(empty($thread)) { ?>
+    <p class="table-empty" style="padding:20px; text-align:center;">No messages to show</p>
+<?php } else { ?>
+    <?php foreach($thread as $msg) { ?>
+    <div class="message-bubble <?php echo $msg['sender_id'] == $userId ? 'bubble-sent' : 'bubble-received'; ?>">
+        <p><?php echo $msg['message']; ?></p>
+        <span class="bubble-time"><?php echo date('d M Y h:i A', strtotime($msg['created_at'])); ?></span>
+    </div>
+    <?php } ?>
+<?php } ?>
 
             </div>
 

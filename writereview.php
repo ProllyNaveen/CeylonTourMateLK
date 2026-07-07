@@ -1,3 +1,32 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'Classes/session.php';
+checkRole(['tourist']);
+
+require_once 'Classes/DBconnection.php';
+
+$bookingId = $_GET['booking_id'];
+$userId    = $_SESSION['user_id'];
+$conn      = DBconnection::getInstance()->getConnection();
+
+// fetch booking details — only completed bookings can be reviewed
+$sql  = "SELECT b.*, l.title, l.type, l.city, u.firstname, u.lastname, u.profile_pic
+          FROM bookings b
+          JOIN listings l ON b.listing_id = l.id
+          JOIN users u ON l.user_id = u.id
+          WHERE b.id = ? AND b.tourist_id = ? AND b.status = 'completed'";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $bookingId, $userId);
+$stmt->execute();
+$booking = $stmt->get_result()->fetch_assoc();
+
+if (!$booking) {
+    header("Location: mybookings.php?error=1");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,21 +65,12 @@
 
     <h2 class="admin-page-title">Write a Review</h2>
     <p class="admin-page-subtitle">Share your experience to help other travellers</p>
-
-    <?php if(isset($_GET['error'])) { ?>
-        <p class="error">Something went wrong. Please try again.</p>
-    <?php } ?>
-    <?php if(isset($_GET['already'])) { ?>
-        <p class="error">You have already written a review for this booking.</p>
-    <?php } ?>
-
-    <!-- PHP:
-        $sql = "SELECT b.*, l.title, l.type, l.city, u.firstname, u.lastname, u.profile_pic
-                FROM bookings b
-                JOIN listings l ON b.listing_id = l.id
-                JOIN users u ON l.user_id = u.id
-                WHERE b.id = ? AND b.tourist_id = ? AND b.status = 'completed'";
-    -->
+		<?php if(isset($_GET['error'])) { ?>
+			<p class="error">Something went wrong. Please try again.</p>
+		<?php } ?>
+		<?php if(isset($_GET['already'])) { ?>
+			<p class="error">You have already written a review for this booking.</p>
+		<?php } ?>
 
     <div class="listing-detail-layout">
 
@@ -60,10 +80,8 @@
 
                 <form name="writereviewform" method="post" action="writereviewbackend.php" onsubmit="return validateWriteReview();">
 
-                    <input type="hidden" name="booking_id" value="">
-                    <!-- PHP: echo $booking['id'] -->
-                    <input type="hidden" name="listing_id" value="">
-                    <!-- PHP: echo $booking['listing_id'] -->
+                    <input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>">
+					<input type="hidden" name="listing_id" value="<?php echo $booking['listing_id']; ?>">
 
                     <label>Your Rating</label>
                     <div class="star-rating-input">
@@ -94,49 +112,40 @@
         <div class="listing-detail-sidebar">
             <div class="sidebar-card">
                 <h3 class="admin-subsection-title">Booking Details</h3>
+			<div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
+    <img src="<?php echo $booking['profile_pic'] ?? 'uploads/profiles/default.png'; ?>" class="convo-avatar" alt="Owner">
+    <div>
+        <span class="convo-name"><?php echo $booking['firstname'] . ' ' . $booking['lastname']; ?></span>
+        <span class="convo-listing">Owner</span>
+    </div>
+</div>
 
-                <!-- PHP: echo booking and listing details -->
-                <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
-                    <img src="images/default.png" class="convo-avatar" alt="Owner">
-                    <div>
-                        <span class="convo-name">Owner Name</span>
-                        <!-- PHP: echo $booking['firstname'] . ' ' . $booking['lastname'] -->
-                        <span class="convo-listing">Owner</span>
-                    </div>
-                </div>
-
-                <table class="detail-table">
-                    <tr>
-                        <td>Listing</td>
-                        <!-- PHP: <td><?php echo $booking['title']; ?></td> -->
-                        <td>Title here</td>
-                    </tr>
-                    <tr>
-                        <td>Type</td>
-                        <!-- PHP: <td><?php echo ucfirst(str_replace('_', ' ', $booking['type'])); ?></td> -->
-                        <td>Type here</td>
-                    </tr>
-                    <tr>
-                        <td>City</td>
-                        <!-- PHP: <td><?php echo $booking['city']; ?></td> -->
-                        <td>City here</td>
-                    </tr>
-                    <tr>
-                        <td>Start</td>
-                        <!-- PHP: <td><?php echo date('d M Y h:i A', strtotime($booking['start_datetime'])); ?></td> -->
-                        <td>Date here</td>
-                    </tr>
-                    <tr>
-                        <td>End</td>
-                        <!-- PHP: <td><?php echo date('d M Y h:i A', strtotime($booking['end_datetime'])); ?></td> -->
-                        <td>Date here</td>
-                    </tr>
-                    <tr>
-                        <td>Guests</td>
-                        <!-- PHP: <td><?php echo $booking['guest_count']; ?></td> -->
-                        <td>0</td>
-                    </tr>
-                </table>
+		<table class="detail-table">
+			<tr>
+				<td>Listing</td>
+				<td><?php echo $booking['title']; ?></td>
+			</tr>
+			<tr>
+				<td>Type</td>
+				<td><?php echo ucfirst(str_replace('_', ' ', $booking['type'])); ?></td>
+			</tr>
+			<tr>
+				<td>City</td>
+				<td><?php echo $booking['city']; ?></td>
+			</tr>
+			<tr>
+				<td>Start</td>
+				<td><?php echo date('d M Y h:i A', strtotime($booking['start_datetime'])); ?></td>
+			</tr>
+			<tr>
+				<td>End</td>
+				<td><?php echo date('d M Y h:i A', strtotime($booking['end_datetime'])); ?></td>
+			</tr>
+			<tr>
+				<td>Guests</td>
+				<td><?php echo $booking['guest_count']; ?></td>
+			</tr>
+		</table>
 
             </div>
         </div>
