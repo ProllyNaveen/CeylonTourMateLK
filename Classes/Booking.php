@@ -154,36 +154,43 @@ class Booking {
     // CONFIRM BOOKING (by partner)
     // ===========================
     public function confirmBooking($bookingId, $partnerId) {
-        $conn = DBconnection::getInstance()->getConnection();
+    $conn = DBconnection::getInstance()->getConnection();
 
-        // verify the booking's listing belongs to this partner
-        $checkSql = "SELECT b.status FROM bookings b
-                      JOIN listings l ON b.listing_id = l.id
-                      WHERE b.id = ? AND l.user_id = ?";
-        $checkStmt = $conn->prepare($checkSql);
-        $checkStmt->bind_param("ii", $bookingId, $partnerId);
-        $checkStmt->execute();
-        $result = $checkStmt->get_result();
+    $checkSql = "SELECT b.status, b.tourist_id, l.title FROM bookings b
+                  JOIN listings l ON b.listing_id = l.id
+                  WHERE b.id = ? AND l.user_id = ?";
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->bind_param("ii", $bookingId, $partnerId);
+    $checkStmt->execute();
+    $result = $checkStmt->get_result();
 
-        if ($result->num_rows == 0) {
-            return "unauthorized";
-        }
-
-        $booking = $result->fetch_assoc();
-        if ($booking['status'] != 'pending') {
-            return "notpending";
-        }
-
-        $sql = "UPDATE bookings SET status = 'confirmed' WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $bookingId);
-
-        if ($stmt->execute()) {
-            return "success";
-        } else {
-            return "error";
-        }
+    if ($result->num_rows == 0) {
+        return "unauthorized";
     }
+
+    $booking = $result->fetch_assoc();
+    if ($booking['status'] != 'pending') {
+        return "notpending";
+    }
+
+    $sql  = "UPDATE bookings SET status = 'confirmed' WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $bookingId);
+
+    if ($stmt->execute()) {
+        // auto send notification to tourist
+        require_once 'Notification.php';
+        $notification = new Notification(
+            $partnerId,
+            $booking['tourist_id'],
+            "Your booking for \"" . $booking['title'] . "\" has been confirmed! Please proceed to payment from My Bookings."
+        );
+        $notification->sendNotification();
+        return "success";
+    } else {
+        return "error";
+    }
+}
 
     // ===========================
     // COMPLETE BOOKING (by partner, after service delivered)

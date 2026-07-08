@@ -7,10 +7,12 @@ checkRole(['tourist']);
 
 require_once 'Classes/Booking.php';
 require_once 'Classes/Review.php';
+require_once 'Classes/DBconnection.php';
 
 $userId   = $_SESSION['user_id'];
 $status   = isset($_GET['status']) ? $_GET['status'] : null;
 $bookings = Booking::getBookingsForTourist($userId, $status);
+$conn     = DBconnection::getInstance()->getConnection();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +51,7 @@ $bookings = Booking::getBookingsForTourist($userId, $status);
     <p class="admin-page-subtitle">View and manage all your bookings</p>
 
     <?php if(isset($_GET['success'])) { ?>
-    <p class="success">Booking made successfully! Waiting for partner confirmation.</p>
+    <p class="success">Booking submitted successfully! Please wait for the partner to confirm your booking.</p>
 <?php } ?>
 <?php if(isset($_GET['paidsuccess'])) { ?>
     <p class="success">Payment completed successfully!</p>
@@ -123,11 +125,24 @@ $bookings = Booking::getBookingsForTourist($userId, $status);
         <td>
             <div class="action-btns">
                 <?php if($booking['status'] == 'confirmed') { ?>
-                    <a href="payment.php?booking_id=<?php echo $booking['id']; ?>"
-                       class="tbl-btn tbl-btn-green">Pay Now</a>
-                    <a href="touristcancelbookingbackend.php?id=<?php echo $booking['id']; ?>"
-                       class="tbl-btn tbl-btn-red"
-                       onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel</a>
+    <?php
+    // check if already paid
+    $paySql  = "SELECT id FROM payments WHERE booking_id = ? AND payment_status = 'completed'";
+    $payStmt = $conn->prepare($paySql);
+    $payStmt->bind_param("i", $booking['id']);
+    $payStmt->execute();
+    $payStmt->store_result();
+    $alreadyPaid = $payStmt->num_rows > 0;
+    ?>
+    <?php if($alreadyPaid) { ?>
+        <span class="status-badge status-confirmed">Paid</span>
+    <?php } else { ?>
+        <a href="payment.php?booking_id=<?php echo $booking['id']; ?>"
+           class="tbl-btn tbl-btn-green">Pay Now</a>
+        <a href="touristcancelbookingbackend.php?id=<?php echo $booking['id']; ?>"
+           class="tbl-btn tbl-btn-red"
+           onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel</a>
+    <?php } ?>
                 <?php } elseif($booking['status'] == 'pending') { ?>
                     <a href="touristcancelbookingbackend.php?id=<?php echo $booking['id']; ?>"
                        class="tbl-btn tbl-btn-red"

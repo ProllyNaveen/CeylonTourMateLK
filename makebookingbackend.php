@@ -26,7 +26,7 @@ try {
 
 switch ($result) {
     case "success":
-        header("Location: payment.php?booking_id=" . $booking->getId());
+        header("Location: mybookings.php?success=1");
         break;
     case "invalidlisting":
         header("Location: makebooking.php?listing_id=" . $listingId . "&error=1");
