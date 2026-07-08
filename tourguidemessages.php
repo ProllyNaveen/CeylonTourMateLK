@@ -71,7 +71,7 @@ if (isset($_GET['user_id']) && isset($_GET['listing_id'])) {
     <p class="table-empty" style="padding:20px; text-align:center;">No conversations yet</p>
 <?php } else { ?>
     <?php foreach($conversations as $convo) { ?>
-    <a href="tourguidemessages.php?user_id=<?php echo $convo['sender_id']; ?>&listing_id=<?php echo $convo['listing_id']; ?>"
+    <a href="tourguidemessages.php?user_id=<?php echo $convo['other_user_id']; ?>&listing_id=<?php echo $convo['listing_id']; ?>"
        class="conversation-item <?php echo $convo['unread_count'] > 0 ? 'unread' : ''; ?>">
         <img src="<?php echo $convo['profile_pic'] ?? 'uploads/profiles/default.png'; ?>" class="convo-avatar">
         <div class="convo-info">

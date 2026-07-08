@@ -46,7 +46,7 @@ $conn     = DBconnection::getInstance()->getConnection();
 
 <!-- PAGE CONTENT -->
 <div class="admin-section">
-
+	<a href="touristdashboard.php" class="back-link">&larr; Back to Dashboard</a>
     <h2 class="admin-page-title">My Bookings</h2>
     <p class="admin-page-subtitle">View and manage all your bookings</p>
 

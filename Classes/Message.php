@@ -55,28 +55,40 @@ class Message {
     // Static — fetches all unique conversations for a user
     // ===========================
     public static function getConversations($userId) {
-        $conn = DBconnection::getInstance()->getConnection();
+    $conn = DBconnection::getInstance()->getConnection();
 
-        $sql = "SELECT m.*, u.firstname, u.lastname, u.profile_pic,
+    $sql = "SELECT 
+                m.*,
+                CASE WHEN m.sender_id = ? THEN r.firstname ELSE s.firstname END as firstname,
+                CASE WHEN m.sender_id = ? THEN r.lastname ELSE s.lastname END as lastname,
+                CASE WHEN m.sender_id = ? THEN r.profile_pic ELSE s.profile_pic END as profile_pic,
+                CASE WHEN m.sender_id = ? THEN m.receiver_id ELSE m.sender_id END as other_user_id,
                 l.title as listing_title,
                 COUNT(CASE WHEN m.is_read = 0 AND m.receiver_id = ? THEN 1 END) as unread_count
-                FROM messages m
-                JOIN users u ON (m.sender_id = u.id AND m.sender_id != ?)
-                JOIN listings l ON m.listing_id = l.id
-                WHERE m.sender_id = ? OR m.receiver_id = ?
-                GROUP BY m.sender_id, m.listing_id
-                ORDER BY m.created_at DESC";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiii", $userId, $userId, $userId, $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
+            FROM messages m
+            JOIN users s ON m.sender_id = s.id
+            JOIN users r ON m.receiver_id = r.id
+            JOIN listings l ON m.listing_id = l.id
+            WHERE m.sender_id = ? OR m.receiver_id = ?
+            GROUP BY
+                CASE WHEN m.sender_id = ? THEN m.receiver_id ELSE m.sender_id END,
+                m.listing_id
+            ORDER BY m.created_at DESC";
 
-        $conversations = [];
-        while ($row = $result->fetch_assoc()) {
-            $conversations[] = $row;
-        }
-        return $conversations;
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iiiiiiii",
+        $userId, $userId, $userId, $userId,
+        $userId, $userId, $userId, $userId
+    );
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $conversations = [];
+    while ($row = $result->fetch_assoc()) {
+        $conversations[] = $row;
     }
+    return $conversations;
+}
 
     // ===========================
     // GET THREAD
