@@ -136,9 +136,19 @@ $reviews = Review::getReviewsByListing($listingId);
             </p>
         </div>
         <div class="listing-detail-price">
-            <span>Rs. <?php echo number_format($listing['price'], 2); ?></span>
-            <span style="font-size:13px; color:#6b6b6b;">per person / per night</span>
-        </div>
+    <?php if($listing['type'] == 'hotel') { ?>
+        <span style="font-size:14px; color:#6b6b6b;">See room prices below</span>
+    <?php } elseif($listing['type'] == 'shop') { ?>
+        <span>Rs. <?php echo number_format($listing['price'], 2); ?></span>
+        <span style="font-size:13px; color:#6b6b6b;">starting price</span>
+    <?php } elseif($listing['type'] == 'tour_guide') { ?>
+        <span>Rs. <?php echo number_format($listing['price'], 2); ?></span>
+        <span style="font-size:13px; color:#6b6b6b;">per day</span>
+    <?php } elseif($listing['type'] == 'experience') { ?>
+        <span>Rs. <?php echo number_format($listing['price'], 2); ?></span>
+        <span style="font-size:13px; color:#6b6b6b;">per person</span>
+    <?php } ?>
+</div>
     </div>
 
     <!-- LISTING IMAGES -->

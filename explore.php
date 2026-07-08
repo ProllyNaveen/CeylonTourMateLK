@@ -35,6 +35,7 @@ $listings = Listing::searchListings($keyword, $type, $city, $sort);
                 <a href="mybookings.php" class="nav-link">My Bookings</a>
                 <a href="touristmessages.php" class="nav-link">Messages</a>
                 <a href="touristnotifications.php" class="nav-link">Notifications</a>
+				<a href="touristdashboard.php" class="nav-link">Dashboard</a>
             </td>
             <td class="nav-buttons-cell">
                 <span class="admin-welcome">Welcome, Tourist</span>
