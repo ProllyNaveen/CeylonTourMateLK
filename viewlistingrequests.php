@@ -71,7 +71,7 @@ $listings = Listing::getPendingListings($type);
             <th>City</th>
             <th>Price (Rs.)</th>
             <th>Submitted</th>
-            <th>Actions</th>
+            <th>Action</th>
         </tr>
 
         <?php if(empty($listings)) { ?>
@@ -94,11 +94,8 @@ $listings = Listing::getPendingListings($type);
 				<td><?php echo date('d M Y', strtotime($listing['created_at'])); ?></td>
 				<td>
 					<div class="action-btns">
-						<a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=approve"
-						   class="tbl-btn tbl-btn-green">Approve</a>
-						<a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=reject"
-						   class="tbl-btn tbl-btn-red"
-						   onclick="return confirm('Are you sure you want to reject this listing?')">Reject</a>
+						<a href="viewlistingdetailadmin.php?id=<?php echo $listing['id']; ?>"
+       class="tbl-btn tbl-btn-amber">View Listing</a>
 					</div>
 				</td>
 			</tr>

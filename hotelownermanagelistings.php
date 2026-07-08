@@ -120,14 +120,16 @@ $listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         </td>
         <td>
             <div class="action-btns">
-                <a href="hotelownermanagerooms.php?hotel_listing_id=<?php echo $listing['hotel_listing_id']; ?>"
-                   class="tbl-btn tbl-btn-green">Rooms</a>
-                <a href="hotelownereditlisting.php?id=<?php echo $listing['id']; ?>"
-                   class="tbl-btn tbl-btn-amber">Edit</a>
-                <a href="hotelownerdeletelistingbackend.php?id=<?php echo $listing['id']; ?>"
-                   class="tbl-btn tbl-btn-red"
-                   onclick="return confirm('Are you sure you want to delete this listing?')">Delete</a>
-            </div>
+    <a href="hotelownerviewlisting.php?id=<?php echo $listing['id']; ?>"
+       class="tbl-btn tbl-btn-green">View</a>
+    <a href="hotelownermanagerooms.php?hotel_listing_id=<?php echo $listing['hotel_listing_id']; ?>"
+       class="tbl-btn tbl-btn-green">Rooms</a>
+    <a href="hotelownereditlisting.php?id=<?php echo $listing['id']; ?>"
+       class="tbl-btn tbl-btn-amber">Edit</a>
+    <a href="hotelownerdeletelistingbackend.php?id=<?php echo $listing['id']; ?>"
+       class="tbl-btn tbl-btn-red"
+       onclick="return confirm('Are you sure you want to delete this listing?')">Delete</a>
+</div>
         </td>
     </tr>
     <?php } ?>

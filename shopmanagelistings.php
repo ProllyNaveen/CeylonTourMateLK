@@ -116,12 +116,14 @@ $listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         </td>
         <td>
             <div class="action-btns">
-                <a href="shopeditlisting.php?id=<?php echo $listing['id']; ?>"
-                   class="tbl-btn tbl-btn-amber">Edit</a>
-                <a href="shopdeletelistingbackend.php?id=<?php echo $listing['id']; ?>"
-                   class="tbl-btn tbl-btn-red"
-                   onclick="return confirm('Are you sure you want to delete this listing?')">Delete</a>
-            </div>
+    <a href="shopviewlisting.php?id=<?php echo $listing['id']; ?>"
+       class="tbl-btn tbl-btn-green">View</a>
+    <a href="shopeditlisting.php?id=<?php echo $listing['id']; ?>"
+       class="tbl-btn tbl-btn-amber">Edit</a>
+    <a href="shopdeletelistingbackend.php?id=<?php echo $listing['id']; ?>"
+       class="tbl-btn tbl-btn-red"
+       onclick="return confirm('Are you sure you want to delete this listing?')">Delete</a>
+</div>
         </td>
     </tr>
     <?php } ?>
