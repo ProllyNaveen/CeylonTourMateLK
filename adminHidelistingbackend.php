@@ -18,33 +18,26 @@ try {
     $stmt->bind_param("i", $listingId);
 
     if ($stmt->execute()) {
-        // notify the partner
-        $notifSql  = "SELECT user_id, title FROM listings WHERE id = ?";
-        $notifStmt = $conn->prepare($notifSql);
-        $notifStmt->bind_param("i", $listingId);
-        $notifStmt->execute();
-        $listing = $notifStmt->get_result()->fetch_assoc();
+    // notify the partner
+    $notifSql  = "SELECT user_id, title FROM listings WHERE id = ?";
+    $notifStmt = $conn->prepare($notifSql);
+    $notifStmt->bind_param("i", $listingId);
+    $notifStmt->execute();
+    $listing = $notifStmt->get_result()->fetch_assoc();
 
-        require_once 'Classes/Notification.php';
-        $notification = new Notification(
-            $_SESSION['user_id'],
-            $listing['user_id'],
-            "Your listing \"" . $listing['title'] . "\" has been hidden from the platform by admin. Please contact admin for more information."
-        );
-        $notification->sendNotification();
+    require_once 'Classes/Notification.php';
+    $notification = new Notification(
+        $_SESSION['user_id'],
+        $listing['user_id'],
+        "Your listing \"" . $listing['title'] . "\" has been hidden from the platform by admin. Please contact admin for more information."
+    );
+    $notification->sendNotification();
 
-        if ($from == 'alllistings') {
-			header("Location: viewalllistings.php?success=1");
-		} else {
-			header("Location: viewlistingdetailadmin.php?id=" . $listingId . "&success=1&from=" . $from);
-		}
-    } else {
-        if ($from == 'alllistings') {
-            header("Location: viewalllistings.php?error=1");
-        } else {
-            header("Location: viewlistingdetailadmin.php?id=" . $listingId . "&error=1");
-        }
-    }
+    header("Location: viewlistingdetailadmin.php?id=" . $listingId . "&success=1&from=" . $from);
+
+} else {
+    header("Location: viewlistingdetailadmin.php?id=" . $listingId . "&error=1&from=" . $from);
+}
     exit();
 
 } catch (Exception $e) {
