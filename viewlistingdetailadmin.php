@@ -273,10 +273,10 @@ if ($from == 'bookings') {
 					<div style="display:flex; flex-direction:column; gap:10px;">
 						<a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=approve"
 						   class="btn btn-primary" style="text-align:center;">Approve</a>
-						<a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=reject"
-						   class="btn btn-login"
-						   onclick="return confirm('Are you sure you want to reject this listing?')"
-						   style="text-align:center; background-color:#faece7; color:#993c1d; border-color:#993c1d;">Reject</a>
+						<a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=reject&from=<?php echo $from; ?>"
+							   class="btn btn-login"
+							   onclick="return confirm('Are you sure you want to reject this listing?')"
+							   style="text-align:center; background-color:#faece7; color:#993c1d; border-color:#993c1d;">Reject</a>
 					</div>
 
 				<?php } elseif($listing['status'] == 'approved') { ?>
@@ -298,8 +298,8 @@ if ($from == 'bookings') {
 						<span class="status-badge status-cancelled"><?php echo ucfirst($listing['status']); ?></span>
 					</p>
 					<div style="display:flex; flex-direction:column; gap:10px;">
-						<a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=approve"
-						   class="btn btn-primary" style="text-align:center;">Re-approve Listing</a>
+						<a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=approve&from=<?php echo $from; ?>"
+							class="btn btn-primary" style="text-align:center;">Re-approve Listing</a>
 					</div>
 
 				<?php } ?>

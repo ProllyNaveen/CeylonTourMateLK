@@ -14,12 +14,12 @@ try {
     $listingId = $_GET['id'];
     $action    = $_GET['action'];
     $adminId   = $_SESSION['user_id'];
+    $from      = isset($_GET['from']) ? $_GET['from'] : 'requests';
 
     $listing = new Listing(null, null, null, null, null, null, null);
     $result  = $listing->approveRejectListing($listingId, $action);
 
     if ($result == "success") {
-        // fetch listing owner id and title
         $conn    = DBconnection::getInstance()->getConnection();
         $sql     = "SELECT user_id, title FROM listings WHERE id = ?";
         $stmt    = $conn->prepare($sql);
@@ -27,7 +27,6 @@ try {
         $stmt->execute();
         $row     = $stmt->get_result()->fetch_assoc();
 
-        // send notification to partner
         if ($action == "approve") {
             $message = "Your listing \"" . $row['title'] . "\" has been approved and is now live on CeylonTourMate.lk!";
         } else {
@@ -37,15 +36,15 @@ try {
         $notification = new Notification($adminId, $row['user_id'], $message);
         $notification->sendNotification();
 
-        header("Location: viewlistingdetailadmin.php?id=" . $listingId . "&success=1");
+        header("Location: viewlistingdetailadmin.php?id=" . $listingId . "&success=1&from=" . $from);
     } else {
-        header("Location: viewlistingdetailadmin.php?id=" . $listingId . "&error=1");
+        header("Location: viewlistingdetailadmin.php?id=" . $listingId . "&error=1&from=" . $from);
     }
     exit();
 
 } catch (Exception $e) {
     error_log($e->getMessage());
-    header("Location: viewlistingdetailadmin.php?id=" . $listingId . "&error=1");
+    header("Location: viewlistingdetailadmin.php?id=" . $listingId . "&error=1&from=" . $from);
     exit();
 }
 ?>
