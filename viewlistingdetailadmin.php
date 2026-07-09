@@ -100,7 +100,17 @@ $images = ListingImage::getImagesByListing($listingId);
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <a href="viewlistingrequests.php" class="back-link">&larr; Back to Listing Requests</a>
+    <?php
+$from = isset($_GET['from']) ? $_GET['from'] : 'requests';
+if ($from == 'bookings') {
+    $backLink = 'viewallbookings.php';
+    $backText = 'Back to All Bookings';
+} else {
+    $backLink = 'viewlistingrequests.php';
+    $backText = 'Back to Listing Requests';
+}
+?>
+<a href="<?php echo $backLink; ?>" class="back-link">&larr; <?php echo $backText; ?></a>
 
     <?php if(isset($_GET['success'])) { ?>
         <p class="success">Action completed successfully.</p>

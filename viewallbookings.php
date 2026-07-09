@@ -86,7 +86,9 @@ $bookings = Booking::viewAllBookings($status);
     <tr>
         <td><?php echo $booking['id']; ?></td>
         <td><?php echo $booking['firstname'] . ' ' . $booking['lastname']; ?></td>
-        <td><?php echo $booking['title']; ?></td>
+       <td> <a href="viewlistingdetailadmin.php?id=<?php echo $booking['listing_id']; ?>&from=bookings" style="color:#1c7293;">
+    <?php echo $booking['title']; ?>
+</a> </td>
         <td>
             <span class="role-badge role-<?php echo $booking['type']; ?>">
                 <?php echo ucfirst(str_replace('_', ' ', $booking['type'])); ?>

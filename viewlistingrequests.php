@@ -94,8 +94,7 @@ $listings = Listing::getPendingListings($type);
 				<td><?php echo date('d M Y', strtotime($listing['created_at'])); ?></td>
 				<td>
 					<div class="action-btns">
-						<a href="viewlistingdetailadmin.php?id=<?php echo $listing['id']; ?>"
-       class="tbl-btn tbl-btn-amber">View Listing</a>
+						<a href="viewlistingdetailadmin.php?id=<?php echo $listing['id']; ?>&from=requests" class="tbl-btn tbl-btn-amber">View Listing</a>
 					</div>
 				</td>
 			</tr>
