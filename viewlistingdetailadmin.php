@@ -100,11 +100,18 @@ $images = ListingImage::getImagesByListing($listingId);
 <!-- PAGE CONTENT -->
 <div class="admin-section">
 
-    <?php
+<?php
 $from = isset($_GET['from']) ? $_GET['from'] : 'requests';
+
 if ($from == 'bookings') {
     $backLink = 'viewallbookings.php';
     $backText = 'Back to All Bookings';
+} elseif ($from == 'userprofile') {
+    $backLink = 'javascript:history.back()';
+    $backText = 'Back to User Profile';
+} elseif ($from == 'alllistings') {
+    $backLink = 'viewalllistings.php';
+    $backText = 'Back to All Listings';
 } else {
     $backLink = 'viewlistingrequests.php';
     $backText = 'Back to Listing Requests';
@@ -255,33 +262,49 @@ if ($from == 'bookings') {
                 </div>
             </div>
 
-            <!-- APPROVE / REJECT -->
-            <?php if($listing['status'] == 'pending') { ?>
-            <div class="sidebar-card" style="margin-top:20px;">
-                <h3 class="admin-subsection-title">Decision</h3>
-                <p style="font-size:13px; color:#6b6b6b; margin-bottom:15px;">
-                    Review the listing details and approve or reject it.
-                </p>
-                <div class="action-btns">
-                    <a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=approve"
-                       class="btn btn-primary">Approve</a>
-                    <a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=reject"
-                       class="btn btn-login"
-                       onclick="return confirm('Are you sure you want to reject this listing?')"
-                       style="background-color:#faece7; color:#993c1d; border-color:#993c1d;">Reject</a>
-                </div>
-            </div>
-            <?php } else { ?>
-            <div class="sidebar-card" style="margin-top:20px;">
-                <h3 class="admin-subsection-title">Decision</h3>
-                <p style="font-size:13px; color:#6b6b6b;">
-                    This listing has already been
-                    <span class="status-badge status-<?php echo $listing['status']; ?>">
-                        <?php echo ucfirst($listing['status']); ?>
-                    </span>
-                </p>
-            </div>
-            <?php } ?>
+            <!-- DECISION / ACTIONS -->
+			<div class="sidebar-card" style="margin-top:20px;">
+				<h3 class="admin-subsection-title">Actions</h3>
+
+				<?php if($listing['status'] == 'pending') { ?>
+					<p style="font-size:13px; color:#6b6b6b; margin-bottom:15px;">
+						Review the listing details and approve or reject it.
+					</p>
+					<div style="display:flex; flex-direction:column; gap:10px;">
+						<a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=approve"
+						   class="btn btn-primary" style="text-align:center;">Approve</a>
+						<a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=reject"
+						   class="btn btn-login"
+						   onclick="return confirm('Are you sure you want to reject this listing?')"
+						   style="text-align:center; background-color:#faece7; color:#993c1d; border-color:#993c1d;">Reject</a>
+					</div>
+
+				<?php } elseif($listing['status'] == 'approved') { ?>
+					<p style="font-size:13px; color:#6b6b6b; margin-bottom:15px;">
+						This listing is currently
+						<span class="status-badge status-confirmed">Approved</span>
+					</p>
+					<div style="display:flex; flex-direction:column; gap:10px;">
+						<a href="adminHidelistingbackend.php?id=<?php echo $listing['id']; ?>&from=<?php echo $from; ?>"
+						   class="btn btn-login"
+						   onclick="return confirm('Are you sure you want to hide this listing?')"
+						   style="text-align:center; background-color:#faece7; color:#993c1d; border-color:#993c1d;">
+						   Hide Listing</a>
+					</div>
+
+				<?php } else { ?>
+					<p style="font-size:13px; color:#6b6b6b; margin-bottom:15px;">
+						This listing is currently
+						<span class="status-badge status-cancelled"><?php echo ucfirst($listing['status']); ?></span>
+					</p>
+					<div style="display:flex; flex-direction:column; gap:10px;">
+						<a href="approvelistingbackend.php?id=<?php echo $listing['id']; ?>&action=approve"
+						   class="btn btn-primary" style="text-align:center;">Re-approve Listing</a>
+					</div>
+
+				<?php } ?>
+
+			</div>
 
         </div>
 

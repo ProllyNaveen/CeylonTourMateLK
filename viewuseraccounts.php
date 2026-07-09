@@ -103,17 +103,19 @@ $users = $user->manageUserAccounts($role);
             <td><?php echo date('d M Y', strtotime($u['created_at'])); ?></td>
             <td>
                 <div class="action-btns">
-                    <?php if($u['is_suspended'] == 1) { ?>
-                        <a href="suspenduserbackend.php?id=<?php echo $u['id']; ?>&action=unsuspend"
-                           class="tbl-btn tbl-btn-green">Unsuspend</a>
-                    <?php } else { ?>
-                        <a href="suspenduserbackend.php?id=<?php echo $u['id']; ?>&action=suspend"
-                           class="tbl-btn tbl-btn-amber">Suspend</a>
-                    <?php } ?>
-                    <a href="deleteuserbackend.php?id=<?php echo $u['id']; ?>"
-                       class="tbl-btn tbl-btn-red"
-                       onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
-                </div>
+    <a href="viewuserprofile.php?id=<?php echo $u['id']; ?>"
+       class="tbl-btn tbl-btn-green">View</a>
+    <?php if($u['is_suspended'] == 1) { ?>
+        <a href="suspenduserbackend.php?id=<?php echo $u['id']; ?>&action=unsuspend"
+           class="tbl-btn tbl-btn-green">Unsuspend</a>
+    <?php } else { ?>
+        <a href="suspenduserbackend.php?id=<?php echo $u['id']; ?>&action=suspend"
+           class="tbl-btn tbl-btn-amber">Suspend</a>
+    <?php } ?>
+    <a href="deleteuserbackend.php?id=<?php echo $u['id']; ?>"
+       class="tbl-btn tbl-btn-red"
+       onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+</div>
             </td>
         </tr>
         <?php } ?>

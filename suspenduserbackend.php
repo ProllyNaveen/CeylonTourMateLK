@@ -1,6 +1,6 @@
 <?php
 require_once 'Classes/DBconnection.php';
-
+$from = isset($_GET['from']) ? $_GET['from'] : 'list';
 try {
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
@@ -21,10 +21,14 @@ try {
     $stmt->bind_param("ii", $isSuspended, $userId);
 
     if ($stmt->execute()) {
-        header("Location: viewuseraccounts.php?success=1");
+    if ($from == 'profile') {
+        header("Location: viewuserprofile.php?id=" . $userId . "&success=1");
     } else {
-        header("Location: viewuseraccounts.php?error=1");
+        header("Location: viewuseraccounts.php?success=1");
     }
+} else {
+    header("Location: viewuseraccounts.php?error=1");
+}
     exit();
 
 } catch (Exception $e) {

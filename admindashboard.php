@@ -158,7 +158,11 @@ $pendingReg = $stmt6->get_result()->fetch_assoc()['total'];
             <h3>Listing Approvals</h3>
             <p>Approve or reject newly submitted listings</p>
         </a>
-
+		<a href="viewalllistings.php" class="action-card">
+			<div class="action-icon">&#127968;</div>
+			<h3>All Listings</h3>
+			<p>View and manage all approved listings on the platform</p>
+		</a>
         <a href="viewallbookings.php" class="action-card">
             <div class="action-icon">&#128197;</div>
             <h3>All Bookings</h3>
