@@ -104,12 +104,14 @@ $requests = $user->viewPendingRequests($role);
             <td><?php echo date('d M Y', strtotime($req['created_at'])); ?></td>
             <td>
                 <div class="action-btns">
-                    <a href="approveregbackend.php?id=<?php echo $req['id']; ?>&action=approve"
-                       class="tbl-btn tbl-btn-green">Approve</a>
-                    <a href="approveregbackend.php?id=<?php echo $req['id']; ?>&action=reject"
-                       class="tbl-btn tbl-btn-red"
-                       onclick="return confirm('Are you sure you want to reject this registration?')">Reject</a>
-                </div>
+					<a href="viewuserprofile.php?id=<?php echo $req['id']; ?>&from=pending"
+						class="tbl-btn tbl-btn-amber">View</a>
+					<a href="approveregbackend.php?id=<?php echo $req['id']; ?>&action=approve"
+					   class="tbl-btn tbl-btn-green">Approve</a>
+					<a href="approveregbackend.php?id=<?php echo $req['id']; ?>&action=reject"
+					   class="tbl-btn tbl-btn-red"
+					   onclick="return confirm('Are you sure you want to reject this registration?')">Reject</a>
+				</div>
             </td>
         </tr>
         <?php } ?>

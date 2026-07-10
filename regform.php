@@ -33,7 +33,12 @@
     <div class="auth-card">
         <h2>Create your account</h2>
         <p class="auth-subtitle">Join CeylonTourMate.lk as a tourist or local partner</p>
-
+		<?php if(isset($_GET['exists'])) { ?>
+    <p class="error">Username or email already exists. Please choose a different one.</p>
+<?php } ?>
+<?php if(isset($_GET['error'])) { ?>
+    <p class="error">Something went wrong. Please try again.</p>
+<?php } ?>
         <form name="regform" method="post" action="regbackend.php" enctype="multipart/form-data" onsubmit="return validateRegForm();">
 
             <!-- Role selection -->

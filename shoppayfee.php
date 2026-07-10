@@ -6,6 +6,9 @@ require_once 'Classes/session.php';
 checkRole(['shop_owner']);
 
 require_once 'Classes/DBconnection.php';
+// fetch current listing fee
+require_once 'Classes/Commission.php';
+$currentFee = Commission::getCurrentListingFee();
 
 $conn         = DBconnection::getInstance()->getConnection();
 $userId       = $_SESSION['user_id'];
@@ -119,9 +122,9 @@ $paymentHistory = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
         <td>
             <?php if(!$listing['payment_id']) { ?>
                 <button class="tbl-btn tbl-btn-green"
-                        onclick="selectListing(<?php echo $listing['shop_listing_id']; ?>, '<?php echo $listing['title']; ?>', 500)">
-                    Pay Now
-                </button>
+						onclick="selectListing(<?php echo $listing['shop_listing_id']; ?>, '<?php echo $listing['title']; ?>', <?php echo $currentFee; ?>)">
+					Pay Now
+				</button>
             <?php } else { ?>
                 <span style="color:#999; font-size:12px;">Already Paid</span>
             <?php } ?>
@@ -143,7 +146,7 @@ $paymentHistory = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
             <!-- PHP: echo current listing fee amount from commission or fixed fee -->
             <label>Amount Due (Rs.)</label>
-            <input type="text" name="amount" id="amount" value="" readonly style="background-color:#f5f5f5;">
+            <input type="text" name="amount" id="amount" value="<?php echo $currentFee; ?>" readonly style="background-color:#f5f5f5;">
 
             <label>Cardholder Name</label>
             <input type="text" name="cardholder_name" placeholder="Name on card">

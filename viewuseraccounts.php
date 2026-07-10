@@ -103,8 +103,8 @@ $users = $user->manageUserAccounts($role);
             <td><?php echo date('d M Y', strtotime($u['created_at'])); ?></td>
             <td>
                 <div class="action-btns">
-    <a href="viewuserprofile.php?id=<?php echo $u['id']; ?>"
-       class="tbl-btn tbl-btn-green">View</a>
+    <a href="viewuserprofile.php?id=<?php echo $u['id']; ?>&from=accounts"
+		class="tbl-btn tbl-btn-green">View</a>
     <?php if($u['is_suspended'] == 1) { ?>
         <a href="suspenduserbackend.php?id=<?php echo $u['id']; ?>&action=unsuspend"
            class="tbl-btn tbl-btn-green">Unsuspend</a>

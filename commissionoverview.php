@@ -72,6 +72,13 @@ $overview = Commission::viewCommissionOverview();
                 <span class="stat-label">Current Commission Rate</span>
             </div>
         </div>
+		<div class="stat-card">
+            <div class="stat-icon stat-icon-amber">&#128202;</div>
+            <div class="stat-info">
+                <span class="stat-number">Rs. <?php echo number_format($overview['current_listing_fee'], 2); ?></span>
+				<span class="stat-label">Current Monthly Listing Fee</span>
+            </div>
+        </div>
     </div>
 
     <!-- CHANGE COMMISSION RATE -->
@@ -93,6 +100,41 @@ $overview = Commission::viewCommissionOverview();
 
         <p class="form-note">This rate applies to all new bookings from now on. Existing bookings keep the commission amount they were charged at the time.</p>
     </div>
+	
+	<h3 class="admin-subsection-title admin-section-spacer">Shop Listing Fee</h3>
+
+<div class="commission-form-card" style="max-width:450px; margin-bottom:30px;">
+    <form name="listingfeeform" method="post" action="changelistingfeebackend.php" onsubmit="return validateListingFee();">
+        <label>New Monthly Listing Fee (Rs.)</label>
+        <input type="number" name="listing_fee" step="0.01" min="0"
+               placeholder="e.g. 500.00"
+               value="<?php echo $overview['current_listing_fee']; ?>">
+        <button type="submit" class="btn btn-primary">Update Listing Fee</button>
+    </form>
+</div>
+
+<h3 class="admin-subsection-title">Listing Fee History</h3>
+
+<table class="admin-table">
+    <tr>
+        <th>Fee (Rs.)</th>
+        <th>Updated By</th>
+        <th>Date</th>
+    </tr>
+    <?php if(empty($overview['fee_history'])) { ?>
+        <tr>
+            <td colspan="3" class="table-empty">No fee history yet</td>
+        </tr>
+    <?php } else { ?>
+        <?php foreach($overview['fee_history'] as $row) { ?>
+        <tr>
+            <td>Rs. <?php echo number_format($row['rate'], 2); ?></td>
+            <td><?php echo $row['firstname'] . ' ' . $row['lastname']; ?></td>
+            <td><?php echo date('d M Y h:i A', strtotime($row['updated_at'])); ?></td>
+        </tr>
+        <?php } ?>
+    <?php } ?>
+</table>
 
     <!-- COMMISSION RATE HISTORY -->
     <h3 class="admin-subsection-title admin-section-spacer">Rate Change History</h3>

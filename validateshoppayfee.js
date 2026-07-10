@@ -28,9 +28,8 @@ function validateShopPayFee() {
     return true;
 }
 
-function selectListing(shopListingId, listingName) {
+function selectListing(shopListingId, listingName, amount) {
     document.getElementById("shop_listing_id").value = shopListingId;
     document.getElementById("selected-listing-name").textContent = listingName;
-    // PHP will provide the fee amount — for now set a placeholder
-    document.getElementById("amount").value = "500.00";
+    document.getElementById("amount").value = amount;
 }

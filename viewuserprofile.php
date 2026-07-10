@@ -2,6 +2,7 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+$from = isset($_GET['from']) ? $_GET['from'] : 'accounts';
 require_once 'Classes/session.php';
 checkRole(['admin']);
 
@@ -93,7 +94,11 @@ if ($user['role'] == 'tourist') {
 
 <div class="admin-section">
 
-    <a href="viewuseraccounts.php" class="back-link">&larr; Back to User Accounts</a>
+    <?php
+$backLink = $from == 'pending' ? 'viewpendingrequests.php' : 'viewuseraccounts.php';
+$backText = $from == 'pending' ? 'Back to Pending Requests' : 'Back to User Accounts';
+?>
+<a href="<?php echo $backLink; ?>" class="back-link">&larr; <?php echo $backText; ?></a>
 
     <?php if(isset($_GET['success'])) { ?>
         <p class="success">Action completed successfully.</p>
@@ -249,24 +254,36 @@ if ($user['role'] == 'tourist') {
 
             <!-- ADMIN ACTIONS -->
             <div class="sidebar-card" style="margin-top:20px;">
-                <h3 class="admin-subsection-title">Actions</h3>
-                <div style="display:flex; flex-direction:column; gap:10px;">
-                    <?php if($user['is_suspended'] == 1) { ?>
-                        <a href="suspenduserbackend.php?id=<?php echo $user['id']; ?>&action=unsuspend&from=profile"
-                           class="btn btn-primary" style="text-align:center;">Unsuspend User</a>
-                    <?php } else { ?>
-                        <a href="suspenduserbackend.php?id=<?php echo $user['id']; ?>&action=suspend&from=profile"
-                           class="btn btn-login"
-                           style="text-align:center; background-color:#faeeda; color:#7a5200; border-color:#7a5200;">
-                           Suspend User</a>
-                    <?php } ?>
-                    <a href="deleteuserbackend.php?id=<?php echo $user['id']; ?>"
-                       class="btn btn-login"
-                       onclick="return confirm('Are you sure you want to delete this user?')"
-                       style="text-align:center; background-color:#faece7; color:#993c1d; border-color:#993c1d;">
-                       Delete User</a>
-                </div>
-            </div>
+    <h3 class="admin-subsection-title">Actions</h3>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+
+        <?php if($from == 'pending') { ?>
+            <a href="approveregbackend.php?id=<?php echo $user['id']; ?>&action=approve"
+               class="btn btn-primary" style="text-align:center;">Approve</a>
+            <a href="approveregbackend.php?id=<?php echo $user['id']; ?>&action=reject"
+               class="btn btn-login"
+               onclick="return confirm('Are you sure you want to reject this registration?')"
+               style="text-align:center; background-color:#faece7; color:#993c1d; border-color:#993c1d;">Reject</a>
+
+        <?php } else { ?>
+            <?php if($user['is_suspended'] == 1) { ?>
+                <a href="suspenduserbackend.php?id=<?php echo $user['id']; ?>&action=unsuspend&from=profile"
+                   class="btn btn-primary" style="text-align:center;">Unsuspend User</a>
+            <?php } else { ?>
+                <a href="suspenduserbackend.php?id=<?php echo $user['id']; ?>&action=suspend&from=profile"
+                   class="btn btn-login"
+                   style="text-align:center; background-color:#faeeda; color:#7a5200; border-color:#7a5200;">
+                   Suspend User</a>
+            <?php } ?>
+            <a href="deleteuserbackend.php?id=<?php echo $user['id']; ?>"
+               class="btn btn-login"
+               onclick="return confirm('Are you sure you want to delete this user?')"
+               style="text-align:center; background-color:#faece7; color:#993c1d; border-color:#993c1d;">
+               Delete User</a>
+        <?php } ?>
+
+    </div>
+</div>
 
         </div>
 
