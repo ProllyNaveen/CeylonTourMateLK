@@ -35,7 +35,7 @@ $user   = $stmt->get_result()->fetch_assoc();
                 <span class="partner-badge tourguide-badge">Tour Guide</span>
             </td>
             <td class="nav-buttons-cell">
-                <span class="admin-welcome">Welcome, Guide</span>
+                <span class="admin-welcome">Welcome, <?php echo htmlspecialchars($_SESSION['firstname']); ?></span>
                 <a href="logout.php"><button class="btn btn-login">Logout</button></a>
             </td>
         </tr>
