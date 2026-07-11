@@ -7,7 +7,7 @@ function checkSession() {
 
     // if not logged in redirect to login
     if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
-        header("Location: ../login.php");
+        header("Location:login.php");
         exit();
     }
 }
@@ -19,25 +19,25 @@ function checkRole($allowedRoles) {
     if (!in_array($_SESSION['role'], $allowedRoles)) {
         switch ($_SESSION['role']) {
             case 'admin':
-                header("Location: ../admindashboard.php");
+                header("Location:admindashboard.php");
                 break;
             case 'tourist':
-                header("Location: ../touristdashboard.php");
+                header("Location:touristdashboard.php");
                 break;
             case 'tour_guide':
-                header("Location: ../tourguidedashboard.php");
+                header("Location:tourguidedashboard.php");
                 break;
             case 'hotel_owner':
-                header("Location: ../hotelownerdashboard.php");
+                header("Location:hotelownerdashboard.php");
                 break;
             case 'shop_owner':
-                header("Location: ../shopownerdashboard.php");
+                header("Location:shopownerdashboard.php");
                 break;
             case 'experience_provider':
-                header("Location: ../experiencedashboard.php");
+                header("Location:experiencedashboard.php");
                 break;
             default:
-                header("Location: ../login.php");
+                header("Location:login.php");
                 break;
         }
         exit();

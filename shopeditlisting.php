@@ -73,51 +73,34 @@ if (!$listing) {
             <h3 style="color:#0f2a43; margin-bottom:15px;">General Information</h3>
 
             <label>Shop Name / Title</label>
-            <input type="text" name="title" value="<?php echo $listing['title']; ?>">
+			<input type="text" name="title" value="<?php echo $listing['title']; ?>" readonly style="background-color:#f5f5f5; cursor:not-allowed;">
 
             <label>Description</label>
-            <textarea name="description" rows="4" style="width:100%; padding:10px; border:1px solid #d6d6d6; border-radius:5px; font-size:14px; margin-bottom:15px; resize:vertical;"><?php echo $listing['description']; ?></textarea>
+			<textarea name="description" rows="4" style="width:100%; padding:10px; border:1px solid #d6d6d6; border-radius:5px; font-size:14px; margin-bottom:15px; resize:vertical;"><?php echo $listing['description']; ?></textarea>
+
 
             <label>Location / Address</label>
-            <input type="text" name="location" value="<?php echo $listing['location']; ?>">
+			<input type="text" name="location" value="<?php echo $listing['location']; ?>" readonly style="background-color:#f5f5f5; cursor:not-allowed;">
 
+            
             <label>City</label>
-            <select name="city">
-                <?php
-                $cities = ['Colombo','Galle','Kandy','Jaffna','Negombo','Trincomalee',
-                           'Batticaloa','Anuradhapura','Polonnaruwa','Matara','Kurunegala',
-                           'Ratnapura','Badulla','Nuwara Eliya','Hambantota','Other'];
-                foreach($cities as $city) {
-                    $selected = ($listing['city'] == $city) ? 'selected' : '';
-                    echo "<option value='$city' $selected>$city</option>";
-                }
-                ?>
-            </select>
+			<input type="text" value="<?php echo $listing['city']; ?>" readonly style="background-color:#f5f5f5; cursor:not-allowed;">
 
             <label>Price (Rs.)</label>
-            <input type="number" name="price" step="0.01" min="0" value="<?php echo $listing['price']; ?>">
+<input type="text" value="Rs. <?php echo number_format($listing['price'], 2); ?>">
 
             <hr style="border:none; border-top:1px solid #eee; margin:20px 0;">
 
             <h3 style="color:#0f2a43; margin-bottom:15px;">Shop Details</h3>
 
             <label>Shop Type</label>
-            <select name="shop_type">
-                <?php
-                $shopTypes = ['Souvenir','Clothing','Grocery','Jewellery','Spices',
-                              'Handicrafts','Electronics','Pharmacy','Other'];
-                foreach($shopTypes as $type) {
-                    $selected = ($listing['shop_type'] == $type) ? 'selected' : '';
-                    echo "<option value='$type' $selected>$type</option>";
-                }
-                ?>
-            </select>
+<input type="text" value="<?php echo $listing['shop_type']; ?>" readonly style="background-color:#f5f5f5; cursor:not-allowed;">
 
             <label>Opening Time</label>
-            <input type="time" name="open_time" value="<?php echo $listing['open_time']; ?>">
+<input type="time" name="open_time" value="<?php echo $listing['open_time']; ?>">
 
             <label>Closing Time</label>
-            <input type="time" name="close_time" value="<?php echo $listing['close_time']; ?>">
+<input type="time" name="close_time" value="<?php echo $listing['close_time']; ?>">
 
             <button type="submit" class="btn btn-primary" style="margin-top:15px;">Save Changes</button>
 

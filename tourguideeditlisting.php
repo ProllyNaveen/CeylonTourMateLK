@@ -73,7 +73,7 @@ if (!$listing) {
             <h3 style="color:#0f2a43; margin-bottom:15px;">General Information</h3>
 
             <label>Tour Title</label>
-            <input type="text" name="title" value="<?php echo $listing['title']; ?>">
+            <input type="text" name="title" value="<?php echo $listing['title']; ?>"readonly style="background-color:#f5f5f5; cursor:not-allowed;">
 
             <label>Description</label>
             <textarea name="description" rows="4" style="width:100%; padding:10px; border:1px solid #d6d6d6; border-radius:5px; font-size:14px; margin-bottom:15px; resize:vertical;"><?php echo $listing['description']; ?></textarea>
@@ -82,18 +82,7 @@ if (!$listing) {
             <input type="text" name="location" value="<?php echo $listing['location']; ?>">
 
             <label>City</label>
-            <select name="city">
-                <option value="">-- Select City --</option>
-                <?php
-                $cities = ['Colombo','Galle','Kandy','Jaffna','Negombo','Trincomalee',
-                           'Batticaloa','Anuradhapura','Polonnaruwa','Matara','Kurunegala',
-                           'Ratnapura','Badulla','Nuwara Eliya','Hambantota','Other'];
-                foreach($cities as $city) {
-                    $selected = ($listing['city'] == $city) ? 'selected' : '';
-                    echo "<option value='$city' $selected>$city</option>";
-                }
-                ?>
-            </select>
+            <input type="text" name="city" value="<?php echo $listing['city']; ?>"readonly style="background-color:#f5f5f5; cursor:not-allowed;">
 
             <label>Price Per Person (Rs.)</label>
             <input type="number" name="price" step="0.01" min="0" value="<?php echo $listing['price']; ?>">
@@ -103,22 +92,14 @@ if (!$listing) {
             <h3 style="color:#0f2a43; margin-bottom:15px;">Tour Guide Details</h3>
 
             <label>Languages Spoken</label>
-            <input type="text" name="languages" value="<?php echo $listing['languages']; ?>">
+            <input type="text" name="languages" value="<?php echo $listing['languages']; ?>"readonly style="background-color:#f5f5f5; cursor:not-allowed;">
 
             <label>Specialization</label>
-            <select name="specialization">
-                <?php
-                $specs = ['Cultural & Heritage','Wildlife & Nature','Adventure','Historical',
-                          'Religious','Beach & Coastal','City Tours','Photography','Food & Cuisine','General'];
-                foreach($specs as $spec) {
-                    $selected = ($listing['specialization'] == $spec) ? 'selected' : '';
-                    echo "<option value='$spec' $selected>$spec</option>";
-                }
-                ?>
-            </select>
+			<input type="text" name="specialization" value="<?php echo $listing['specialization']; ?>"readonly style="background-color:#f5f5f5; cursor:not-allowed;">
+           
 
             <label>Years of Experience</label>
-            <input type="number" name="experience_years" min="0" value="<?php echo $listing['experience_years']; ?>">
+            <input type="number" name="experience_years" min="0" value="<?php echo $listing['experience_years']; ?>"readonly style="background-color:#f5f5f5; cursor:not-allowed;">
 
             <label>Availability</label>
             <select name="availability">

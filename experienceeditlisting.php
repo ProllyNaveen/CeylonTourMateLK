@@ -73,7 +73,7 @@ if (!$listing) {
             <h3 style="color:#0f2a43; margin-bottom:15px;">General Information</h3>
 
             <label>Experience Title</label>
-            <input type="text" name="title" value="<?php echo $listing['title']; ?>">
+            <input type="text" name="title" value="<?php echo $listing['title']; ?>"readonly style="background-color:#f5f5f5; cursor:not-allowed;">
 
             <label>Description</label>
             <textarea name="description" rows="4" style="width:100%; padding:10px; border:1px solid #d6d6d6; border-radius:5px; font-size:14px; margin-bottom:15px; resize:vertical;"><?php echo $listing['description']; ?></textarea>
@@ -82,17 +82,8 @@ if (!$listing) {
             <input type="text" name="location" value="<?php echo $listing['location']; ?>">
 
             <label>City</label>
-            <select name="city">
-                <?php
-                $cities = ['Colombo','Galle','Kandy','Jaffna','Negombo','Trincomalee',
-                           'Batticaloa','Anuradhapura','Polonnaruwa','Matara','Kurunegala',
-                           'Ratnapura','Badulla','Nuwara Eliya','Hambantota','Other'];
-                foreach($cities as $city) {
-                    $selected = ($listing['city'] == $city) ? 'selected' : '';
-                    echo "<option value='$city' $selected>$city</option>";
-                }
-                ?>
-            </select>
+			<input type="text" name="city" value="<?php echo $listing['city']; ?>"readonly style="background-color:#f5f5f5; cursor:not-allowed;">
+            
 
             <label>Price Per Person (Rs.)</label>
             <input type="number" name="price" step="0.01" min="0" value="<?php echo $listing['price']; ?>">
@@ -102,16 +93,8 @@ if (!$listing) {
             <h3 style="color:#0f2a43; margin-bottom:15px;">Experience Details</h3>
 
             <label>Experience Type</label>
-            <select name="experience_type">
-                <?php
-                $types = ['Adventure','Cultural','Wildlife','Water Sports','Hiking',
-                          'Cooking','Wellness','Photography','Historical','Other'];
-                foreach($types as $type) {
-                    $selected = ($listing['experience_type'] == $type) ? 'selected' : '';
-                    echo "<option value='$type' $selected>$type</option>";
-                }
-                ?>
-            </select>
+			<input type="text" name="experience_type" value="<?php echo $listing['experience_type']; ?>"readonly style="background-color:#f5f5f5; cursor:not-allowed;">
+            
 
             <label>Duration</label>
             <select name="duration">
