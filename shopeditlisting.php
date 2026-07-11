@@ -87,7 +87,7 @@ if (!$listing) {
 			<input type="text" name="city" value="<?php echo $listing['city']; ?>" readonly style="background-color:#f5f5f5; cursor:not-allowed;">
 
             <label>Price (Rs.)</label>
-<input type="text" value="Rs. <?php echo number_format($listing['price'], 2); ?>">
+<input type="text" name="price" value="<?php echo number_format($listing['price']); ?>">
 
             <hr style="border:none; border-top:1px solid #eee; margin:20px 0;">
 
