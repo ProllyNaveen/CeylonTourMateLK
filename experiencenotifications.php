@@ -60,7 +60,7 @@ $notifications = Notification::getNotifications($userId, $filter);
                 <span class="partner-badge experience-badge">Experience Provider</span>
             </td>
             <td class="nav-buttons-cell">
-                <span class="admin-welcome">Welcome, Provider</span>
+                <span class="admin-welcome">Welcome, <?php echo htmlspecialchars($_SESSION['firstname']); ?></span>
                 <a href="logout.php"><button class="btn btn-login">Logout</button></a>
             </td>
         </tr>
