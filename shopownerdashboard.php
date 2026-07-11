@@ -73,7 +73,7 @@ $unreadNotifications = $stmt5->get_result()->fetch_assoc()['total'];
             </td>
             <td class="nav-buttons-cell">
                 <!-- PHP: echo shop owner's firstname from session -->
-                <span class="admin-welcome">Welcome, Owner</span>
+                <span class="admin-welcome">Welcome, <?php echo htmlspecialchars($_SESSION['firstname']); ?></span>
                 <a href="logout.php"><button class="btn btn-login">Logout</button></a>
             </td>
         </tr>

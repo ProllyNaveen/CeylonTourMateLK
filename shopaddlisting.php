@@ -26,7 +26,7 @@ checkRole(['shop_owner']);
                 <span class="partner-badge">Shop Owner</span>
             </td>
             <td class="nav-buttons-cell">
-                <span class="admin-welcome">Welcome, Owner</span>
+                <span class="admin-welcome">Welcome, <?php echo htmlspecialchars($_SESSION['firstname']); ?></span>
                 <a href="logout.php"><button class="btn btn-login">Logout</button></a>
             </td>
         </tr>
