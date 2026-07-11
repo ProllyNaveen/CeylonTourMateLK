@@ -42,7 +42,7 @@ if (isset($_GET['user_id']) && isset($_GET['listing_id'])) {
                 <a href="touristnotifications.php" class="nav-link">Notifications</a>
             </td>
             <td class="nav-buttons-cell">
-                <span class="admin-welcome">Welcome, Tourist</span>
+                <span class="admin-welcome">Welcome, <?php echo htmlspecialchars($_SESSION['firstname']); ?></span>
                 <a href="logout.php"><button class="btn btn-login">Logout</button></a>
             </td>
         </tr>
