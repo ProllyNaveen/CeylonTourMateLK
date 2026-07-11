@@ -36,7 +36,7 @@ $admin  = $result->fetch_assoc();
                 <span class="admin-badge">Admin Panel</span>
             </td>
             <td class="nav-buttons-cell">
-                <span class="admin-welcome">Welcome, Admin</span>
+                <span class="admin-welcome">Welcome, <?php echo htmlspecialchars($_SESSION['firstname']); ?></span>
                 <a href="logout.php"><button class="btn btn-login">Logout</button></a>
             </td>
         </tr>
