@@ -84,7 +84,7 @@ if (!$listing) {
 
             
             <label>City</label>
-			<input type="text" value="<?php echo $listing['city']; ?>" readonly style="background-color:#f5f5f5; cursor:not-allowed;">
+			<input type="text" name="city" value="<?php echo $listing['city']; ?>" readonly style="background-color:#f5f5f5; cursor:not-allowed;">
 
             <label>Price (Rs.)</label>
 <input type="text" value="Rs. <?php echo number_format($listing['price'], 2); ?>">
@@ -94,7 +94,7 @@ if (!$listing) {
             <h3 style="color:#0f2a43; margin-bottom:15px;">Shop Details</h3>
 
             <label>Shop Type</label>
-<input type="text" value="<?php echo $listing['shop_type']; ?>" readonly style="background-color:#f5f5f5; cursor:not-allowed;">
+<input type="text" name="shop_type" value="<?php echo $listing['shop_type']; ?>" readonly style="background-color:#f5f5f5; cursor:not-allowed;">
 
             <label>Opening Time</label>
 <input type="time" name="open_time" value="<?php echo $listing['open_time']; ?>">
