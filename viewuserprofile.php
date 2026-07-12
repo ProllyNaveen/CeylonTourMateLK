@@ -26,7 +26,7 @@ if (!$user) {
 // fetch user listings if partner
 $listings = [];
 if ($user['role'] != 'tourist') {
-    $listSql  = "SELECT * FROM listings WHERE user_id = ? ORDER BY created_at DESC";
+    $listSql  = "SELECT * FROM listings WHERE user_id = ? AND is_deleted = 0 ORDER BY created_at DESC";
     $listStmt = $conn->prepare($listSql);
     $listStmt->bind_param("i", $userId);
     $listStmt->execute();
