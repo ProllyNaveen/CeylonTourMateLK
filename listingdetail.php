@@ -126,9 +126,7 @@ $reviews = Review::getReviewsByListing($listingId);
         <div>
             <h2 class="admin-page-title"><?php echo $listing['title']; ?></h2>
             <p class="listing-card-location">&#128205; <?php echo $listing['city']; ?> &nbsp;|&nbsp;
-                <span class="listing-type-badge listing-type-<?php echo $listing['type']; ?>">
-                    <?php echo ucfirst(str_replace('_', ' ', $listing['type'])); ?>
-                </span>
+                
             </p>
             <p style="font-size:14px; color:#6b6b6b; margin-top:8px;">
                 &#11088; <?php echo $listing['avg_rating'] ? number_format($listing['avg_rating'], 1) : 'New'; ?>

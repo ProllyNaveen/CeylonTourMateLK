@@ -4,18 +4,15 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require_once 'Classes/session.php';
 checkRole(['admin']);
-
 require_once 'Classes/DBconnection.php';
-
 $conn   = DBconnection::getInstance()->getConnection();
 $type   = isset($_GET['type']) ? $_GET['type'] : null;
 $status = isset($_GET['status']) ? $_GET['status'] : null;
-
 if ($type && $status) {
     $sql  = "SELECT l.*, u.firstname, u.lastname
              FROM listings l
              JOIN users u ON l.user_id = u.id
-             WHERE l.type = ? AND l.status = ?
+             WHERE l.type = ? AND l.status = ? AND l.is_deleted = 0
              ORDER BY l.created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $type, $status);
@@ -23,7 +20,7 @@ if ($type && $status) {
     $sql  = "SELECT l.*, u.firstname, u.lastname
              FROM listings l
              JOIN users u ON l.user_id = u.id
-             WHERE l.type = ?
+             WHERE l.type = ? AND l.is_deleted = 0
              ORDER BY l.created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $type);
@@ -31,7 +28,7 @@ if ($type && $status) {
     $sql  = "SELECT l.*, u.firstname, u.lastname
              FROM listings l
              JOIN users u ON l.user_id = u.id
-             WHERE l.status = ?
+             WHERE l.status = ? AND l.is_deleted = 0
              ORDER BY l.created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $status);
@@ -39,6 +36,7 @@ if ($type && $status) {
     $sql  = "SELECT l.*, u.firstname, u.lastname
              FROM listings l
              JOIN users u ON l.user_id = u.id
+             WHERE l.is_deleted = 0
              ORDER BY l.created_at DESC";
     $stmt = $conn->prepare($sql);
 }

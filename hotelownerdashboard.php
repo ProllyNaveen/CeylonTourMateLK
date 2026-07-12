@@ -21,7 +21,7 @@ $activeListings = $stmt1->get_result()->fetch_assoc()['total'];
 $sql2  = "SELECT COUNT(*) as total FROM rooms r
            JOIN hotel_listings hl ON r.hotel_listing_id = hl.id
            JOIN listings l ON hl.listing_id = l.id
-           WHERE l.user_id = ? AND r.is_available = 1";
+           WHERE l.user_id = ? AND r.is_available = 1 AND is_deleted = 0";
 $stmt2 = $conn->prepare($sql2);
 $stmt2->bind_param("i", $userId);
 $stmt2->execute();

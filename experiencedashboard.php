@@ -18,7 +18,7 @@ $stmt1->execute();
 $activeListings = $stmt1->get_result()->fetch_assoc()['total'];
 
 // pending listings
-$sql2  = "SELECT COUNT(*) as total FROM listings WHERE user_id = ? AND status = 'pending'";
+$sql2  = "SELECT COUNT(*) as total FROM listings WHERE user_id = ? AND status = 'pending' AND is_deleted = 0";
 $stmt2 = $conn->prepare($sql2);
 $stmt2->bind_param("i", $userId);
 $stmt2->execute();
