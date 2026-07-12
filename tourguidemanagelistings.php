@@ -15,7 +15,7 @@ if ($status) {
     $sql  = "SELECT l.*, tl.specialization, tl.languages, tl.experience_years, tl.availability
              FROM listings l
              JOIN tourguide_listings tl ON l.id = tl.listing_id
-             WHERE l.user_id = ? AND l.status = ?
+             WHERE l.user_id = ? AND l.status = ? And l.is_deleted = 0
              ORDER BY l.created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("is", $userId, $status);
@@ -23,7 +23,7 @@ if ($status) {
     $sql  = "SELECT l.*, tl.specialization, tl.languages, tl.experience_years, tl.availability
              FROM listings l
              JOIN tourguide_listings tl ON l.id = tl.listing_id
-             WHERE l.user_id = ?
+             WHERE l.user_id = ? And l.is_deleted = 0
              ORDER BY l.created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $userId);

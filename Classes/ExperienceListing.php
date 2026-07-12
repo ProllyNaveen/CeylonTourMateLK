@@ -133,6 +133,13 @@ class ExperienceListing extends Listing {
             return null;
         }
     }
+// ===========================
+// DELETE EXPERIENCE LISTING
+// Soft delete only — bookings, payments, messages, reviews all stay intact
+// ===========================
+public function deleteExperienceListing($listingId, $userId) {
+    return $this->deleteListing($listingId, $userId);
+}
 
     // ===========================
     // GETTERS

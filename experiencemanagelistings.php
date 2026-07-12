@@ -15,7 +15,7 @@ if ($status) {
     $sql  = "SELECT l.*, el.experience_type, el.duration, el.max_group_size, el.availability
              FROM listings l
              JOIN experience_listings el ON l.id = el.listing_id
-             WHERE l.user_id = ? AND l.status = ?
+             WHERE l.user_id = ? AND l.status = ? AND l.is_deleted = 0
              ORDER BY l.created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("is", $userId, $status);
@@ -23,7 +23,7 @@ if ($status) {
     $sql  = "SELECT l.*, el.experience_type, el.duration, el.max_group_size, el.availability
              FROM listings l
              JOIN experience_listings el ON l.id = el.listing_id
-             WHERE l.user_id = ?
+             WHERE l.user_id = ? AND l.is_deleted = 0
              ORDER BY l.created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $userId);

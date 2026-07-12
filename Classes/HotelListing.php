@@ -116,6 +116,13 @@ class HotelListing extends Listing {
             return null;
         }
     }
+	// ===========================
+// DELETE HOTEL LISTING
+// Soft delete only — rooms, bookings, payments, messages, reviews all stay intact
+// ===========================
+public function deleteHotelListing($listingId, $userId) {
+    return $this->deleteListing($listingId, $userId);
+}
 
     // ===========================
     // GETTERS

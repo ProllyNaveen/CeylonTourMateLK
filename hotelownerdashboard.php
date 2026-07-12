@@ -11,7 +11,7 @@ $conn   = DBconnection::getInstance()->getConnection();
 $userId = $_SESSION['user_id'];
 
 // active listings
-$sql1  = "SELECT COUNT(*) as total FROM listings WHERE user_id = ? AND status = 'approved'";
+$sql1  = "SELECT COUNT(*) as total FROM listings WHERE user_id = ? AND status = 'approved' AND is_deleted = 0";
 $stmt1 = $conn->prepare($sql1);
 $stmt1->bind_param("i", $userId);
 $stmt1->execute();

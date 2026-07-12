@@ -11,14 +11,14 @@ $conn   = DBconnection::getInstance()->getConnection();
 $userId = $_SESSION['user_id'];
 
 // active listings
-$sql1  = "SELECT COUNT(*) as total FROM listings WHERE user_id = ? AND status = 'approved'";
+$sql1  = "SELECT COUNT(*) as total FROM listings WHERE user_id = ? AND status = 'approved' AND is_deleted = 0";
 $stmt1 = $conn->prepare($sql1);
 $stmt1->bind_param("i", $userId);
 $stmt1->execute();
 $activeListings = $stmt1->get_result()->fetch_assoc()['total'];
 
 // pending listings
-$sql2  = "SELECT COUNT(*) as total FROM listings WHERE user_id = ? AND status = 'pending'";
+$sql2  = "SELECT COUNT(*) as total FROM listings WHERE user_id = ? AND status = 'pending' AND is_deleted = 0";
 $stmt2 = $conn->prepare($sql2);
 $stmt2->bind_param("i", $userId);
 $stmt2->execute();

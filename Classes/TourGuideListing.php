@@ -133,6 +133,14 @@ class TourGuideListing extends Listing {
             return null;
         }
     }
+	
+	// ===========================
+// DELETE TOUR GUIDE LISTING
+// Soft delete only — bookings, payments, messages, reviews all stay intact
+// ===========================
+public function deleteTourGuideListing($listingId, $userId) {
+    return $this->deleteListing($listingId, $userId);
+}
 
     // ===========================
     // GETTERS

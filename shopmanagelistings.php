@@ -15,7 +15,7 @@ if ($status) {
     $sql  = "SELECT l.*, sl.id as shop_listing_id, sl.shop_type, sl.open_time, sl.close_time
              FROM listings l
              JOIN shop_listings sl ON l.id = sl.listing_id
-             WHERE l.user_id = ? AND l.status = ?
+             WHERE l.user_id = ? AND l.status = ? AND l.is_deleted = 0
              ORDER BY l.created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("is", $userId, $status);
@@ -23,7 +23,7 @@ if ($status) {
     $sql  = "SELECT l.*, sl.id as shop_listing_id, sl.shop_type, sl.open_time, sl.close_time
              FROM listings l
              JOIN shop_listings sl ON l.id = sl.listing_id
-             WHERE l.user_id = ?
+             WHERE l.user_id = ? AND l.is_deleted = 0
              ORDER BY l.created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $userId);

@@ -1,5 +1,6 @@
 <?php
 require_once 'Listing.php';
+require_once 'ListingImage.php';
 
 class ShopListing extends Listing {
 
@@ -76,7 +77,11 @@ class ShopListing extends Listing {
             return "error";
         }
     }
-
+	
+	public function deleteShopListing($listingId, $userId) {
+    // soft delete only — bookings, payments, messages, reviews all stay intact
+    return $this->deleteListing($listingId, $userId);
+}
     // ===========================
     // GET SHOP LISTING DETAILS
     // Static — fetches listing + shop_listings joined

@@ -94,28 +94,26 @@ class Listing {
     // Note: caller must delete subtype row and images first (FK order)
     // ===========================
     public function deleteListing($listingId, $userId) {
-        $conn = DBconnection::getInstance()->getConnection();
-
-        $checkSql = "SELECT id FROM listings WHERE id = ? AND user_id = ?";
-        $checkStmt = $conn->prepare($checkSql);
-        $checkStmt->bind_param("ii", $listingId, $userId);
-        $checkStmt->execute();
-        $checkStmt->store_result();
-
-        if ($checkStmt->num_rows == 0) {
-            return "unauthorized";
-        }
-
-        $sql = "DELETE FROM listings WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $listingId);
-
-        if ($stmt->execute()) {
-            return "success";
-        } else {
-            return "error";
-        }
+    $conn = DBconnection::getInstance()->getConnection();
+    // verify ownership
+    $checkSql = "SELECT id FROM listings WHERE id = ? AND user_id = ?";
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->bind_param("ii", $listingId, $userId);
+    $checkStmt->execute();
+    $checkStmt->store_result();
+    if ($checkStmt->num_rows == 0) {
+        return "unauthorized";
     }
+
+    $sql = "UPDATE listings SET is_deleted = 1 WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $listingId);
+    if ($stmt->execute()) {
+        return "success";
+    } else {
+        return "error";
+    }
+}
 
     // ===========================
     // UPLOAD IMAGE
@@ -184,16 +182,16 @@ class Listing {
         $conn = DBconnection::getInstance()->getConnection();
 
         if ($status) {
-            $sql = "SELECT * FROM listings WHERE user_id = ? AND status = ?
-                    ORDER BY created_at DESC";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("is", $userId, $status);
-        } else {
-            $sql = "SELECT * FROM listings WHERE user_id = ?
-                    ORDER BY created_at DESC";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("i", $userId);
-        }
+        $sql = "SELECT * FROM listings WHERE user_id = ? AND status = ? AND is_deleted = 0
+                ORDER BY created_at DESC";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("is", $userId, $status);
+    } else {
+        $sql = "SELECT * FROM listings WHERE user_id = ? AND is_deleted = 0
+                ORDER BY created_at DESC";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $userId);
+    }
 
         $stmt->execute();
         $result = $stmt->get_result();
@@ -213,21 +211,21 @@ class Listing {
         $conn = DBconnection::getInstance()->getConnection();
 
         if ($type) {
-            $sql = "SELECT l.*, u.firstname, u.lastname
-                    FROM listings l
-                    JOIN users u ON l.user_id = u.id
-                    WHERE l.status = 'pending' AND l.type = ?
-                    ORDER BY l.created_at DESC";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("s", $type);
-        } else {
-            $sql = "SELECT l.*, u.firstname, u.lastname
-                    FROM listings l
-                    JOIN users u ON l.user_id = u.id
-                    WHERE l.status = 'pending'
-                    ORDER BY l.created_at DESC";
-            $stmt = $conn->prepare($sql);
-        }
+        $sql = "SELECT l.*, u.firstname, u.lastname
+                FROM listings l
+                JOIN users u ON l.user_id = u.id
+                WHERE l.status = 'pending' AND l.type = ? AND l.is_deleted = 0
+                ORDER BY l.created_at DESC";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $type);
+    } else {
+        $sql = "SELECT l.*, u.firstname, u.lastname
+                FROM listings l
+                JOIN users u ON l.user_id = u.id
+                WHERE l.status = 'pending' AND l.is_deleted = 0
+                ORDER BY l.created_at DESC";
+        $stmt = $conn->prepare($sql);
+    }
 
         $stmt->execute();
         $result = $stmt->get_result();
@@ -247,13 +245,13 @@ class Listing {
         $conn = DBconnection::getInstance()->getConnection();
 
         $sql = "SELECT l.*, u.firstname, u.lastname,
-                AVG(r.rating) as avg_rating,
-                COUNT(DISTINCT r.id) as review_count,
-                (SELECT image_path FROM listing_images WHERE listing_id = l.id LIMIT 1) as thumbnail
-                FROM listings l
-                JOIN users u ON l.user_id = u.id
-                LEFT JOIN reviews r ON l.id = r.listing_id
-                WHERE l.status = 'approved'";
+            AVG(r.rating) as avg_rating,
+            COUNT(DISTINCT r.id) as review_count,
+            (SELECT image_path FROM listing_images WHERE listing_id = l.id LIMIT 1) as thumbnail
+            FROM listings l
+            JOIN users u ON l.user_id = u.id
+            LEFT JOIN reviews r ON l.id = r.listing_id
+            WHERE l.status = 'approved' AND l.is_deleted = 0";
 
         $params = [];
         $types = "";

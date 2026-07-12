@@ -16,7 +16,7 @@ if ($status) {
              hl.check_out_time, hl.id as hotel_listing_id
              FROM listings l
              JOIN hotel_listings hl ON l.id = hl.listing_id
-             WHERE l.user_id = ? AND l.status = ?
+             WHERE l.user_id = ? AND l.status = ? AND l.is_deleted = 0
              ORDER BY l.created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("is", $userId, $status);
@@ -25,7 +25,7 @@ if ($status) {
              hl.check_out_time, hl.id as hotel_listing_id
              FROM listings l
              JOIN hotel_listings hl ON l.id = hl.listing_id
-             WHERE l.user_id = ?
+             WHERE l.user_id = ? AND l.is_deleted = 0
              ORDER BY l.created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $userId);
