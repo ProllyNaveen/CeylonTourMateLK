@@ -173,7 +173,7 @@ $backText = $from == 'pending' ? 'Back to Pending Requests' : 'Back to User Acco
                     <tr>
                         <td><?php echo $listing['title']; ?></td>
                         <td>
-                            <span class="listing-type-badge listing-type-<?php echo $listing['type']; ?>">
+                            <span class="listing-type<?php echo $listing['type']; ?>">
                                 <?php echo ucfirst(str_replace('_', ' ', $listing['type'])); ?>
                             </span>
                         </td>
