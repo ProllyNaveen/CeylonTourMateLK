@@ -1409,3 +1409,18 @@ a {
     color: #2b2b2b;
     margin-bottom: 6px;
 }
+.tbl-btn {
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+button.tbl-btn {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: normal;
+}

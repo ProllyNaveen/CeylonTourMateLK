@@ -81,11 +81,14 @@ $bookings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     <p class="admin-page-subtitle">View and manage bookings made for your hotel</p>
 
     <?php if(isset($_GET['success'])) { ?>
-        <p class="success">Action completed successfully.</p>
-    <?php } ?>
-    <?php if(isset($_GET['error'])) { ?>
-        <p class="error">Something went wrong. Please try again.</p>
-    <?php } ?>
+    <p class="success">Action completed successfully.</p>
+<?php } ?>
+<?php if(isset($_GET['msgsent'])) { ?>
+    <p class="success">Message sent successfully.</p>
+<?php } ?>
+<?php if(isset($_GET['error'])) { ?>
+    <p class="error">Something went wrong. Please try again.</p>
+<?php } ?>
 
     <!-- FILTER BY STATUS -->
     <div class="filter-bar">
@@ -144,6 +147,13 @@ $bookings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                 <?php } elseif($booking['status'] == 'confirmed') { ?>
                     <a href="hotelownercompletebookingbackend.php?id=<?php echo $booking['id']; ?>"
                        class="tbl-btn tbl-btn-amber">Mark Complete</a>
+					   <form method="post" action="sendmessagebackend.php" style="display:inline;">
+            <input type="hidden" name="receiver_id" value="<?php echo $booking['tourist_id']; ?>">
+            <input type="hidden" name="listing_id" value="<?php echo $booking['listing_id']; ?>">
+            <input type="hidden" name="message" value="Hi! I'm reaching out about your booking.">
+            <input type="hidden" name="redirect" value="hotelownermybookings.php">
+            <button type="submit" class="tbl-btn tbl-btn-amber">Message</button>
+        </form>
                 <?php } else { ?>
                     <span style="color:#999; font-size:12px;">—</span>
                 <?php } ?>
