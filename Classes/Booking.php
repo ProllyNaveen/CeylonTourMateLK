@@ -70,8 +70,23 @@ class Booking {
                 $this->totalPrice += ($room['price_per_night'] * $nights);
             }
         } else {
-            // tour_guide or experience: price per person
-            $this->totalPrice = $listing['price'] * $this->guestCount;
+            // calculate number of days (round up any partial day)
+					$start = new DateTime($this->startDatetime);
+					$end   = new DateTime($this->endDatetime);
+					$interval = $start->diff($end);
+					$days = $interval->days;
+					if ($interval->h > 0 || $interval->i > 0 || $interval->s > 0) {
+						$days++;
+					}
+					if ($days < 1) $days = 1;
+
+					if ($listing['type'] == 'tour_guide') {
+						// price per day x days
+						$this->totalPrice = $listing['price'] * $days;
+					} else {
+						// experience: price per person
+						$this->totalPrice = $listing['price'] * $this->guestCount;
+					}
         }
 
         // calculate commission
