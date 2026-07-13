@@ -8,6 +8,7 @@ checkRole(['hotel_owner']);
 require_once 'Classes/DBconnection.php';
 require_once 'Classes/ListingImage.php';
 require_once 'Classes/Room.php';
+require_once 'Classes/Review.php';
 
 $listingId = $_GET['id'];
 $userId    = $_SESSION['user_id'];
@@ -28,8 +29,9 @@ if (!$listing) {
     exit();
 }
 
-$images = ListingImage::getImagesByListing($listingId);
-$rooms  = Room::getRoomsByHotelListing($listing['hotel_listing_id']);
+$images  = ListingImage::getImagesByListing($listingId);
+$rooms   = Room::getRoomsByHotelListing($listing['hotel_listing_id']);
+$reviews = Review::getReviewsByListing($listingId);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -136,6 +138,29 @@ $rooms  = Room::getRoomsByHotelListing($listing['hotel_listing_id']);
                 </table>
             </div>
             <?php } ?>
+
+            <div class="listing-detail-section">
+                <h3 class="admin-subsection-title">Reviews</h3>
+                <?php if(empty($reviews)) { ?>
+                    <p class="table-empty" style="padding:20px; text-align:center;">No reviews yet</p>
+                <?php } else { ?>
+                    <?php foreach($reviews as $review) { ?>
+                    <div class="review-item">
+                        <div class="review-header">
+                            <img src="<?php echo $review['profile_pic'] ?? 'uploads/profiles/default.png'; ?>" class="convo-avatar">
+                            <div>
+                                <span class="convo-name"><?php echo $review['firstname'] . ' ' . $review['lastname']; ?></span>
+                                <span style="font-size:12px; color:#6b6b6b; display:block;">
+                                    <?php echo date('d M Y', strtotime($review['created_at'])); ?>
+                                </span>
+                            </div>
+                            <span class="review-stars"><?php echo str_repeat('&#11088;', $review['rating']); ?></span>
+                        </div>
+                        <p class="review-comment"><?php echo $review['comment']; ?></p>
+                    </div>
+                    <?php } ?>
+                <?php } ?>
+            </div>
 
         </div>
 
