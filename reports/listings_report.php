@@ -20,6 +20,7 @@ $sql  = "SELECT
             COUNT(DISTINCT r.id) as total_reviews
          FROM listings l
          LEFT JOIN reviews r ON l.id = r.listing_id
+         WHERE l.is_deleted = 0
          GROUP BY l.type
          ORDER BY l.type";
 $stmt = $conn->prepare($sql);

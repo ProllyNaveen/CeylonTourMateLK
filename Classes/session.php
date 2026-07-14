@@ -1,5 +1,5 @@
 <?php
-require_once 'Classes/DBconnection.php';
+require_once __DIR__ . '/DBconnection.php';
 
 function checkSession() {
     if (session_status() == PHP_SESSION_NONE) {

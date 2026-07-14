@@ -32,6 +32,7 @@ $sql  = "SELECT
              AND p.fee_year = ?
          WHERE p.id IS NULL
          AND l.status = 'approved'
+         AND l.is_deleted = 0
          ORDER BY l.city, l.title";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $currentMonth, $currentYear);

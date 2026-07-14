@@ -4,17 +4,14 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require_once 'Classes/session.php';
 checkRole(['shop_owner']);
-
 require_once 'Classes/DBconnection.php';
 // fetch current listing fee
 require_once 'Classes/Commission.php';
 $currentFee = Commission::getCurrentListingFee();
-
 $conn         = DBconnection::getInstance()->getConnection();
 $userId       = $_SESSION['user_id'];
 $currentMonth = date('n');
 $currentYear  = date('Y');
-
 // fetch listings with fee status
 $sql  = "SELECT l.id, l.title, l.city, sl.id as shop_listing_id, sl.shop_type,
           p.id as payment_id, p.payment_status
@@ -25,13 +22,12 @@ $sql  = "SELECT l.id, l.title, l.city, sl.id as shop_listing_id, sl.shop_type,
               AND p.payment_status = 'completed'
               AND p.fee_month = ?
               AND p.fee_year = ?
-          WHERE l.user_id = ? AND l.status = 'approved'
+          WHERE l.user_id = ? AND l.status = 'approved' AND l.is_deleted = 0
           ORDER BY l.created_at DESC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("iii", $currentMonth, $currentYear, $userId);
 $stmt->execute();
 $feeListings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-
 // fetch payment history
 $histSql  = "SELECT p.*, l.title
               FROM payments p
