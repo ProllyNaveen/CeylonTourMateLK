@@ -51,22 +51,22 @@
     <div class="category-grid">
         <div class="category-card">
             <div class="category-icon">🧭</div>
-            <h3>Tour Guides</h3>
+            <a href="login.php"><h3>Tour Guides</h3></a>
             <p>Licensed local guides for cultural, wildlife and adventure tours.</p>
         </div>
         <div class="category-card">
             <div class="category-icon">🏨</div>
-            <h3>Hotels</h3>
+            <a href="login.php"><h3>Hotels</h3></a>
             <p>Verified stays with real availability, from guesthouses to resorts.</p>
         </div>
         <div class="category-card">
             <div class="category-icon">🛍️</div>
-            <h3>Local Shops</h3>
+            <a href="login.php"><h3>Local Shops</h3></a>
             <p>Authentic handcrafted goods and traditional products.</p>
         </div>
         <div class="category-card">
             <div class="category-icon">🎒</div>
-            <h3>Experiences</h3>
+            <a href="login.php"><h3>Experiences</h3></a>
             <p>Cooking classes, village visits and hands-on cultural activities.</p>
         </div>
     </div>
