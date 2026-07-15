@@ -7,9 +7,7 @@
 </head>
 <body>
 
-<!-- ===========================
-     NAVBAR (table layout)
-     =========================== -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -29,9 +27,7 @@
     </table>
 </div>
 
-<!-- ===========================
-     HERO SECTION (div layout)
-     =========================== -->
+
 <div class="hero">
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -47,9 +43,7 @@
     </div>
 </div>
 
-<!-- ===========================
-     CATEGORY SECTION (div layout)
-     =========================== -->
+
 <div class="section" id="explore">
     <h2 class="section-title">What are you looking for?</h2>
     <p class="section-subtitle">Browse trusted local services across Sri Lanka</p>
@@ -78,9 +72,7 @@
     </div>
 </div>
 
-<!-- ===========================
-     ABOUT US SECTION (table layout)
-     =========================== -->
+
 <div class="about-section" id="about">
     <table class="about-table">
         <tr>
@@ -126,9 +118,7 @@
     </table>
 </div>
 
-<!-- ===========================
-     FOOTER (table layout)
-     =========================== -->
+
 <div class="footer">
     <table class="footer-table">
         <tr>

@@ -75,12 +75,7 @@ if ($listing['type'] == 'hotel') {
 
 <div class="admin-section">
 
-    <!-- PHP:
-        $sql = "SELECT l.*, u.firstname, u.lastname
-                FROM listings l
-                JOIN users u ON l.user_id = u.id
-                WHERE l.id = ? AND l.status = 'approved'";
-    -->
+    
 
     <a href="listingdetail.php?id=<?php echo $listing['id']; ?>" class="back-link">&larr; Back to Listing</a>
 

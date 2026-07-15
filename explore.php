@@ -107,26 +107,7 @@ $listings = Listing::searchListings($keyword, $type, $city, $sort);
     </div>
 
     
-    <!-- PHP:
-        build WHERE clause based on $_GET params:
-        - keyword: WHERE l.title LIKE '%keyword%' OR l.description LIKE '%keyword%' OR l.city LIKE '%keyword%'
-        - type: AND l.type = ?
-        - city: AND l.city = ?
-        - sort: ORDER BY created_at DESC / price ASC / price DESC / avg rating DESC
-
-        $sql = "SELECT l.*, u.firstname, u.lastname,
-                AVG(r.rating) as avg_rating,
-                COUNT(r.id) as review_count,
-                (SELECT image_path FROM listing_images WHERE listing_id = l.id LIMIT 1) as thumbnail
-                FROM listings l
-                JOIN users u ON l.user_id = u.id
-                LEFT JOIN reviews r ON l.id = r.listing_id
-                WHERE l.status = 'approved'
-                [+ filters]
-                GROUP BY l.id
-                [+ sort]";
-        loop through results and echo each card
-    -->
+    
 
     <div class="listings-grid">
 

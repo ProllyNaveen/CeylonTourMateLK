@@ -67,13 +67,7 @@ if ($booking['status'] != 'confirmed') {
 
 <div class="admin-section">
 
-    <!-- PHP:
-        $sql = "SELECT b.*, l.title, l.type, l.city, u.firstname, u.lastname
-                FROM bookings b
-                JOIN listings l ON b.listing_id = l.id
-                JOIN users u ON l.user_id = u.id
-                WHERE b.id = ? AND b.tourist_id = ?";
-    -->
+    
 
     <a href="mybookings.php" class="back-link">&larr; Back to My Bookings</a>
 
