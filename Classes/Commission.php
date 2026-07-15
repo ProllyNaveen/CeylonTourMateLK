@@ -65,7 +65,7 @@ class Commission {
         if ($result->num_rows == 1) {
             return $result->fetch_assoc()['rate'];
         } else {
-            return 500.00; // default if not set yet
+            return 500.00; 
         }
     }
 
