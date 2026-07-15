@@ -11,7 +11,7 @@ require_once 'Classes/ListingImage.php';
 $listingId = $_GET['id'];
 $conn      = DBconnection::getInstance()->getConnection();
 
-// fetch listing with owner details
+
 $sql  = "SELECT l.*, u.firstname, u.lastname, u.profile_pic, u.phone, u.email
           FROM listings l
           JOIN users u ON l.user_id = u.id
@@ -26,7 +26,7 @@ if (!$listing) {
     exit();
 }
 
-// fetch subtype details
+
 $subDetails = null;
 $rooms      = [];
 
@@ -67,7 +67,7 @@ if ($listing['type'] == 'tour_guide') {
     $subDetails = $subStmt->get_result()->fetch_assoc();
 }
 
-// fetch images
+
 $images = ListingImage::getImagesByListing($listingId);
 ?>
 <!DOCTYPE html>

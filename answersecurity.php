@@ -3,7 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// if step 1 not completed, redirect back
+
 if (!isset($_SESSION['reset_user_id'])) {
     header("Location: forgotpassword.php");
     exit();

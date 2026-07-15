@@ -20,7 +20,7 @@ try {
     $newPassword     = $_POST['new_password'];
     $confirmPassword = $_POST['confirm_password'];
 
-    // handle profile pic upload
+    
     $profilePic = null;
     if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
         $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -37,7 +37,7 @@ try {
         }
     }
 
-    // if no new pic uploaded keep existing one
+    
     if (!$profilePic) {
         $conn     = DBconnection::getInstance()->getConnection();
         $picSql   = "SELECT profile_pic FROM users WHERE id = ?";
@@ -65,7 +65,7 @@ try {
             header("Location: touristeditprofile.php?wrongpassword=1");
             break;
         case "success":
-            // update session firstname if changed
+            
             $_SESSION['firstname'] = $firstname;
             header("Location: touristeditprofile.php?success=1");
             break;

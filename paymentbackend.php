@@ -13,7 +13,7 @@ try {
     $userId    = $_SESSION['user_id'];
     $bookingId = $_POST['booking_id'];
 
-    // get booking total price
+    
     $conn    = DBconnection::getInstance()->getConnection();
     $sql     = "SELECT total_price, status FROM bookings WHERE id = ? AND tourist_id = ?";
     $stmt    = $conn->prepare($sql);

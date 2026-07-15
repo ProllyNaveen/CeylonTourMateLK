@@ -13,7 +13,7 @@ $listingId = $_GET['id'];
 $userId    = $_SESSION['user_id'];
 $conn      = DBconnection::getInstance()->getConnection();
 
-// fetch listing with owner details and average rating
+
 $sql  = "SELECT l.*, u.firstname, u.lastname, u.profile_pic, u.phone,
           AVG(r.rating) as avg_rating, COUNT(r.id) as review_count
           FROM listings l
@@ -31,7 +31,7 @@ if (!$listing) {
     exit();
 }
 
-// fetch subtype details
+
 $subDetails = null;
 $rooms      = [];
 
@@ -72,10 +72,10 @@ if ($listing['type'] == 'tour_guide') {
     $subDetails = $subStmt->get_result()->fetch_assoc();
 }
 
-// fetch images
+
 $images  = ListingImage::getImagesByListing($listingId);
 
-// fetch reviews
+
 $reviews = Review::getReviewsByListing($listingId);
 ?>
 <!DOCTYPE html>

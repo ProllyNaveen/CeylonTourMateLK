@@ -7,7 +7,7 @@ try {
         session_start();
     }
 
-    // make sure step 1 was completed first
+    
     if (!isset($_SESSION['reset_user_id'])) {
         header("Location: forgotpassword.php");
         exit();
@@ -28,7 +28,7 @@ try {
         exit();
     }
 
-    // answer correct — allow password reset
+    
     $_SESSION['reset_verified'] = true;
 
     header("Location: resetpassword.php");

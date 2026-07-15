@@ -17,13 +17,13 @@ try {
     $conn = DBconnection::getInstance()->getConnection();
 
     if ($sendTo == 'specific') {
-        // send to one user
+        
         $receiverId   = $_POST['receiver_id'];
         $notification = new Notification($senderId, $receiverId, $message);
         $notification->sendNotification();
 
     } else {
-        // send to a group — build query based on send_to value
+        
         switch ($sendTo) {
             case 'all':
                 $sql = "SELECT id FROM users WHERE role != 'admin'";

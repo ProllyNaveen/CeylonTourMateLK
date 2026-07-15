@@ -11,7 +11,7 @@ require_once 'Classes/DBconnection.php';
 $userId = $_GET['id'];
 $conn   = DBconnection::getInstance()->getConnection();
 
-// fetch user details
+
 $sql  = "SELECT * FROM users WHERE id = ? AND role != 'admin'";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $userId);
@@ -23,7 +23,7 @@ if (!$user) {
     exit();
 }
 
-// fetch user listings if partner
+
 $listings = [];
 if ($user['role'] != 'tourist') {
     $listSql  = "SELECT * FROM listings WHERE user_id = ? AND is_deleted = 0 ORDER BY created_at DESC";
@@ -33,7 +33,7 @@ if ($user['role'] != 'tourist') {
     $listings = $listStmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
-// fetch user bookings if tourist
+
 $bookings = [];
 if ($user['role'] == 'tourist') {
     $bookSql  = "SELECT b.*, l.title, l.type FROM bookings b
@@ -46,7 +46,7 @@ if ($user['role'] == 'tourist') {
     $bookings = $bookStmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
-// fetch license if tour guide
+
 $license = null;
 if ($user['role'] == 'tour_guide') {
     $licSql  = "SELECT * FROM tourguide_licenses WHERE user_id = ?";
@@ -56,7 +56,7 @@ if ($user['role'] == 'tour_guide') {
     $license = $licStmt->get_result()->fetch_assoc();
 }
 
-// fetch review count if tourist
+
 $reviewCount = 0;
 if ($user['role'] == 'tourist') {
     $revSql  = "SELECT COUNT(*) as total FROM reviews WHERE tourist_id = ?";

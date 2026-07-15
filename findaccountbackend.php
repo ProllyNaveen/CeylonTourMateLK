@@ -21,7 +21,7 @@ try {
         exit();
     }
 
-    // store user id and security question in session for next step
+    
     $_SESSION['reset_user_id']        = $result['id'];
     $_SESSION['reset_security_question'] = $result['security_question'];
 

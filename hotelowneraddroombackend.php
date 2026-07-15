@@ -17,7 +17,7 @@ try {
     $pricePerNight   = $_POST['price_per_night'];
     $capacity        = $_POST['capacity'];
 
-    // verify hotel listing belongs to this user
+    
     $conn    = DBconnection::getInstance()->getConnection();
     $chkSql  = "SELECT hl.id FROM hotel_listings hl
                  JOIN listings l ON hl.listing_id = l.id
@@ -32,7 +32,7 @@ try {
         exit();
     }
 
-    // use HotelListing's addRoom() method (composition)
+    
     $hotelListing = new HotelListing(
         $userId, null, null, null, null, null,
         null, null, null, null, null

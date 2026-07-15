@@ -10,14 +10,14 @@ require_once 'Classes/DBconnection.php';
 $conn   = DBconnection::getInstance()->getConnection();
 $userId = $_SESSION['user_id'];
 
-// active listings
+
 $sql1  = "SELECT COUNT(*) as total FROM listings WHERE user_id = ? AND status = 'approved' AND is_deleted = 0";
 $stmt1 = $conn->prepare($sql1);
 $stmt1->bind_param("i", $userId);
 $stmt1->execute();
 $activeListings = $stmt1->get_result()->fetch_assoc()['total'];
 
-// available rooms
+
 $sql2  = "SELECT COUNT(*) as total FROM rooms r
            JOIN hotel_listings hl ON r.hotel_listing_id = hl.id
            JOIN listings l ON hl.listing_id = l.id
@@ -27,7 +27,7 @@ $stmt2->bind_param("i", $userId);
 $stmt2->execute();
 $availableRooms = $stmt2->get_result()->fetch_assoc()['total'];
 
-// pending bookings
+
 $sql3  = "SELECT COUNT(*) as total FROM bookings b
            JOIN listings l ON b.listing_id = l.id
            WHERE l.user_id = ? AND b.status = 'pending'";
@@ -36,7 +36,7 @@ $stmt3->bind_param("i", $userId);
 $stmt3->execute();
 $pendingBookings = $stmt3->get_result()->fetch_assoc()['total'];
 
-// total earnings
+
 $sql4  = "SELECT COALESCE(SUM(b.total_price - b.commission_amount), 0) as total
            FROM bookings b
            JOIN listings l ON b.listing_id = l.id
@@ -46,14 +46,14 @@ $stmt4->bind_param("i", $userId);
 $stmt4->execute();
 $totalEarnings = $stmt4->get_result()->fetch_assoc()['total'];
 
-// unread messages
+
 $sql5  = "SELECT COUNT(*) as total FROM messages WHERE receiver_id = ? AND is_read = 0";
 $stmt5 = $conn->prepare($sql5);
 $stmt5->bind_param("i", $userId);
 $stmt5->execute();
 $unreadMessages = $stmt5->get_result()->fetch_assoc()['total'];
 
-// unread notifications
+
 $sql6  = "SELECT COUNT(*) as total FROM notifications WHERE receiver_id = ? AND is_read = 0";
 $stmt6 = $conn->prepare($sql6);
 $stmt6->bind_param("i", $userId);

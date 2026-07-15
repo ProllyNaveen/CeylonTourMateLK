@@ -8,7 +8,7 @@ try {
         session_start();
     }
 
-    // get form data
+    
     $firstname        = trim($_POST['firstname']);
     $lastname         = trim($_POST['lastname']);
     $username         = trim($_POST['username']);
@@ -19,7 +19,7 @@ try {
     $securityQuestion = $_POST['security_question'];
     $securityAnswer   = trim($_POST['security_answer']);
 
-    // handle profile pic upload
+    
     $profilePic = 'uploads/profiles/default.png';
     if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
         $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -36,10 +36,10 @@ try {
         }
     }
 
-    // partners need admin approval, tourists are auto approved
+    
     $isApproved = ($role == 'tourist') ? 1 : 0;
 
-    // create User object and register
+    
     $user = new User(
         $firstname, $lastname, $username, $email, $password,
         $phone, $profilePic, $role, 0, $isApproved,
@@ -58,9 +58,9 @@ try {
         exit();
     }
 
-    // if tour guide, handle license upload
+    
     if ($role == 'tour_guide') {
-        // get the newly registered user's id
+        
         $conn = DBconnection::getInstance()->getConnection();
         $idSql = "SELECT id FROM users WHERE username = ?";
         $idStmt = $conn->prepare($idSql);
@@ -97,12 +97,12 @@ try {
         }
     }
 
-    // redirect based on role
+    
     if ($role == 'tourist') {
-        // tourist auto approved, send to login
+        
         header("Location: login.php?registered=1");
     } else {
-        // partners need admin approval first
+        
         header("Location: login.php?pending=1");
     }
     exit();

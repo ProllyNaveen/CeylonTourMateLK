@@ -11,7 +11,7 @@ try {
 
     $adminId = $_GET['id'];
 
-    // prevent admin from deleting their own account
+    
     if ($adminId == $_SESSION['user_id']) {
         header("Location: manageadminaccounts.php?error=1");
         exit();

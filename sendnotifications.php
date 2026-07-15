@@ -10,13 +10,13 @@ require_once 'Classes/Notification.php';
 
 $conn     = DBconnection::getInstance()->getConnection();
 
-// fetch all non-admin users for specific user dropdown
+
 $usersSql  = "SELECT id, firstname, lastname, username, role FROM users WHERE role != 'admin' ORDER BY firstname ASC";
 $usersStmt = $conn->prepare($usersSql);
 $usersStmt->execute();
 $allUsers  = $usersStmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-// fetch notification history
+
 $histSql  = "SELECT n.*, CONCAT(s.firstname, ' ', s.lastname) as sender_name,
               CONCAT(r.firstname, ' ', r.lastname) as receiver_name
               FROM notifications n

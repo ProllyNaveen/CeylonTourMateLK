@@ -7,7 +7,7 @@ try {
         session_start();
     }
 
-    // make sure steps 1 and 2 were completed first
+    
     if (!isset($_SESSION['reset_user_id']) || !isset($_SESSION['reset_verified'])) {
         header("Location: forgotpassword.php");
         exit();
@@ -28,7 +28,7 @@ try {
         exit();
     }
 
-    // clear reset session variables
+    
     unset($_SESSION['reset_user_id']);
     unset($_SESSION['reset_security_question']);
     unset($_SESSION['reset_verified']);

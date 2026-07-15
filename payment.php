@@ -11,7 +11,7 @@ $bookingId = $_GET['booking_id'];
 $userId    = $_SESSION['user_id'];
 $conn      = DBconnection::getInstance()->getConnection();
 
-// fetch booking details
+
 $sql  = "SELECT b.*, l.title, l.type, l.city, u.firstname, u.lastname
           FROM bookings b
           JOIN listings l ON b.listing_id = l.id
@@ -27,7 +27,7 @@ if (!$booking) {
     exit();
 }
 
-// only confirmed bookings can be paid
+
 if ($booking['status'] != 'confirmed') {
     header("Location: mybookings.php?notconfirmed=1");
     exit();

@@ -19,7 +19,7 @@ try {
     $currentPassword = $_POST['current_password'];
     $newPassword     = $_POST['new_password'];
 
-    // handle profile pic upload
+    
     $profilePic = null;
     if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
         $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -36,7 +36,7 @@ try {
         }
     }
 
-    // if no new pic keep existing one
+    
     if (!$profilePic) {
         $conn      = DBconnection::getInstance()->getConnection();
         $picSql    = "SELECT profile_pic FROM users WHERE id = ?";

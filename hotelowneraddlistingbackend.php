@@ -34,7 +34,7 @@ try {
         exit();
     }
 
-    // handle image uploads
+    
     if (isset($_FILES['images']) && $_FILES['images']['error'][0] == 0) {
         $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
         $uploadDir    = 'uploads/listingimages/';

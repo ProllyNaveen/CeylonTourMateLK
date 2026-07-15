@@ -11,7 +11,7 @@ $bookingId = $_GET['booking_id'];
 $userId    = $_SESSION['user_id'];
 $conn      = DBconnection::getInstance()->getConnection();
 
-// fetch booking details — only completed bookings can be reviewed
+
 $sql  = "SELECT b.*, l.title, l.type, l.city, u.firstname, u.lastname, u.profile_pic
           FROM bookings b
           JOIN listings l ON b.listing_id = l.id

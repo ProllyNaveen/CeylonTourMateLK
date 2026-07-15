@@ -10,42 +10,42 @@ require_once 'Classes/DBconnection.php';
 $conn   = DBconnection::getInstance()->getConnection();
 $userId = $_SESSION['user_id'];
 
-// total bookings
+
 $sql1  = "SELECT COUNT(*) as total FROM bookings WHERE tourist_id = ?";
 $stmt1 = $conn->prepare($sql1);
 $stmt1->bind_param("i", $userId);
 $stmt1->execute();
 $totalBookings = $stmt1->get_result()->fetch_assoc()['total'];
 
-// pending bookings
+
 $sql2  = "SELECT COUNT(*) as total FROM bookings WHERE tourist_id = ? AND status = 'pending'";
 $stmt2 = $conn->prepare($sql2);
 $stmt2->bind_param("i", $userId);
 $stmt2->execute();
 $pendingBookings = $stmt2->get_result()->fetch_assoc()['total'];
 
-// completed bookings
+
 $sql3  = "SELECT COUNT(*) as total FROM bookings WHERE tourist_id = ? AND status = 'completed'";
 $stmt3 = $conn->prepare($sql3);
 $stmt3->bind_param("i", $userId);
 $stmt3->execute();
 $completedBookings = $stmt3->get_result()->fetch_assoc()['total'];
 
-// reviews written
+
 $sql4  = "SELECT COUNT(*) as total FROM reviews WHERE tourist_id = ?";
 $stmt4 = $conn->prepare($sql4);
 $stmt4->bind_param("i", $userId);
 $stmt4->execute();
 $reviewsWritten = $stmt4->get_result()->fetch_assoc()['total'];
 
-// unread messages
+
 $sql5  = "SELECT COUNT(*) as total FROM messages WHERE receiver_id = ? AND is_read = 0";
 $stmt5 = $conn->prepare($sql5);
 $stmt5->bind_param("i", $userId);
 $stmt5->execute();
 $unreadMessages = $stmt5->get_result()->fetch_assoc()['total'];
 
-// unread notifications
+
 $sql6  = "SELECT COUNT(*) as total FROM notifications WHERE receiver_id = ? AND is_read = 0";
 $stmt6 = $conn->prepare($sql6);
 $stmt6->bind_param("i", $userId);

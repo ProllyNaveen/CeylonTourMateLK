@@ -15,9 +15,9 @@ try {
 	$username  = trim($_POST['username']);
 	$email     = trim($_POST['email']);
 	$password  = $_POST['password'];
-	$phone     = trim($_POST['phone']); // add this line
+	$phone     = trim($_POST['phone']); 
 
-    // security question and answer set automatically from email
+    
     $securityQuestion = "What is your registered email address on this platform?";
     $securityAnswer   = $email;
 

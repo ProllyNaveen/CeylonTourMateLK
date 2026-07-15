@@ -10,7 +10,7 @@ require_once 'Classes/Notification.php';
 $userId = $_SESSION['user_id'];
 $filter = isset($_GET['filter']) ? $_GET['filter'] : null;
 
-// mark all as read when page loads
+
 $conn    = (require_once 'Classes/DBconnection.php') ? DBconnection::getInstance()->getConnection() : null;
 $markSql = "UPDATE notifications SET is_read = 1 WHERE receiver_id = ?";
 $markStmt = $conn->prepare($markSql);

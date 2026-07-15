@@ -12,7 +12,7 @@ $hotelListingId = $_GET['hotel_listing_id'];
 $userId         = $_SESSION['user_id'];
 $conn           = DBconnection::getInstance()->getConnection();
 
-// verify this hotel listing belongs to this user
+
 $chkSql  = "SELECT l.title FROM hotel_listings hl
              JOIN listings l ON hl.listing_id = l.id
              WHERE hl.id = ? AND l.user_id = ?";

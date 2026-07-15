@@ -12,7 +12,7 @@ $listingId = $_GET['listing_id'];
 $userId    = $_SESSION['user_id'];
 $conn      = DBconnection::getInstance()->getConnection();
 
-// fetch listing details
+
 $sql  = "SELECT l.*, u.firstname, u.lastname
           FROM listings l
           JOIN users u ON l.user_id = u.id
@@ -27,7 +27,7 @@ if (!$listing) {
     exit();
 }
 
-// fetch available rooms if hotel
+
 $rooms = [];
 if ($listing['type'] == 'hotel') {
     $hotelSql  = "SELECT hl.id FROM hotel_listings hl WHERE hl.listing_id = ?";

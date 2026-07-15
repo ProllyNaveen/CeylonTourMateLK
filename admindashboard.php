@@ -9,37 +9,37 @@ require_once 'Classes/DBconnection.php';
 
 $conn = DBconnection::getInstance()->getConnection();
 
-// total users
+
 $sql1  = "SELECT COUNT(*) as total FROM users WHERE role != 'admin'";
 $stmt1 = $conn->prepare($sql1);
 $stmt1->execute();
 $totalUsers = $stmt1->get_result()->fetch_assoc()['total'];
 
-// active listings
+
 $sql2  = "SELECT COUNT(*) as total FROM listings WHERE status = 'approved' AND is_deleted = 0";
 $stmt2 = $conn->prepare($sql2);
 $stmt2->execute();
 $activeListings = $stmt2->get_result()->fetch_assoc()['total'];
 
-// pending listings
+
 $sql3  = "SELECT COUNT(*) as total FROM listings WHERE status = 'pending' AND is_deleted = 0";
 $stmt3 = $conn->prepare($sql3);
 $stmt3->execute();
 $pendingListings = $stmt3->get_result()->fetch_assoc()['total'];
 
-// total bookings
+
 $sql4  = "SELECT COUNT(*) as total FROM bookings";
 $stmt4 = $conn->prepare($sql4);
 $stmt4->execute();
 $totalBookings = $stmt4->get_result()->fetch_assoc()['total'];
 
-// total commission
+
 $sql5  = "SELECT COALESCE(SUM(commission_amount), 0) as total FROM bookings WHERE status = 'completed'";
 $stmt5 = $conn->prepare($sql5);
 $stmt5->execute();
 $totalCommission = $stmt5->get_result()->fetch_assoc()['total'];
 
-// pending registrations
+
 $sql6  = "SELECT COUNT(*) as total FROM users WHERE is_approved = 0 AND role != 'tourist' AND role != 'admin'";
 $stmt6 = $conn->prepare($sql6);
 $stmt6->execute();

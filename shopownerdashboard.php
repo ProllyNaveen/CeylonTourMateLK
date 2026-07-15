@@ -10,21 +10,21 @@ require_once 'Classes/DBconnection.php';
 $conn   = DBconnection::getInstance()->getConnection();
 $userId = $_SESSION['user_id'];
 
-// active listings
+
 $sql1  = "SELECT COUNT(*) as total FROM listings WHERE user_id = ? AND status = 'approved' AND is_deleted = 0";
 $stmt1 = $conn->prepare($sql1);
 $stmt1->bind_param("i", $userId);
 $stmt1->execute();
 $activeListings = $stmt1->get_result()->fetch_assoc()['total'];
 
-// pending listings
+
 $sql2  = "SELECT COUNT(*) as total FROM listings WHERE user_id = ? AND status = 'pending' AND is_deleted = 0";
 $stmt2 = $conn->prepare($sql2);
 $stmt2->bind_param("i", $userId);
 $stmt2->execute();
 $pendingListings = $stmt2->get_result()->fetch_assoc()['total'];
 
-// fees paid this month
+
 $currentMonth = date('n');
 $currentYear  = date('Y');
 $sql3  = "SELECT COUNT(*) as total FROM payments p
@@ -38,14 +38,14 @@ $stmt3->bind_param("iii", $userId, $currentMonth, $currentYear);
 $stmt3->execute();
 $feesPaid = $stmt3->get_result()->fetch_assoc()['total'];
 
-// unread messages
+
 $sql4  = "SELECT COUNT(*) as total FROM messages WHERE receiver_id = ? AND is_read = 0";
 $stmt4 = $conn->prepare($sql4);
 $stmt4->bind_param("i", $userId);
 $stmt4->execute();
 $unreadMessages = $stmt4->get_result()->fetch_assoc()['total'];
 
-// unread notifications
+
 $sql5  = "SELECT COUNT(*) as total FROM notifications WHERE receiver_id = ? AND is_read = 0";
 $stmt5 = $conn->prepare($sql5);
 $stmt5->bind_param("i", $userId);

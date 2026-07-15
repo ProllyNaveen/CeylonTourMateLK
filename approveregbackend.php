@@ -21,7 +21,7 @@ try {
     if ($result == "success") {
 
         if ($action == "approve") {
-            // fetch partner details to personalize the message
+            
             $conn    = DBconnection::getInstance()->getConnection();
             $sql     = "SELECT firstname, role FROM users WHERE id = ?";
             $stmt    = $conn->prepare($sql);

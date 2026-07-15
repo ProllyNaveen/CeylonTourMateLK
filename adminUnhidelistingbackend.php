@@ -18,7 +18,7 @@ try {
     $stmt->bind_param("i", $listingId);
 
     if ($stmt->execute()) {
-        // notify the partner
+        
         $notifSql  = "SELECT user_id, title FROM listings WHERE id = ?";
         $notifStmt = $conn->prepare($notifSql);
         $notifStmt->bind_param("i", $listingId);

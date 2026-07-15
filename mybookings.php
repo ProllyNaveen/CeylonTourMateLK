@@ -126,7 +126,7 @@ $conn     = DBconnection::getInstance()->getConnection();
             <div class="action-btns">
                 <?php if($booking['status'] == 'confirmed') { ?>
     <?php
-    // check if already paid
+    
     $paySql  = "SELECT id FROM payments WHERE booking_id = ? AND payment_status = 'completed'";
     $payStmt = $conn->prepare($paySql);
     $payStmt->bind_param("i", $booking['id']);
