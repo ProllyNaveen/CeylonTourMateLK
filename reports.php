@@ -14,7 +14,7 @@ checkRole(['admin']);
 </head>
 <body>
 
-<!-- ADMIN NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -32,7 +32,7 @@ checkRole(['admin']);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="admindashboard.php" class="back-link">&larr; Back to Dashboard</a>

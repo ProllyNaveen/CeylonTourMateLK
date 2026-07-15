@@ -25,7 +25,7 @@ $admin  = $result->fetch_assoc();
 </head>
 <body>
 
-<!-- ADMIN NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -43,7 +43,7 @@ $admin  = $result->fetch_assoc();
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="admindashboard.php" class="back-link">&larr; Back to Dashboard</a>
@@ -64,13 +64,13 @@ $admin  = $result->fetch_assoc();
         <p class="error">Current password is incorrect.</p>
     <?php } ?>
 
-    <!-- PROFILE PICTURE -->
+    
 	<div class="profile-pic-section">
 		<img src="<?php echo $admin['profile_pic']; ?>" alt="Profile Picture" class="profile-pic-preview" id="profilePicPreview">
 		<p class="form-note">Click below to change your profile picture</p>
 	</div>
 
-    <!-- EDIT PROFILE FORM -->
+    
     <div class="commission-form-card" style="max-width: 550px;">
         <form name="editprofileform" method="post" action="editprofilebackend.php" enctype="multipart/form-data" onsubmit="return validateEditProfile();">
 

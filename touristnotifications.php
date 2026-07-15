@@ -28,7 +28,7 @@ $notifications = Notification::getNotifications($userId, $filter);
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -49,7 +49,7 @@ $notifications = Notification::getNotifications($userId, $filter);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="touristdashboard.php" class="back-link">&larr; Back to Dashboard</a>
@@ -57,14 +57,14 @@ $notifications = Notification::getNotifications($userId, $filter);
     <h2 class="admin-page-title">Notifications</h2>
     <p class="admin-page-subtitle">View notices and updates from the platform</p>
 
-    <!-- FILTER -->
+    
     <div class="filter-bar">
         <a href="touristnotifications.php" class="filter-btn <?php echo !isset($_GET['filter']) ? 'active' : ''; ?>">All</a>
         <a href="touristnotifications.php?filter=unread" class="filter-btn <?php echo (isset($_GET['filter']) && $_GET['filter']=='unread') ? 'active' : ''; ?>">Unread</a>
         <a href="touristnotifications.php?filter=read" class="filter-btn <?php echo (isset($_GET['filter']) && $_GET['filter']=='read') ? 'active' : ''; ?>">Read</a>
     </div>
 
-    <!-- NOTIFICATIONS LIST -->
+    
     <div class="notifications-list">
 
         <?php if(empty($notifications)) { ?>

@@ -66,7 +66,7 @@ $unreadNotifications = $stmt6->get_result()->fetch_assoc()['total'];
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -77,7 +77,7 @@ $unreadNotifications = $stmt6->get_result()->fetch_assoc()['total'];
                 <span class="partner-badge tourguide-badge">Tour Guide</span>
             </td>
             <td class="nav-buttons-cell">
-                <!-- PHP: echo tour guide's firstname from session -->
+                
                 <span class="admin-welcome">Welcome, <?php echo htmlspecialchars($_SESSION['firstname']); ?></span>
                 <a href="logout.php"><button class="btn btn-login">Logout</button></a>
             </td>
@@ -85,13 +85,13 @@ $unreadNotifications = $stmt6->get_result()->fetch_assoc()['total'];
     </table>
 </div>
 
-<!-- DASHBOARD CONTENT -->
+
 <div class="admin-section">
 
     <h2 class="admin-page-title">My Dashboard</h2>
     <p class="admin-page-subtitle">Manage your tour guide listings and bookings</p>
 
-    <!-- STAT CARDS -->
+    
     <div class="stat-grid">
 
         <div class="stat-card">
@@ -144,7 +144,7 @@ $unreadNotifications = $stmt6->get_result()->fetch_assoc()['total'];
 
     </div>
 
-    <!-- QUICK ACTIONS -->
+    
     <h2 class="admin-page-title admin-section-spacer">Quick Actions</h2>
 
     <div class="action-grid">

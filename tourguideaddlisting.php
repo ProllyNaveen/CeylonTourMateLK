@@ -15,7 +15,7 @@ checkRole(['tour_guide']);
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -33,7 +33,7 @@ checkRole(['tour_guide']);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="tourguidedashboard.php" class="back-link">&larr; Back to Dashboard</a>

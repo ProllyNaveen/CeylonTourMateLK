@@ -42,7 +42,7 @@ $listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -60,7 +60,7 @@ $listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="hotelownerdashboard.php" class="back-link">&larr; Back to Dashboard</a>
@@ -75,7 +75,7 @@ $listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         <p class="error">Something went wrong. Please try again.</p>
     <?php } ?>
 
-    <!-- FILTER BY STATUS -->
+    
     <div class="filter-bar">
         <a href="hotelownermanagelistings.php" class="filter-btn <?php echo !isset($_GET['status']) ? 'active' : ''; ?>">All</a>
         <a href="hotelownermanagelistings.php?status=approved" class="filter-btn <?php echo (isset($_GET['status']) && $_GET['status']=='approved') ? 'active' : ''; ?>">Approved</a>
@@ -83,7 +83,7 @@ $listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         <a href="hotelownermanagelistings.php?status=rejected" class="filter-btn <?php echo (isset($_GET['status']) && $_GET['status']=='rejected') ? 'active' : ''; ?>">Rejected</a>
     </div>
 
-    <!-- LISTINGS TABLE -->
+    
     <table class="admin-table">
         <tr>
             <th>ID</th>

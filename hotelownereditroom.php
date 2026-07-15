@@ -32,7 +32,7 @@ if (!$room) {
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -50,7 +50,7 @@ if (!$room) {
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="hotelownermanagerooms.php?hotel_listing_id=<?php echo $hotelListingId; ?>" class="back-link">&larr; Back to Rooms</a>

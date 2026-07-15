@@ -23,7 +23,7 @@ $conn     = DBconnection::getInstance()->getConnection();
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -44,7 +44,7 @@ $conn     = DBconnection::getInstance()->getConnection();
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 	<a href="touristdashboard.php" class="back-link">&larr; Back to Dashboard</a>
     <h2 class="admin-page-title">My Bookings</h2>
@@ -72,7 +72,7 @@ $conn     = DBconnection::getInstance()->getConnection();
     <p class="error">Something went wrong. Please try again.</p>
 <?php } ?>
 
-    <!-- FILTER BY STATUS -->
+    
     <div class="filter-bar">
         <a href="mybookings.php" class="filter-btn <?php echo !isset($_GET['status']) ? 'active' : ''; ?>">All</a>
         <a href="mybookings.php?status=pending" class="filter-btn <?php echo (isset($_GET['status']) && $_GET['status']=='pending') ? 'active' : ''; ?>">Pending</a>
@@ -81,7 +81,7 @@ $conn     = DBconnection::getInstance()->getConnection();
         <a href="mybookings.php?status=cancelled" class="filter-btn <?php echo (isset($_GET['status']) && $_GET['status']=='cancelled') ? 'active' : ''; ?>">Cancelled</a>
     </div>
 
-    <!-- BOOKINGS TABLE -->
+    
     <table class="admin-table">
         <tr>
             <th>ID</th>

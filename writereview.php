@@ -37,7 +37,7 @@ if (!$booking) {
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -58,7 +58,7 @@ if (!$booking) {
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="mybookings.php" class="back-link">&larr; Back to My Bookings</a>
@@ -74,7 +74,7 @@ if (!$booking) {
 
     <div class="listing-detail-layout">
 
-        <!-- LEFT: REVIEW FORM -->
+        
         <div class="listing-detail-main">
             <div class="listing-detail-section">
 
@@ -108,7 +108,7 @@ if (!$booking) {
             </div>
         </div>
 
-        <!-- RIGHT: BOOKING SUMMARY -->
+        
         <div class="listing-detail-sidebar">
             <div class="sidebar-card">
                 <h3 class="admin-subsection-title">Booking Details</h3>

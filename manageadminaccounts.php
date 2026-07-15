@@ -20,7 +20,7 @@ $admins = $user->manageAdminAccounts();
 </head>
 <body>
 
-<!-- ADMIN NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -38,7 +38,7 @@ $admins = $user->manageAdminAccounts();
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="admindashboard.php" class="back-link">&larr; Back to Dashboard</a>
@@ -56,7 +56,7 @@ $admins = $user->manageAdminAccounts();
         <p class="error">Username or email already exists.</p>
     <?php } ?>
 
-    <!-- ADD NEW ADMIN -->
+    
     <h3 class="admin-subsection-title">Add New Admin</h3>
 
     <div class="commission-form-card">
@@ -84,7 +84,7 @@ $admins = $user->manageAdminAccounts();
         </form>
     </div>
 
-    <!-- EXISTING ADMINS TABLE -->
+    
     <h3 class="admin-subsection-title admin-section-spacer">Existing Admins</h3>
 
     <table class="admin-table">

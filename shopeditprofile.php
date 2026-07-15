@@ -25,7 +25,7 @@ $user   = $result->fetch_assoc();
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -43,7 +43,7 @@ $user   = $result->fetch_assoc();
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="shopownerdashboard.php" class="back-link">&larr; Back to Dashboard</a>
@@ -64,14 +64,14 @@ $user   = $result->fetch_assoc();
         <p class="error">Current password is incorrect.</p>
     <?php } ?>
 
-    <!-- PROFILE PICTURE -->
+    
     <div class="profile-pic-section">
-        <!-- PHP: echo shop owner's profile pic or default -->
+        
         <img src="<?php echo $user['profile_pic']; ?>" alt="Profile Picture" class="profile-pic-preview" id="profilePicPreview">
         <p class="form-note">Click below to change your profile picture</p>
     </div>
 
-    <!-- EDIT PROFILE FORM -->
+    
     <div class="commission-form-card" style="max-width:550px;">
         <form name="shopeditprofileform" method="post" action="shopeditprofilebackend.php" enctype="multipart/form-data" onsubmit="return validateShopEditProfile();">
 

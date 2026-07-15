@@ -19,7 +19,7 @@ $listings = Listing::getPendingListings($type);
 </head>
 <body>
 
-<!-- ADMIN NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -37,7 +37,7 @@ $listings = Listing::getPendingListings($type);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="admindashboard.php" class="back-link">&larr; Back to Dashboard</a>
@@ -52,7 +52,7 @@ $listings = Listing::getPendingListings($type);
         <p class="error">Something went wrong. Please try again.</p>
     <?php } ?>
 
-    <!-- FILTER BY TYPE -->
+    
     <div class="filter-bar">
         <a href="viewlistingrequests.php" class="filter-btn <?php echo !isset($_GET['type']) ? 'active' : ''; ?>">All</a>
         <a href="viewlistingrequests.php?type=tour_guide" class="filter-btn <?php echo (isset($_GET['type']) && $_GET['type']=='tour_guide') ? 'active' : ''; ?>">Tour Guide</a>
@@ -61,7 +61,7 @@ $listings = Listing::getPendingListings($type);
         <a href="viewlistingrequests.php?type=experience" class="filter-btn <?php echo (isset($_GET['type']) && $_GET['type']=='experience') ? 'active' : ''; ?>">Experience</a>
     </div>
 
-    <!-- LISTINGS TABLE -->
+    
     <table class="admin-table">
         <tr>
             <th>ID</th>

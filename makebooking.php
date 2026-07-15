@@ -51,7 +51,7 @@ if ($listing['type'] == 'hotel') {
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -72,7 +72,7 @@ if ($listing['type'] == 'hotel') {
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <!-- PHP:
@@ -100,7 +100,7 @@ if ($listing['type'] == 'hotel') {
 
     <div class="listing-detail-layout">
 
-        <!-- LEFT: BOOKING FORM -->
+        
         <div class="listing-detail-main">
             <div class="listing-detail-section">
 
@@ -118,7 +118,7 @@ if ($listing['type'] == 'hotel') {
                     <label>Number of Guests</label>
                     <input type="number" name="guest_count" id="guest_count" placeholder="Enter number of guests" min="1">
 
-                    <!-- ROOM SELECTION — only for hotel listings -->
+                    
                     <?php if($listing['type'] == 'hotel') { ?>
 					<div id="room-selection-div">
 						<label>Select Rooms</label>
@@ -155,7 +155,7 @@ if ($listing['type'] == 'hotel') {
             </div>
         </div>
 
-        <!-- RIGHT: BOOKING SUMMARY -->
+        
         <div class="listing-detail-sidebar">
             <div class="sidebar-card">
                 <h3 class="admin-subsection-title">Booking Summary</h3>

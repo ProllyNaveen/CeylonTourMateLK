@@ -7,7 +7,7 @@
     <script type="text/javascript" src="validatelogin.js"></script>
 </head>
 <body>
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -26,7 +26,7 @@
         </tr>
     </table>
 </div>
-<!-- LOGIN FORM SECTION -->
+
 <div class="auth-section">
     <div class="auth-card auth-card-narrow">
         <h2>Welcome back</h2>

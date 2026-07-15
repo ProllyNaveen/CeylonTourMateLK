@@ -15,7 +15,7 @@ checkRole(['hotel_owner']);
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -33,7 +33,7 @@ checkRole(['hotel_owner']);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="hotelownerdashboard.php" class="back-link">&larr; Back to Dashboard</a>

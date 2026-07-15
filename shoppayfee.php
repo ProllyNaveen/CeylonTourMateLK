@@ -50,7 +50,7 @@ $paymentHistory = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -68,7 +68,7 @@ $paymentHistory = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="shopownerdashboard.php" class="back-link">&larr; Back to Dashboard</a>
@@ -86,7 +86,7 @@ $paymentHistory = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
         <p class="success">You have already paid the listing fee for this listing this month.</p>
     <?php } ?>
 
-    <!-- MY LISTINGS AND FEE STATUS -->
+    
     <h3 class="admin-subsection-title">My Listings — Fee Status This Month</h3>
 
     <table class="admin-table" style="margin-bottom:40px;">
@@ -131,7 +131,7 @@ $paymentHistory = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
     </table>
 
-    <!-- PAYMENT FORM -->
+    
     <h3 class="admin-subsection-title">Card Payment</h3>
     <p class="form-note" style="margin-bottom:20px;">Selected listing: <strong id="selected-listing-name">None selected</strong></p>
 
@@ -140,7 +140,7 @@ $paymentHistory = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
             <input type="hidden" name="shop_listing_id" id="shop_listing_id" value="">
 
-            <!-- PHP: echo current listing fee amount from commission or fixed fee -->
+            
             <label>Amount Due (Rs.)</label>
             <input type="text" name="amount" id="amount" value="<?php echo $currentFee; ?>" readonly style="background-color:#f5f5f5;">
 
@@ -161,7 +161,7 @@ $paymentHistory = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
         </form>
     </div>
 
-    <!-- PAYMENT HISTORY -->
+    
     <h3 class="admin-subsection-title admin-section-spacer">Payment History</h3>
 
     <table class="admin-table">

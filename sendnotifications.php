@@ -37,7 +37,7 @@ $history  = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
 </head>
 <body>
 
-<!-- ADMIN NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -55,7 +55,7 @@ $history  = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="admindashboard.php" class="back-link">&larr; Back to Dashboard</a>
@@ -70,7 +70,7 @@ $history  = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
         <p class="error">Something went wrong. Please try again.</p>
     <?php } ?>
 
-    <!-- SEND NOTIFICATION FORM -->
+    
     <div class="commission-form-card" style="max-width: 600px;">
         <form name="notificationform" method="post" action="sendnotificationbackend.php" onsubmit="return validateNotification();">
 
@@ -86,7 +86,7 @@ $history  = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
                 <option value="specific">Specific User</option>
             </select>
 
-            <!-- shown only when specific user is selected -->
+            
             <div id="specific-user-div" style="display:none;">
                 <label>Select User</label>
                 <select name="receiver_id">
@@ -107,7 +107,7 @@ $history  = $histStmt->get_result()->fetch_all(MYSQLI_ASSOC);
         </form>
     </div>
 
-    <!-- SENT NOTIFICATIONS HISTORY -->
+    
     <h3 class="admin-subsection-title admin-section-spacer">Sent Notifications History</h3>
 
     <table class="admin-table">

@@ -28,7 +28,7 @@ if (isset($_GET['user_id']) && isset($_GET['listing_id'])) {
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -46,7 +46,7 @@ if (isset($_GET['user_id']) && isset($_GET['listing_id'])) {
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="tourguidedashboard.php" class="back-link">&larr; Back to Dashboard</a>
@@ -63,7 +63,7 @@ if (isset($_GET['user_id']) && isset($_GET['listing_id'])) {
 
     <div class="messages-layout">
 
-        <!-- CONVERSATIONS LIST -->
+        
         <div class="conversations-list">
             <h3 class="admin-subsection-title">Conversations</h3>
 
@@ -87,7 +87,7 @@ if (isset($_GET['user_id']) && isset($_GET['listing_id'])) {
 
         </div>
 
-        <!-- MESSAGE THREAD -->
+        
         <div class="message-thread">
             <h3 class="admin-subsection-title">
                 Select a conversation
@@ -108,7 +108,7 @@ if (isset($_GET['user_id']) && isset($_GET['listing_id'])) {
 
             </div>
 
-            <!-- REPLY FORM -->
+            
             <?php if(isset($_GET['user_id']) && isset($_GET['listing_id'])) { ?>
             <form name="replyform" method="post" action="tourguidereplybackend.php" onsubmit="return validateReply();">
                 <input type="hidden" name="receiver_id" value="<?php echo $_GET['user_id']; ?>">

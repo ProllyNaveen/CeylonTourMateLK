@@ -15,7 +15,7 @@ checkRole(['experience_provider']);
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -33,7 +33,7 @@ checkRole(['experience_provider']);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="experiencedashboard.php" class="back-link">&larr; Back to Dashboard</a>

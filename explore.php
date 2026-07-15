@@ -23,7 +23,7 @@ $listings = Listing::searchListings($keyword, $type, $city, $sort);
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -45,13 +45,13 @@ $listings = Listing::searchListings($keyword, $type, $city, $sort);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <h2 class="admin-page-title">Explore Sri Lanka</h2>
     <p class="admin-page-subtitle">Find tour guides, hotels, shops and experiences across Sri Lanka</p>
 
-    <!-- SEARCH & FILTER BAR -->
+    
     <div class="explore-search-bar">
         <form name="searchform" method="get" action="explore.php">
 
@@ -97,7 +97,7 @@ $listings = Listing::searchListings($keyword, $type, $city, $sort);
         </form>
     </div>
 
-    <!-- FILTER TABS -->
+    
     <div class="filter-bar" style="margin-bottom:25px;">
         <a href="explore.php" class="filter-btn <?php echo !isset($_GET['type']) ? 'active' : ''; ?>">All</a>
         <a href="explore.php?type=tour_guide" class="filter-btn <?php echo (isset($_GET['type']) && $_GET['type']=='tour_guide') ? 'active' : ''; ?>">Tour Guides</a>
@@ -106,7 +106,7 @@ $listings = Listing::searchListings($keyword, $type, $city, $sort);
         <a href="explore.php?type=experience" class="filter-btn <?php echo (isset($_GET['type']) && $_GET['type']=='experience') ? 'active' : ''; ?>">Experiences</a>
     </div>
 
-    <!-- LISTINGS GRID -->
+    
     <!-- PHP:
         build WHERE clause based on $_GET params:
         - keyword: WHERE l.title LIKE '%keyword%' OR l.description LIKE '%keyword%' OR l.city LIKE '%keyword%'

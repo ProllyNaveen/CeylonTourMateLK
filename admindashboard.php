@@ -54,7 +54,7 @@ $pendingReg = $stmt6->get_result()->fetch_assoc()['total'];
 </head>
 <body>
 
-<!-- ADMIN NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -65,7 +65,7 @@ $pendingReg = $stmt6->get_result()->fetch_assoc()['total'];
                 <span class="admin-badge">Admin Panel</span>
             </td>
             <td class="nav-buttons-cell">
-                <!-- PHP: echo admin's firstname from session -->
+                
                 <span class="admin-welcome">Welcome, <?php echo htmlspecialchars($_SESSION['firstname']); ?></span>
                 <a href="logout.php"><button class="btn btn-login">Logout</button></a>
             </td>
@@ -73,18 +73,18 @@ $pendingReg = $stmt6->get_result()->fetch_assoc()['total'];
     </table>
 </div>
 
-<!-- DASHBOARD CONTENT -->
+
 <div class="admin-section">
 
     <h2 class="admin-page-title">Dashboard Overview</h2>
     <p class="admin-page-subtitle">A quick snapshot of CeylonTourMate.lk</p>
 
-    <!-- STAT CARDS -->
+    
     <div class="stat-grid">
         <div class="stat-card">
             <div class="stat-icon stat-icon-blue">&#128101;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM users -->
+                
                 <span class="stat-number"><?php echo $totalUsers; ?></span>
                 <span class="stat-label">Total Users</span>
             </div>
@@ -93,7 +93,7 @@ $pendingReg = $stmt6->get_result()->fetch_assoc()['total'];
         <div class="stat-card">
             <div class="stat-icon stat-icon-teal">&#127968;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM listings WHERE status='approved' -->
+                
                 <span class="stat-number"><?php echo $activeListings; ?></span>
                 <span class="stat-label">Active Listings</span>
             </div>
@@ -102,7 +102,7 @@ $pendingReg = $stmt6->get_result()->fetch_assoc()['total'];
         <div class="stat-card">
             <div class="stat-icon stat-icon-amber">&#128203;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM listings WHERE status='pending' -->
+                
                 <span class="stat-number"><?php echo $pendingListings; ?></span>
                 <span class="stat-label">Pending Listings</span>
             </div>
@@ -111,7 +111,7 @@ $pendingReg = $stmt6->get_result()->fetch_assoc()['total'];
         <div class="stat-card">
             <div class="stat-icon stat-icon-coral">&#128197;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM bookings -->
+                
                 <span class="stat-number"><?php echo $totalBookings; ?></span>
                 <span class="stat-label">Total Bookings</span>
             </div>
@@ -120,7 +120,7 @@ $pendingReg = $stmt6->get_result()->fetch_assoc()['total'];
         <div class="stat-card">
             <div class="stat-icon stat-icon-green">&#128176;</div>
             <div class="stat-info">
-                <!-- PHP: echo SUM(commission_amount) FROM bookings -->
+                
                 <span class="stat-number">Rs. <?php echo number_format($totalCommission, 2); ?></span>
                 <span class="stat-label">Total Commission Earned</span>
             </div>
@@ -129,14 +129,14 @@ $pendingReg = $stmt6->get_result()->fetch_assoc()['total'];
         <div class="stat-card">
             <div class="stat-icon stat-icon-purple">&#9888;&#65039;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM users WHERE is_approved=0 AND role != 'tourist' -->
+                
                 <span class="stat-number"><?php echo $pendingReg; ?></span>
                 <span class="stat-label">Pending Registrations</span>
             </div>
         </div>
     </div>
 
-    <!-- ADMIN QUICK ACTIONS -->
+    
     <h2 class="admin-page-title admin-section-spacer">Manage Platform</h2>
 
     <div class="action-grid">

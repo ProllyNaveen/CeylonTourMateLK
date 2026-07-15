@@ -21,7 +21,7 @@ $users = $user->manageUserAccounts($role);
 </head>
 <body>
 
-<!-- ADMIN NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -39,7 +39,7 @@ $users = $user->manageUserAccounts($role);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="admindashboard.php" class="back-link">&larr; Back to Dashboard</a>
@@ -54,7 +54,7 @@ $users = $user->manageUserAccounts($role);
         <p class="error">Something went wrong. Please try again.</p>
     <?php } ?>
 
-    <!-- FILTER BY ROLE -->
+    
     <div class="filter-bar">
         <a href="viewuseraccounts.php" class="filter-btn <?php echo !isset($_GET['role']) ? 'active' : ''; ?>">All</a>
         <a href="viewuseraccounts.php?role=tourist" class="filter-btn <?php echo (isset($_GET['role']) && $_GET['role']=='tourist') ? 'active' : ''; ?>">Tourists</a>
@@ -64,7 +64,7 @@ $users = $user->manageUserAccounts($role);
         <a href="viewuseraccounts.php?role=experience_provider" class="filter-btn <?php echo (isset($_GET['role']) && $_GET['role']=='experience_provider') ? 'active' : ''; ?>">Experience Providers</a>
     </div>
 
-    <!-- USERS TABLE -->
+    
     <table class="admin-table">
     <tr>
         <th>ID</th>

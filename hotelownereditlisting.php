@@ -36,7 +36,7 @@ if (!$listing) {
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -54,7 +54,7 @@ if (!$listing) {
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="hotelownermanagelistings.php" class="back-link">&larr; Back to My Listings</a>

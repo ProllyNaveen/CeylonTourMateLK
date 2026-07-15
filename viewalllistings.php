@@ -83,7 +83,7 @@ $listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         <p class="error">Something went wrong. Please try again.</p>
     <?php } ?>
 
-    <!-- FILTER BY TYPE -->
+    
     <div class="filter-bar">
         <a href="viewalllistings.php" class="filter-btn <?php echo !$type && !$status ? 'active' : ''; ?>">All</a>
         <a href="viewalllistings.php?type=tour_guide" class="filter-btn <?php echo $type == 'tour_guide' ? 'active' : ''; ?>">Tour Guide</a>
@@ -92,7 +92,7 @@ $listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         <a href="viewalllistings.php?type=experience" class="filter-btn <?php echo $type == 'experience' ? 'active' : ''; ?>">Experience</a>
     </div>
 
-    <!-- FILTER BY STATUS -->
+    
     <div class="filter-bar">
         <a href="viewalllistings.php" class="filter-btn <?php echo !$status && !$type ? 'active' : ''; ?>">All Status</a>
         <a href="viewalllistings.php?status=approved" class="filter-btn <?php echo $status == 'approved' ? 'active' : ''; ?>">Approved</a>
@@ -100,7 +100,7 @@ $listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         <a href="viewalllistings.php?status=rejected" class="filter-btn <?php echo $status == 'rejected' ? 'active' : ''; ?>">Rejected</a>
     </div>
 
-    <!-- LISTINGS TABLE -->
+    
     <table class="admin-table">
         <tr>
             <th>ID</th>

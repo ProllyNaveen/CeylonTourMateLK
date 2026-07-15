@@ -61,7 +61,7 @@ $unreadNotifications = $stmt5->get_result()->fetch_assoc()['total'];
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -72,7 +72,7 @@ $unreadNotifications = $stmt5->get_result()->fetch_assoc()['total'];
                 <span class="partner-badge">Shop Owner</span>
             </td>
             <td class="nav-buttons-cell">
-                <!-- PHP: echo shop owner's firstname from session -->
+                
                 <span class="admin-welcome">Welcome, <?php echo htmlspecialchars($_SESSION['firstname']); ?></span>
                 <a href="logout.php"><button class="btn btn-login">Logout</button></a>
             </td>
@@ -80,19 +80,19 @@ $unreadNotifications = $stmt5->get_result()->fetch_assoc()['total'];
     </table>
 </div>
 
-<!-- DASHBOARD CONTENT -->
+
 <div class="admin-section">
 
     <h2 class="admin-page-title">My Dashboard</h2>
     <p class="admin-page-subtitle">Manage your shop listings and payments</p>
 
-    <!-- STAT CARDS -->
+    
     <div class="stat-grid">
 
         <div class="stat-card">
             <div class="stat-icon stat-icon-teal">&#127968;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM listings WHERE user_id = $_SESSION['user_id'] AND status = 'approved' -->
+                
                 <span class="stat-number"><?php echo $activeListings; ?></span>
                 <span class="stat-label">Active Listings</span>
             </div>
@@ -101,7 +101,7 @@ $unreadNotifications = $stmt5->get_result()->fetch_assoc()['total'];
         <div class="stat-card">
             <div class="stat-icon stat-icon-amber">&#128203;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM listings WHERE user_id = $_SESSION['user_id'] AND status = 'pending' -->
+                
                 <span class="stat-number"><?php echo $pendingListings; ?></span>
                 <span class="stat-label">Pending Listings</span>
             </div>
@@ -118,7 +118,7 @@ $unreadNotifications = $stmt5->get_result()->fetch_assoc()['total'];
         <div class="stat-card">
             <div class="stat-icon stat-icon-purple">&#128172;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM messages WHERE receiver_id = $_SESSION['user_id'] AND is_read = 0 -->
+                
                 <span class="stat-number"><?php echo $unreadMessages; ?></span>
                 <span class="stat-label">Unread Messages</span>
             </div>
@@ -127,7 +127,7 @@ $unreadNotifications = $stmt5->get_result()->fetch_assoc()['total'];
         <div class="stat-card">
             <div class="stat-icon stat-icon-coral">&#128276;</div>
             <div class="stat-info">
-                <!-- PHP: echo COUNT(*) FROM notifications WHERE receiver_id = $_SESSION['user_id'] AND is_read = 0 -->
+                
                 <span class="stat-number"><?php echo $unreadNotifications; ?></span>
                 <span class="stat-label">Unread Notifications</span>
             </div>
@@ -135,7 +135,7 @@ $unreadNotifications = $stmt5->get_result()->fetch_assoc()['total'];
 
     </div>
 
-    <!-- QUICK ACTIONS -->
+    
     <h2 class="admin-page-title admin-section-spacer">Quick Actions</h2>
 
     <div class="action-grid">

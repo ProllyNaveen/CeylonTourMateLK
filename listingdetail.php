@@ -88,7 +88,7 @@ $reviews = Review::getReviewsByListing($listingId);
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -109,7 +109,7 @@ $reviews = Review::getReviewsByListing($listingId);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="explore.php" class="back-link">&larr; Back to Explore</a>
@@ -121,7 +121,7 @@ $reviews = Review::getReviewsByListing($listingId);
         <p class="error">Something went wrong. Please try again.</p>
     <?php } ?>
 
-    <!-- LISTING HEADER -->
+    
     <div class="listing-detail-header">
         <div>
             <h2 class="admin-page-title"><?php echo $listing['title']; ?></h2>
@@ -149,7 +149,7 @@ $reviews = Review::getReviewsByListing($listingId);
 </div>
     </div>
 
-    <!-- LISTING IMAGES -->
+    
     <div class="listing-images-row">
         <?php if(empty($images)) { ?>
             <div class="listing-img-placeholder">&#127758; No images uploaded</div>
@@ -162,16 +162,16 @@ $reviews = Review::getReviewsByListing($listingId);
 
     <div class="listing-detail-layout">
 
-        <!-- LEFT: MAIN DETAILS -->
+        
         <div class="listing-detail-main">
 
-            <!-- DESCRIPTION -->
+            
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">About</h3>
                 <p style="font-size:14px; color:#2b2b2b; line-height:1.7;"><?php echo $listing['description']; ?></p>
             </div>
 
-            <!-- TYPE SPECIFIC DETAILS -->
+            
             <?php if($listing['type'] == 'tour_guide' && $subDetails) { ?>
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">Tour Guide Details</h3>
@@ -243,7 +243,7 @@ $reviews = Review::getReviewsByListing($listingId);
             </div>
             <?php } ?>
 
-            <!-- REVIEWS -->
+            
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">Reviews</h3>
                 <?php if(empty($reviews)) { ?>
@@ -269,10 +269,10 @@ $reviews = Review::getReviewsByListing($listingId);
 
         </div>
 
-        <!-- RIGHT: SIDEBAR -->
+        
         <div class="listing-detail-sidebar">
 
-            <!-- OWNER INFO -->
+            
             <div class="sidebar-card">
                 <h3 class="admin-subsection-title">About the Owner</h3>
                 <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
@@ -292,7 +292,7 @@ $reviews = Review::getReviewsByListing($listingId);
                 </form>
             </div>
 
-            <!-- BOOK NOW — only for non-shop listings -->
+            
             <?php if($listing['type'] != 'shop') { ?>
             <div class="sidebar-card" style="margin-top:20px;">
                 <h3 class="admin-subsection-title">Book Now</h3>

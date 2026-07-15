@@ -79,7 +79,7 @@ $images = ListingImage::getImagesByListing($listingId);
 </head>
 <body>
 
-<!-- ADMIN NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -97,7 +97,7 @@ $images = ListingImage::getImagesByListing($listingId);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
 <?php
@@ -123,7 +123,7 @@ if ($from == 'bookings') {
         <p class="success">Action completed successfully.</p>
     <?php } ?>
 
-    <!-- LISTING HEADER -->
+    
     <div class="listing-detail-header">
         <div>
             <h2 class="admin-page-title"><?php echo $listing['title']; ?></h2>
@@ -144,7 +144,7 @@ if ($from == 'bookings') {
         </div>
     </div>
 
-    <!-- LISTING IMAGES -->
+    
     <div class="listing-images-row">
         <?php if(empty($images)) { ?>
             <div class="listing-img-placeholder">&#127758; No images uploaded</div>
@@ -157,16 +157,16 @@ if ($from == 'bookings') {
 
     <div class="listing-detail-layout">
 
-        <!-- LEFT: MAIN DETAILS -->
+        
         <div class="listing-detail-main">
 
-            <!-- DESCRIPTION -->
+            
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">About</h3>
                 <p style="font-size:14px; color:#2b2b2b; line-height:1.7;"><?php echo $listing['description']; ?></p>
             </div>
 
-            <!-- TYPE SPECIFIC DETAILS -->
+            
             <?php if($listing['type'] == 'tour_guide' && $subDetails) { ?>
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">Tour Guide Details</h3>
@@ -246,10 +246,10 @@ if ($from == 'bookings') {
 
         </div>
 
-        <!-- RIGHT: SIDEBAR -->
+        
         <div class="listing-detail-sidebar">
 
-            <!-- OWNER INFO -->
+            
             <div class="sidebar-card">
                 <h3 class="admin-subsection-title">Owner Details</h3>
                 <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
@@ -262,7 +262,7 @@ if ($from == 'bookings') {
                 </div>
             </div>
 
-            <!-- DECISION / ACTIONS -->
+            
 			<div class="sidebar-card" style="margin-top:20px;">
 				<h3 class="admin-subsection-title">Actions</h3>
 

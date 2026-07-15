@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -28,7 +28,7 @@
     </table>
 </div>
 
-<!-- REGISTER FORM SECTION -->
+
 <div class="auth-section">
     <div class="auth-card">
         <h2>Create your account</h2>
@@ -41,7 +41,7 @@
 <?php } ?>
         <form name="regform" method="post" action="regbackend.php" enctype="multipart/form-data" onsubmit="return validateRegForm();">
 
-            <!-- Role selection -->
+            
             <label>I am registering as</label>
             <select name="role" id="role" onchange="toggleRoleFields()">
                 <option value="">-- Select your role --</option>
@@ -52,7 +52,7 @@
                 <option value="experience_provider">Experience Provider</option>
             </select>
 
-            <!-- Common fields -->
+            
             <table class="form-table">
                 <tr>
                     <td>
@@ -92,7 +92,7 @@
                 </tr>
             </table>
 
-            <!-- Security question (used for password reset) -->
+            
             <label>Security Question</label>
             <select name="security_question">
                 <option value="">-- Select a security question --</option>
@@ -104,7 +104,7 @@
             <label>Security Answer</label>
             <input type="text" name="security_answer">
 
-            <!-- ===== TOUR GUIDE ONLY: license upload tied to account verification ===== -->
+            
             <div id="tourguide-fields" class="role-fields" style="display:none;">
                 <h3>Tour Guide Verification</h3>
                 <label>License Number</label>

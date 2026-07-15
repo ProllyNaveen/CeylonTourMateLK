@@ -20,7 +20,7 @@ $bookings = Booking::getBookingsForPartner($userId, $status);
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -38,7 +38,7 @@ $bookings = Booking::getBookingsForPartner($userId, $status);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="tourguidedashboard.php" class="back-link">&larr; Back to Dashboard</a>
@@ -56,7 +56,7 @@ $bookings = Booking::getBookingsForPartner($userId, $status);
         <p class="error">Something went wrong. Please try again.</p>
     <?php } ?>
 
-    <!-- FILTER BY STATUS -->
+    
     <div class="filter-bar">
         <a href="tourguidemybookings.php" class="filter-btn <?php echo !isset($_GET['status']) ? 'active' : ''; ?>">All</a>
         <a href="tourguidemybookings.php?status=pending" class="filter-btn <?php echo (isset($_GET['status']) && $_GET['status']=='pending') ? 'active' : ''; ?>">Pending</a>
@@ -65,7 +65,7 @@ $bookings = Booking::getBookingsForPartner($userId, $status);
         <a href="tourguidemybookings.php?status=cancelled" class="filter-btn <?php echo (isset($_GET['status']) && $_GET['status']=='cancelled') ? 'active' : ''; ?>">Cancelled</a>
     </div>
 
-    <!-- BOOKINGS TABLE -->
+    
     <table class="admin-table">
         <tr>
             <th>ID</th>

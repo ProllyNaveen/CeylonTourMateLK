@@ -18,7 +18,7 @@ $overview = Commission::viewCommissionOverview();
 </head>
 <body>
 
-<!-- ADMIN NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -36,7 +36,7 @@ $overview = Commission::viewCommissionOverview();
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="admindashboard.php" class="back-link">&larr; Back to Dashboard</a>
@@ -44,12 +44,12 @@ $overview = Commission::viewCommissionOverview();
     <h2 class="admin-page-title">Commission & Fees</h2>
     <p class="admin-page-subtitle">Track platform earnings and manage the commission rate</p>
 
-    <!-- EARNINGS STAT CARDS -->
+    
     <div class="stat-grid">
         <div class="stat-card">
             <div class="stat-icon stat-icon-green">&#128176;</div>
             <div class="stat-info">
-                <!-- PHP: echo SUM(commission_amount) FROM bookings -->
+                
                 <span class="stat-number">Rs. <?php echo number_format($overview['total_commission'], 2); ?></span>
                 <span class="stat-label">Total Commission from Bookings</span>
             </div>
@@ -58,7 +58,7 @@ $overview = Commission::viewCommissionOverview();
         <div class="stat-card">
             <div class="stat-icon stat-icon-teal">&#128181;</div>
             <div class="stat-info">
-                <!-- PHP: echo SUM(amount) FROM payments WHERE type='listing_fee' AND payment_status='completed' -->
+                
                 <span class="stat-number">Rs. <?php echo number_format($overview['total_fees'], 2); ?></span>
                 <span class="stat-label">Total Listing Fees Collected</span>
             </div>
@@ -67,7 +67,7 @@ $overview = Commission::viewCommissionOverview();
         <div class="stat-card">
             <div class="stat-icon stat-icon-amber">&#128202;</div>
             <div class="stat-info">
-                <!-- PHP: echo current rate FROM commission ORDER BY updated_at DESC LIMIT 1 -->
+                
                 <span class="stat-number"><?php echo $overview['current_rate']; ?>%</span>
                 <span class="stat-label">Current Commission Rate</span>
             </div>
@@ -81,7 +81,7 @@ $overview = Commission::viewCommissionOverview();
         </div>
     </div>
 
-    <!-- CHANGE COMMISSION RATE -->
+    
     <h3 class="admin-subsection-title admin-section-spacer">Change Commission Rate</h3>
 
     <div class="commission-form-card">
@@ -136,7 +136,7 @@ $overview = Commission::viewCommissionOverview();
     <?php } ?>
 </table>
 
-    <!-- COMMISSION RATE HISTORY -->
+    
     <h3 class="admin-subsection-title admin-section-spacer">Rate Change History</h3>
 
     <table class="admin-table">

@@ -43,7 +43,7 @@ if ($booking['status'] != 'confirmed') {
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -64,7 +64,7 @@ if ($booking['status'] != 'confirmed') {
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <!-- PHP:
@@ -86,7 +86,7 @@ if ($booking['status'] != 'confirmed') {
 
     <div class="listing-detail-layout">
 
-        <!-- LEFT: PAYMENT FORM -->
+        
         <div class="listing-detail-main">
             <div class="listing-detail-section">
 
@@ -126,7 +126,7 @@ if ($booking['status'] != 'confirmed') {
             </div>
         </div>
 
-        <!-- RIGHT: ORDER SUMMARY -->
+        
         <div class="listing-detail-sidebar">
             <div class="sidebar-card">
                 <h3 class="admin-subsection-title">Order Summary</h3>

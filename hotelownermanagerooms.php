@@ -39,7 +39,7 @@ $rooms      = Room::getRoomsByHotelListing($hotelListingId);
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -57,7 +57,7 @@ $rooms      = Room::getRoomsByHotelListing($hotelListingId);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="hotelownermanagelistings.php" class="back-link">&larr; Back to My Listings</a>
@@ -72,13 +72,13 @@ $rooms      = Room::getRoomsByHotelListing($hotelListingId);
         <p class="error">Something went wrong. Please try again.</p>
     <?php } ?>
 
-    <!-- ADD NEW ROOM -->
+    
     <h3 class="admin-subsection-title">Add New Room</h3>
 
     <div class="commission-form-card" style="max-width:550px; margin-bottom:40px;">
         <form name="addroomform" method="post" action="hotelowneraddroombackend.php" onsubmit="return validateAddRoom();">
 
-            <!-- PHP: echo hidden hotel_listing_id from $_GET['hotel_listing_id'] -->
+            
             <input type="hidden" name="hotel_listing_id" value="<?php echo $_GET['hotel_listing_id']; ?>">
 
             <label>Room Type</label>
@@ -104,7 +104,7 @@ $rooms      = Room::getRoomsByHotelListing($hotelListingId);
         </form>
     </div>
 
-    <!-- EXISTING ROOMS TABLE -->
+    
     <h3 class="admin-subsection-title">Existing Rooms</h3>
 
     <table class="admin-table">

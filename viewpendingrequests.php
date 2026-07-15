@@ -21,7 +21,7 @@ $requests = $user->viewPendingRequests($role);
 </head>
 <body>
 
-<!-- ADMIN NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -39,7 +39,7 @@ $requests = $user->viewPendingRequests($role);
     </table>
 </div>
 
-<!-- PAGE CONTENT -->
+
 <div class="admin-section">
 
     <a href="admindashboard.php" class="back-link">&larr; Back to Dashboard</a>
@@ -54,7 +54,7 @@ $requests = $user->viewPendingRequests($role);
         <p class="error">Something went wrong. Please try again.</p>
     <?php } ?>
 
-    <!-- FILTER BY ROLE -->
+    
     <div class="filter-bar">
         <a href="viewpendingrequests.php" class="filter-btn <?php echo !isset($_GET['role']) ? 'active' : ''; ?>">All</a>
         <a href="viewpendingrequests.php?role=tour_guide" class="filter-btn <?php echo (isset($_GET['role']) && $_GET['role']=='tour_guide') ? 'active' : ''; ?>">Tour Guides</a>
@@ -63,7 +63,7 @@ $requests = $user->viewPendingRequests($role);
         <a href="viewpendingrequests.php?role=experience_provider" class="filter-btn <?php echo (isset($_GET['role']) && $_GET['role']=='experience_provider') ? 'active' : ''; ?>">Experience Providers</a>
     </div>
 
-    <!-- PENDING REQUESTS TABLE -->
+    
     <table class="admin-table">
     <tr>
         <th>ID</th>

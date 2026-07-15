@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -28,7 +28,7 @@
     </table>
 </div>
 
-<!-- STEP 1: FIND ACCOUNT -->
+
 <div class="auth-section">
     <div class="auth-card auth-card-narrow">
         <h2>Forgot your password?</h2>

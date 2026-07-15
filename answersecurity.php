@@ -18,7 +18,7 @@ if (!isset($_SESSION['reset_user_id'])) {
     <script type="text/javascript" src="validateanswersecurity.js"></script>
 </head>
 <body>
-<!-- NAVBAR -->
+
 <div class="navbar">
     <table>
         <tr>
@@ -37,7 +37,7 @@ if (!isset($_SESSION['reset_user_id'])) {
         </tr>
     </table>
 </div>
-<!-- STEP 2: ANSWER SECURITY QUESTION -->
+
 <div class="auth-section">
     <div class="auth-card auth-card-narrow">
         <h2>Answer your security question</h2>

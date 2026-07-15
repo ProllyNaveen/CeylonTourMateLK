@@ -106,10 +106,10 @@ $backText = $from == 'pending' ? 'Back to Pending Requests' : 'Back to User Acco
 
     <div class="listing-detail-layout">
 
-        <!-- LEFT: USER DETAILS -->
+        
         <div class="listing-detail-main">
 
-            <!-- BASIC INFO -->
+            
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">Account Information</h3>
                 <table class="detail-table">
@@ -139,7 +139,7 @@ $backText = $from == 'pending' ? 'Back to Pending Requests' : 'Back to User Acco
                 </table>
             </div>
 
-            <!-- TOUR GUIDE LICENSE -->
+            
             <?php if($user['role'] == 'tour_guide' && $license) { ?>
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">Tour Guide License</h3>
@@ -157,7 +157,7 @@ $backText = $from == 'pending' ? 'Back to Pending Requests' : 'Back to User Acco
             </div>
             <?php } ?>
 
-            <!-- LISTINGS (for partners) -->
+            
             <?php if(!empty($listings)) { ?>
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">Listings</h3>
@@ -193,7 +193,7 @@ $backText = $from == 'pending' ? 'Back to Pending Requests' : 'Back to User Acco
             </div>
             <?php } ?>
 
-            <!-- BOOKINGS (for tourists) -->
+            
             <?php if(!empty($bookings)) { ?>
             <div class="listing-detail-section">
                 <h3 class="admin-subsection-title">Booking History</h3>
@@ -228,10 +228,10 @@ $backText = $from == 'pending' ? 'Back to Pending Requests' : 'Back to User Acco
 
         </div>
 
-        <!-- RIGHT: SIDEBAR -->
+        
         <div class="listing-detail-sidebar">
 
-            <!-- PROFILE PIC -->
+            
             <div class="sidebar-card">
                 <h3 class="admin-subsection-title">Profile Picture</h3>
                 <img src="<?php echo $user['profile_pic'] ?? 'uploads/profiles/default.png'; ?>"
@@ -239,7 +239,7 @@ $backText = $from == 'pending' ? 'Back to Pending Requests' : 'Back to User Acco
                      style="width:100%; border-radius:10px; object-fit:cover;">
             </div>
 
-            <!-- STATS -->
+            
             <div class="sidebar-card" style="margin-top:20px;">
                 <h3 class="admin-subsection-title">Statistics</h3>
                 <table class="detail-table">
@@ -252,7 +252,7 @@ $backText = $from == 'pending' ? 'Back to Pending Requests' : 'Back to User Acco
                 </table>
             </div>
 
-            <!-- ADMIN ACTIONS -->
+            
             <div class="sidebar-card" style="margin-top:20px;">
     <h3 class="admin-subsection-title">Actions</h3>
     <div style="display:flex; flex-direction:column; gap:10px;">
