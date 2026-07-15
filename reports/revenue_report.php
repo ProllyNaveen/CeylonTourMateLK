@@ -10,7 +10,7 @@ require_once 'pdfhelper.php';
 
 $conn = DBconnection::getInstance()->getConnection();
 
-// fetch revenue data by month
+
 $sql  = "SELECT 
             MONTHNAME(b.created_at) as month_name,
             MONTH(b.created_at) as month_num,
@@ -25,7 +25,7 @@ $stmt = $conn->prepare($sql);
 $stmt->execute();
 $bookingRevenue = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-// fetch listing fee revenue by month
+
 $sql2  = "SELECT
             MONTHNAME(payment_date) as month_name,
             MONTH(payment_date) as month_num,
@@ -40,18 +40,18 @@ $stmt2 = $conn->prepare($sql2);
 $stmt2->execute();
 $feeRevenue = $stmt2->get_result()->fetch_all(MYSQLI_ASSOC);
 
-// totals
+
 $totalCommission = array_sum(array_column($bookingRevenue, 'total_commission'));
 $totalFees       = array_sum(array_column($feeRevenue, 'total_fees'));
 $grandTotal      = $totalCommission + $totalFees;
 
-// generate PDF
+
 $mpdf = createPDF('Revenue Report');
 
 $html = getReportStyles();
 $html .= getReportHeader('Revenue Report', 'Monthly Revenue — Commission & Listing Fees');
 
-// booking commission table
+
 $html .= '<h3 style="color:#0f2a43; margin-top:20px;">Booking Commission Revenue</h3>';
 $html .= '<table>
     <thead>
@@ -78,7 +78,7 @@ if (empty($bookingRevenue)) {
 }
 $html .= '</tbody></table>';
 
-// listing fee table
+
 $html .= '<h3 style="color:#0f2a43; margin-top:25px;">Listing Fee Revenue</h3>';
 $html .= '<table>
     <thead>
@@ -105,7 +105,7 @@ if (empty($feeRevenue)) {
 }
 $html .= '</tbody></table>';
 
-// summary
+
 $html .= '
 <div class="summary-box">
     <div class="summary-title">Revenue Summary</div>
