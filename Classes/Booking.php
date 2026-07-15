@@ -23,14 +23,11 @@ class Booking {
         $this->guestCount    = $guestCount;
     }
 
-    // ===========================
-    // MAKE BOOKING
-    // roomIds only used for hotel bookings, pass empty array otherwise
-    // ===========================
+    
     public function makeBooking($roomIds = []) {
         $conn = DBconnection::getInstance()->getConnection();
 
-        // get listing type and price
+        
         $listingSql = "SELECT type, price FROM listings WHERE id = ? AND status = 'approved'";
         $listingStmt = $conn->prepare($listingSql);
         $listingStmt->bind_param("i", $this->listingId);
@@ -42,19 +39,19 @@ class Booking {
         }
         $listing = $listingResult->fetch_assoc();
 
-        // calculate total price based on listing type
+        
         if ($listing['type'] == 'hotel') {
             if (empty($roomIds)) {
                 return "noroomsselected";
             }
 
-            // calculate number of nights
+            
             $start = new DateTime($this->startDatetime);
             $end = new DateTime($this->endDatetime);
             $nights = $start->diff($end)->days;
             if ($nights < 1) $nights = 1;
 
-            // check room availability and sum prices
+            
             $this->totalPrice = 0;
             foreach ($roomIds as $roomId) {
                 $roomSql = "SELECT price_per_night FROM rooms WHERE id = ? AND is_available = 1";
@@ -70,7 +67,7 @@ class Booking {
                 $this->totalPrice += ($room['price_per_night'] * $nights);
             }
         } else {
-            // calculate number of days (round up any partial day)
+           
 					$start = new DateTime($this->startDatetime);
 					$end   = new DateTime($this->endDatetime);
 					$interval = $start->diff($end);
@@ -81,19 +78,19 @@ class Booking {
 					if ($days < 1) $days = 1;
 
 					if ($listing['type'] == 'tour_guide') {
-						// price per day x days
+						
 						$this->totalPrice = $listing['price'] * $days;
 					} else {
-						// experience: price per person
+						
 						$this->totalPrice = $listing['price'] * $this->guestCount;
 					}
         }
 
-        // calculate commission
+        
         $commission = new Commission(0, 0);
         $this->commissionAmount = $commission->calculateCommission($this->totalPrice);
 
-        // insert booking
+       
         $sql = "INSERT INTO bookings (tourist_id, listing_id, status, start_datetime,
                 end_datetime, guest_count, total_price, commission_amount)
                 VALUES (?, ?, 'pending', ?, ?, ?, ?, ?)";
@@ -111,7 +108,7 @@ class Booking {
         if ($stmt->execute()) {
             $this->id = $conn->insert_id;
 
-            // insert into junction table for hotel bookings
+            
             if ($listing['type'] == 'hotel') {
                 foreach ($roomIds as $roomId) {
                     $junctionSql = "INSERT INTO booking_rooms (booking_id, room_id) VALUES (?, ?)";
@@ -127,9 +124,7 @@ class Booking {
         }
     }
 
-    // ===========================
-    // CANCEL BOOKING
-    // ===========================
+    
     public function cancelBooking($bookingId, $byAdmin = false) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -165,9 +160,7 @@ class Booking {
         }
     }
 
-    // ===========================
-    // CONFIRM BOOKING (by partner)
-    // ===========================
+    
     public function confirmBooking($bookingId, $partnerId) {
     $conn = DBconnection::getInstance()->getConnection();
 
@@ -193,7 +186,7 @@ class Booking {
     $stmt->bind_param("i", $bookingId);
 
     if ($stmt->execute()) {
-        // auto send notification to tourist
+        
         require_once 'Notification.php';
         $notification = new Notification(
             $partnerId,
@@ -207,9 +200,7 @@ class Booking {
     }
 }
 
-    // ===========================
-    // COMPLETE BOOKING (by partner, after service delivered)
-    // ===========================
+    
     public function completeBooking($bookingId, $partnerId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -241,9 +232,7 @@ class Booking {
         }
     }
 
-    // ===========================
-    // VIEW BOOKING STATUS
-    // ===========================
+    
     public function viewBookingStatus($bookingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -260,10 +249,7 @@ class Booking {
         }
     }
 
-    // ===========================
-    // VIEW ALL BOOKINGS (admin only)
-    // Static — fetches every booking on the platform
-    // ===========================
+   
     public static function viewAllBookings($status = null) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -295,10 +281,7 @@ class Booking {
         return $bookings;
     }
 
-    // ===========================
-    // GET BOOKINGS FOR PARTNER
-    // Static — fetches bookings for a partner's listings
-    // ===========================
+    
     public static function getBookingsForPartner($partnerId, $status = null) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -334,10 +317,7 @@ class Booking {
         return $bookings;
     }
 
-    // ===========================
-    // GET BOOKINGS FOR TOURIST
-    // Static — fetches a tourist's own bookings
-    // ===========================
+    
     public static function getBookingsForTourist($touristId, $status = null) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -369,9 +349,7 @@ class Booking {
         return $bookings;
     }
 
-    // ===========================
-    // GETTERS
-    // ===========================
+   
     public function getId()               { return $this->id; }
     public function getTouristId()        { return $this->touristId; }
     public function getListingId()        { return $this->listingId; }
@@ -382,9 +360,7 @@ class Booking {
     public function getTotalPrice()       { return $this->totalPrice; }
     public function getCommissionAmount() { return $this->commissionAmount; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
+   
     public function setId($id)                     { $this->id = $id; }
     public function setTouristId($id)               { $this->touristId = $id; }
     public function setListingId($id)               { $this->listingId = $id; }
