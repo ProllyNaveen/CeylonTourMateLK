@@ -16,9 +16,6 @@ class Notification {
         $this->isRead     = 0;
     }
 
-    // ===========================
-    // SEND NOTIFICATION
-    // ===========================
     public function sendNotification() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -38,9 +35,6 @@ class Notification {
         }
     }
 
-    // ===========================
-    // MARK AS READ
-    // ===========================
     public function markAsRead($receiverId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -56,10 +50,6 @@ class Notification {
         }
     }
 
-    // ===========================
-    // GET NOTIFICATIONS
-    // Static method — fetches all notifications for a user
-    // ===========================
     public static function getNotifications($receiverId, $filter = null) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -95,18 +85,12 @@ class Notification {
         return $notifications;
     }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getId()         { return $this->id; }
     public function getSenderId()   { return $this->senderId; }
     public function getReceiverId() { return $this->receiverId; }
     public function getMessage()    { return $this->message; }
     public function getIsRead()     { return $this->isRead; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setId($id)               { $this->id = $id; }
     public function setSenderId($id)         { $this->senderId = $id; }
     public function setReceiverId($id)       { $this->receiverId = $id; }

@@ -12,10 +12,6 @@ class ListingImage {
         $this->imagePath = $imagePath;
     }
 
-    // ===========================
-    // SAVE
-    // Created and called internally by Listing only (composition)
-    // ===========================
     public function save() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -31,10 +27,6 @@ class ListingImage {
         }
     }
 
-    // ===========================
-    // GET IMAGES BY LISTING
-    // Static — used to display images on listing detail page
-    // ===========================
     public static function getImagesByListing($listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -51,10 +43,6 @@ class ListingImage {
         return $images;
     }
 
-    // ===========================
-    // DELETE ALL FOR LISTING
-    // Called internally by Listing::deleteListing()
-    // ===========================
     public static function deleteAllForListing($listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -64,16 +52,10 @@ class ListingImage {
         $stmt->execute();
     }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getId()        { return $this->id; }
     public function getListingId() { return $this->listingId; }
     public function getImagePath() { return $this->imagePath; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setId($id)          { $this->id = $id; }
     public function setListingId($id)   { $this->listingId = $id; }
     public function setImagePath($path) { $this->imagePath = $path; }

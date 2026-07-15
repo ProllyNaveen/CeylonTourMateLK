@@ -14,10 +14,6 @@ class Commission {
         $this->type      = $type;
     }
 
-    // ===========================
-    // CHANGE RATE
-    // INSERT new row — never UPDATE, to preserve history
-    // ===========================
     public function changeRate() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -37,10 +33,6 @@ class Commission {
         }
     }
 
-    // ===========================
-    // CALCULATE COMMISSION
-    // Gets latest booking commission rate
-    // ===========================
     public function calculateCommission($totalPrice) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -60,10 +52,6 @@ class Commission {
         }
     }
 
-    // ===========================
-    // GET CURRENT LISTING FEE
-    // Static — gets latest listing fee
-    // ===========================
     public static function getCurrentListingFee() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -81,23 +69,17 @@ class Commission {
         }
     }
 
-    // ===========================
-    // VIEW COMMISSION OVERVIEW
-    // Static — fetches all data for overview page
-    // ===========================
     public static function viewCommissionOverview() {
         $conn = DBconnection::getInstance()->getConnection();
 
         $overview = [];
 
-        // total commission from bookings
         $sql1  = "SELECT COALESCE(SUM(commission_amount), 0) as total_commission
                   FROM bookings WHERE status = 'completed'";
         $stmt1 = $conn->prepare($sql1);
         $stmt1->execute();
         $overview['total_commission'] = $stmt1->get_result()->fetch_assoc()['total_commission'];
 
-        // total listing fees collected
         $sql2  = "SELECT COALESCE(SUM(amount), 0) as total_fees
                   FROM payments WHERE type = 'listing_fee'
                   AND payment_status = 'completed'";
@@ -105,7 +87,6 @@ class Commission {
         $stmt2->execute();
         $overview['total_fees'] = $stmt2->get_result()->fetch_assoc()['total_fees'];
 
-        // current booking commission rate
         $sql3  = "SELECT rate FROM commission
                   WHERE type = 'booking_commission'
                   ORDER BY updated_at DESC LIMIT 1";
@@ -116,10 +97,8 @@ class Commission {
             ? $result3->fetch_assoc()['rate']
             : 0;
 
-        // current listing fee
         $overview['current_listing_fee'] = self::getCurrentListingFee();
 
-        // booking commission rate history
         $sql4  = "SELECT c.*, u.firstname, u.lastname
                   FROM commission c
                   JOIN users u ON c.updated_by = u.id
@@ -135,7 +114,6 @@ class Commission {
         }
         $overview['history'] = $history;
 
-        // listing fee history
         $sql5  = "SELECT c.*, u.firstname, u.lastname
                   FROM commission c
                   JOIN users u ON c.updated_by = u.id
@@ -154,17 +132,11 @@ class Commission {
         return $overview;
     }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getId()        { return $this->id; }
     public function getRate()      { return $this->rate; }
     public function getType()      { return $this->type; }
     public function getUpdatedBy() { return $this->updatedBy; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setId($id)             { $this->id = $id; }
     public function setRate($rate)         { $this->rate = $rate; }
     public function setType($type)         { $this->type = $type; }

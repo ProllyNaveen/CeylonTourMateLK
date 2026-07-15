@@ -21,10 +21,6 @@ class HotelListing extends Listing {
         $this->checkOutTime = $checkOutTime;
     }
 
-    // ===========================
-    // ADD HOTEL LISTING
-    // Inserts parent listing row, then the hotel_listings subtype row
-    // ===========================
     public function addHotelListing() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -54,9 +50,6 @@ class HotelListing extends Listing {
         }
     }
 
-    // ===========================
-    // UPDATE HOTEL LISTING
-    // ===========================
     public function updateHotelListing($listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -84,19 +77,11 @@ class HotelListing extends Listing {
         }
     }
 
-    // ===========================
-    // ADD ROOM
-    // Composition — HotelListing creates the Room object internally
-    // ===========================
     public function addRoom($hotelListingId, $description, $roomType, $pricePerNight, $capacity) {
         $room = new Room($hotelListingId, $description, $roomType, $pricePerNight, $capacity);
         return $room->save();
     }
 
-    // ===========================
-    // GET HOTEL LISTING DETAILS
-    // Static — fetches listing + hotel_listings joined
-    // ===========================
     public static function getHotelListingDetails($listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -116,26 +101,16 @@ class HotelListing extends Listing {
             return null;
         }
     }
-	// ===========================
-// DELETE HOTEL LISTING
-// Soft delete only — rooms, bookings, payments, messages, reviews all stay intact
-// ===========================
 public function deleteHotelListing($listingId, $userId) {
     return $this->deleteListing($listingId, $userId);
 }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getStarRating()   { return $this->starRating; }
     public function getAmenities()    { return $this->amenities; }
     public function getTotalRooms()   { return $this->totalRooms; }
     public function getCheckInTime()  { return $this->checkInTime; }
     public function getCheckOutTime() { return $this->checkOutTime; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setStarRating($rating)    { $this->starRating = $rating; }
     public function setAmenities($amenities)  { $this->amenities = $amenities; }
     public function setTotalRooms($total)     { $this->totalRooms = $total; }

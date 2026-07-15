@@ -18,13 +18,9 @@ class Review {
         $this->comment   = $comment;
     }
 
-    // ===========================
-    // WRITE REVIEW
-    // ===========================
     public function writeReview() {
         $conn = DBconnection::getInstance()->getConnection();
 
-        // check if review already exists for this booking
         $checkSql = "SELECT id FROM reviews WHERE booking_id = ? AND tourist_id = ?";
         $checkStmt = $conn->prepare($checkSql);
         $checkStmt->bind_param("ii", $this->bookingId, $this->touristId);
@@ -53,13 +49,9 @@ class Review {
         }
     }
 
-    // ===========================
-    // DELETE REVIEW
-    // ===========================
     public function deleteReview($reviewId) {
     $conn = DBconnection::getInstance()->getConnection();
 
-    // verify this review belongs to the tourist making the request
     $checkSql = "SELECT id FROM reviews WHERE id = ? AND tourist_id = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param("ii", $reviewId, $this->touristId);
@@ -81,10 +73,6 @@ class Review {
     }
 }
 
-    // ===========================
-    // GET REVIEWS FOR LISTING
-    // Static — fetches all reviews for a specific listing
-    // ===========================
     public static function getReviewsByListing($listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -105,10 +93,6 @@ class Review {
         return $reviews;
     }
 
-    // ===========================
-    // CHECK IF REVIEWED
-    // Static — checks if tourist already reviewed a booking
-    // ===========================
     public static function hasReviewed($bookingId, $touristId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -121,9 +105,6 @@ class Review {
         return $stmt->num_rows > 0;
     }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getId()        { return $this->id; }
     public function getTouristId() { return $this->touristId; }
     public function getListingId() { return $this->listingId; }
@@ -131,9 +112,6 @@ class Review {
     public function getRating()    { return $this->rating; }
     public function getComment()   { return $this->comment; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setId($id)             { $this->id = $id; }
     public function setTouristId($id)      { $this->touristId = $id; }
     public function setListingId($id)      { $this->listingId = $id; }

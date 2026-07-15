@@ -18,10 +18,6 @@ class TourGuideListing extends Listing {
         $this->availability     = $availability;
     }
 
-    // ===========================
-    // ADD TOUR GUIDE LISTING
-    // Inserts parent listing row, then the tourguide_listings subtype row
-    // ===========================
     public function addTourGuideListing() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -50,9 +46,6 @@ class TourGuideListing extends Listing {
         }
     }
 
-    // ===========================
-    // UPDATE TOUR GUIDE LISTING
-    // ===========================
     public function updateTourGuideListing($listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -79,14 +72,9 @@ class TourGuideListing extends Listing {
         }
     }
 
-    // ===========================
-    // SET AVAILABILITY
-    // Quick update from dashboard, without touching other fields
-    // ===========================
     public function setAvailability($listingId, $availability) {
         $conn = DBconnection::getInstance()->getConnection();
 
-        // verify ownership
         $checkSql = "SELECT l.id FROM listings l
                       JOIN tourguide_listings tl ON l.id = tl.listing_id
                       WHERE l.id = ? AND l.user_id = ?";
@@ -110,10 +98,6 @@ class TourGuideListing extends Listing {
         }
     }
 
-    // ===========================
-    // GET TOUR GUIDE LISTING DETAILS
-    // Static — fetches listing + tourguide_listings joined
-    // ===========================
     public static function getTourGuideListingDetails($listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -134,25 +118,15 @@ class TourGuideListing extends Listing {
         }
     }
 	
-	// ===========================
-// DELETE TOUR GUIDE LISTING
-// Soft delete only — bookings, payments, messages, reviews all stay intact
-// ===========================
 public function deleteTourGuideListing($listingId, $userId) {
     return $this->deleteListing($listingId, $userId);
 }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getLanguages()       { return $this->languages; }
     public function getSpecialization()  { return $this->specialization; }
     public function getExperienceYears() { return $this->experienceYears; }
     public function getAvailability()    { return $this->availability; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setLanguages($languages)      { $this->languages = $languages; }
     public function setSpecialization($spec)      { $this->specialization = $spec; }
     public function setExperienceYears($years)    { $this->experienceYears = $years; }

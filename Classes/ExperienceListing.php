@@ -18,10 +18,6 @@ class ExperienceListing extends Listing {
         $this->availability     = $availability;
     }
 
-    // ===========================
-    // ADD EXPERIENCE LISTING
-    // Inserts parent listing row, then the experience_listings subtype row
-    // ===========================
     public function addExperienceListing() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -50,9 +46,6 @@ class ExperienceListing extends Listing {
         }
     }
 
-    // ===========================
-    // UPDATE EXPERIENCE LISTING
-    // ===========================
     public function updateExperienceListing($listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -79,14 +72,9 @@ class ExperienceListing extends Listing {
         }
     }
 
-    // ===========================
-    // SET AVAILABILITY
-    // Quick update from dashboard, without touching other fields
-    // ===========================
     public function setAvailability($listingId, $availability) {
         $conn = DBconnection::getInstance()->getConnection();
 
-        // verify ownership
         $checkSql = "SELECT l.id FROM listings l
                       JOIN experience_listings el ON l.id = el.listing_id
                       WHERE l.id = ? AND l.user_id = ?";
@@ -110,10 +98,6 @@ class ExperienceListing extends Listing {
         }
     }
 
-    // ===========================
-    // GET EXPERIENCE LISTING DETAILS
-    // Static — fetches listing + experience_listings joined
-    // ===========================
     public static function getExperienceListingDetails($listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -133,25 +117,15 @@ class ExperienceListing extends Listing {
             return null;
         }
     }
-// ===========================
-// DELETE EXPERIENCE LISTING
-// Soft delete only — bookings, payments, messages, reviews all stay intact
-// ===========================
 public function deleteExperienceListing($listingId, $userId) {
     return $this->deleteListing($listingId, $userId);
 }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getExperienceType() { return $this->experienceType; }
     public function getDuration()       { return $this->duration; }
     public function getMaxGroupSize()   { return $this->maxGroupSize; }
     public function getAvailability()   { return $this->availability; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setExperienceType($type) { $this->experienceType = $type; }
     public function setDuration($duration)   { $this->duration = $duration; }
     public function setMaxGroupSize($size)   { $this->maxGroupSize = $size; }

@@ -24,10 +24,6 @@ class Listing {
         $this->type        = $type;
     }
 
-    // ===========================
-    // ADD LISTING
-    // Inserts the parent row, returns new id for subtype insert
-    // ===========================
     public function addListing() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -53,13 +49,9 @@ class Listing {
         }
     }
 
-    // ===========================
-    // UPDATE LISTING
-    // ===========================
     public function updateListing($listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
-        // verify ownership
         $checkSql = "SELECT id FROM listings WHERE id = ? AND user_id = ?";
         $checkStmt = $conn->prepare($checkSql);
         $checkStmt->bind_param("ii", $listingId, $this->userId);
@@ -89,13 +81,8 @@ class Listing {
         }
     }
 
-    // ===========================
-    // DELETE LISTING
-    // Note: caller must delete subtype row and images first (FK order)
-    // ===========================
     public function deleteListing($listingId, $userId) {
     $conn = DBconnection::getInstance()->getConnection();
-    // verify ownership
     $checkSql = "SELECT id FROM listings WHERE id = ? AND user_id = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param("ii", $listingId, $userId);
@@ -115,9 +102,6 @@ class Listing {
     }
 }
 
-    // ===========================
-    // UPLOAD IMAGE
-    // ===========================
 
 	public function uploadImage($listingId, $imagePaths) {
 		require_once 'ListingImage.php';
@@ -135,9 +119,6 @@ class Listing {
 		return $results;
 	}
 
-    // ===========================
-    // GET AVERAGE RATING
-    // ===========================
     public function getAverageRating($listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -155,9 +136,6 @@ class Listing {
         ];
     }
 
-    // ===========================
-    // APPROVE / REJECT LISTING (admin only)
-    // ===========================
     public function approveRejectListing($listingId, $action) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -174,10 +152,6 @@ class Listing {
         }
     }
 
-    // ===========================
-    // GET LISTINGS BY USER
-    // Static — fetches a partner's own listings
-    // ===========================
     public static function getListingsByUser($userId, $status = null) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -203,10 +177,6 @@ class Listing {
         return $listings;
     }
 
-    // ===========================
-    // GET PENDING LISTINGS (admin only)
-    // Static — fetches all pending listings, optionally by type
-    // ===========================
     public static function getPendingListings($type = null) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -237,10 +207,6 @@ class Listing {
         return $listings;
     }
 
-    // ===========================
-    // SEARCH LISTINGS (explore page)
-    // Static — used for tourist browsing/search
-    // ===========================
     public static function searchListings($keyword = null, $type = null, $city = null, $sort = 'latest') {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -298,9 +264,6 @@ class Listing {
         return $listings;
     }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getId()          { return $this->id; }
     public function getUserId()      { return $this->userId; }
     public function getTitle()       { return $this->title; }
@@ -311,9 +274,6 @@ class Listing {
     public function getStatus()      { return $this->status; }
     public function getType()        { return $this->type; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setId($id)               { $this->id = $id; }
     public function setUserId($id)           { $this->userId = $id; }
     public function setTitle($title)         { $this->title = $title; }

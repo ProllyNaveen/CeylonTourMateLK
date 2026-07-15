@@ -14,9 +14,6 @@ class TourGuideLicense {
         $this->licenseImage  = $licenseImage;
     }
 
-    // ===========================
-    // SUBMIT LICENSE
-    // ===========================
     public function submitLicense() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -36,17 +33,11 @@ class TourGuideLicense {
         }
     }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getId()            { return $this->id; }
     public function getUserId()        { return $this->userId; }
     public function getLicenseNumber() { return $this->licenseNumber; }
     public function getLicenseImage()  { return $this->licenseImage; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setId($id)                    { $this->id = $id; }
     public function setUserId($userId)            { $this->userId = $userId; }
     public function setLicenseNumber($number)     { $this->licenseNumber = $number; }

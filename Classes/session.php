@@ -5,12 +5,10 @@ function checkSession() {
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
-    // if not logged in redirect to login
     if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
         header("Location:login.php");
         exit();
     }
-    // load firstname into session if not already cached
     if (!isset($_SESSION['firstname'])) {
         $conn = DBconnection::getInstance()->getConnection();
         $stmt = $conn->prepare("SELECT firstname FROM users WHERE id = ?");
@@ -26,7 +24,6 @@ function checkSession() {
 
 function checkRole($allowedRoles) {
     checkSession();
-    // if logged in but wrong role redirect to their own dashboard
     if (!in_array($_SESSION['role'], $allowedRoles)) {
         switch ($_SESSION['role']) {
             case 'admin':

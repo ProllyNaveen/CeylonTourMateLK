@@ -10,10 +10,6 @@ class DBconnection {
     private $password = "";
     private $database = "ceylontourmatelk";
 
-    // ===========================
-    // PRIVATE CONSTRUCTOR
-    // Throws an exception instead of die() so calling code can catch it gracefully
-    // ===========================
     private function __construct() {
         $this->connection = new mysqli($this->host, $this->username, $this->password, $this->database);
 
@@ -24,10 +20,6 @@ class DBconnection {
         $this->connection->set_charset("utf8mb4");
     }
 
-    // ===========================
-    // GET INSTANCE
-    // Returns the single shared instance of this class (Singleton pattern)
-    // ===========================
     public static function getInstance() {
         if (self::$instance == null) {
             self::$instance = new DBconnection();
@@ -35,10 +27,6 @@ class DBconnection {
         return self::$instance;
     }
 
-    // ===========================
-    // GET CONNECTION
-    // Returns the actual mysqli connection object to run queries on
-    // ===========================
     public function getConnection() {
         return $this->connection;
     }

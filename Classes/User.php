@@ -34,13 +34,9 @@ class User {
         $this->securityAnswer   = $securityAnswer;
     }
 
-    // ===========================
-    // REGISTER
-    // ===========================
     public function register() {
         $conn = DBconnection::getInstance()->getConnection();
 
-        // check if username or email already exists
         $checkSql = "SELECT id FROM users WHERE username = ? OR email = ?";
         $checkStmt = $conn->prepare($checkSql);
         $checkStmt->bind_param("ss", $this->username, $this->email);
@@ -79,9 +75,6 @@ class User {
         }
     }
 
-    // ===========================
-    // LOGIN
-    // ===========================
     public function login() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -117,9 +110,6 @@ class User {
         }
     }
 
-    // ===========================
-    // LOGOUT
-    // ===========================
     public function logout() {
         session_start();
         session_unset();
@@ -127,9 +117,6 @@ class User {
         return "success";
     }
 
-    // ===========================
-    // EDIT PROFILE
-    // ===========================
     public function editProfile($currentPassword, $newPassword) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -184,9 +171,6 @@ class User {
         }
     }
 
-    // ===========================
-    // FIND ACCOUNT (forgot password step 1)
-    // ===========================
     public function findAccount() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -203,9 +187,6 @@ class User {
         }
     }
 
-    // ===========================
-    // VERIFY SECURITY ANSWER (forgot password step 2)
-    // ===========================
     public function verifySecurityAnswer($userId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -222,9 +203,6 @@ class User {
         }
     }
 
-    // ===========================
-    // RESET PASSWORD (forgot password step 3)
-    // ===========================
     public function resetPassword($userId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -241,9 +219,6 @@ class User {
         }
     }
 
-    // ===========================
-    // MANAGE ADMIN ACCOUNTS (admin only)
-    // ===========================
     public function manageAdminAccounts() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -260,9 +235,6 @@ class User {
         return $admins;
     }
 
-    // ===========================
-    // VIEW PENDING REQUESTS (admin only)
-    // ===========================
     public function viewPendingRequests($role = null) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -294,9 +266,6 @@ class User {
         return $requests;
     }
 
-    // ===========================
-    // APPROVE / REJECT REGISTRATION (admin only)
-    // ===========================
     public function approveRejectRegistration($userId, $action) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -317,9 +286,6 @@ class User {
         }
     }
 
-    // ===========================
-    // MANAGE USER ACCOUNTS (admin only)
-    // ===========================
     public function manageUserAccounts($role = null) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -344,9 +310,6 @@ class User {
         return $users;
     }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getId()        { return $this->id; }
     public function getFirstname() { return $this->firstname; }
     public function getLastname()  { return $this->lastname; }
@@ -354,9 +317,6 @@ class User {
     public function getEmail()     { return $this->email; }
     public function getRole()      { return $this->role; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setId($id)               { $this->id = $id; }
     public function setFirstname($firstname) { $this->firstname = $firstname; }
     public function setLastname($lastname)   { $this->lastname = $lastname; }

@@ -20,10 +20,6 @@ class Room {
         $this->isAvailable      = 1;
     }
 
-    // ===========================
-    // SAVE
-    // Created and called internally by HotelListing (composition)
-    // ===========================
     public function save() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -47,9 +43,6 @@ class Room {
         }
     }
 
-    // ===========================
-    // SET ROOM AVAILABILITY
-    // ===========================
     public function setRoomAvailability($roomId, $isAvailable) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -64,9 +57,6 @@ class Room {
         }
     }
 
-    // ===========================
-    // UPDATE ROOM
-    // ===========================
     public function updateRoom($roomId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -88,9 +78,6 @@ class Room {
         }
     }
 
-    // ===========================
-    // DELETE ROOM
-    // ===========================
     public function deleteRoom($roomId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -105,10 +92,6 @@ class Room {
         }
     }
 
-    // ===========================
-    // GET ROOMS BY HOTEL LISTING
-    // Static — used for manage rooms page and booking page
-    // ===========================
     public static function getRoomsByHotelListing($hotelListingId, $onlyAvailable = false) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -131,9 +114,6 @@ class Room {
         return $rooms;
     }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getId()             { return $this->id; }
     public function getHotelListingId() { return $this->hotelListingId; }
     public function getDescription()    { return $this->description; }
@@ -142,9 +122,6 @@ class Room {
     public function getCapacity()       { return $this->capacity; }
     public function getIsAvailable()    { return $this->isAvailable; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setId($id)                    { $this->id = $id; }
     public function setHotelListingId($id)        { $this->hotelListingId = $id; }
     public function setDescription($desc)         { $this->description = $desc; }

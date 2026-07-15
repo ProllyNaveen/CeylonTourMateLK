@@ -25,14 +25,9 @@ class Payment {
         $this->feeYear       = $feeYear;
     }
 
-    // ===========================
-    // COMPLETE PAYMENT
-    // For booking payments (tour guide, hotel, experience)
-    // ===========================
     public function completePayment() {
     $conn = DBconnection::getInstance()->getConnection();
 
-    // verify booking belongs to this user and is confirmed by the partner
     $checkSql = "SELECT id, status FROM bookings WHERE id = ? AND tourist_id = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param("ii", $this->bookingId, $this->userId);
@@ -65,14 +60,9 @@ class Payment {
     }
 }
 
-    // ===========================
-    // PAY LISTING FEE
-    // For shop owners only
-    // ===========================
     public function payListingFee() {
         $conn = DBconnection::getInstance()->getConnection();
 
-        // verify shop listing belongs to this user
         $checkOwnerSql = "SELECT sl.id FROM shop_listings sl
                            JOIN listings l ON sl.listing_id = l.id
                            WHERE sl.id = ? AND l.user_id = ?";
@@ -85,7 +75,6 @@ class Payment {
             return "unauthorized";
         }
 
-        // check fee not already paid for this month/year
         $checkSql = "SELECT id FROM payments
                       WHERE shop_listing_id = ? AND type = 'listing_fee'
                       AND payment_status = 'completed'
@@ -118,10 +107,6 @@ class Payment {
         }
     }
 
-    // ===========================
-    // GET PAYMENT HISTORY FOR USER
-    // Static — fetches all payments made by a user
-    // ===========================
     public static function getPaymentHistory($userId, $type = null) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -147,10 +132,6 @@ class Payment {
         return $payments;
     }
 
-    // ===========================
-    // CHECK FEE STATUS
-    // Static — checks if a shop listing's fee is paid for given month/year
-    // ===========================
     public static function isFeesPaid($shopListingId, $month, $year) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -166,9 +147,6 @@ class Payment {
         return $stmt->num_rows > 0;
     }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getId()            { return $this->id; }
     public function getUserId()        { return $this->userId; }
     public function getShopListingId() { return $this->shopListingId; }
@@ -179,9 +157,6 @@ class Payment {
     public function getFeeMonth()      { return $this->feeMonth; }
     public function getFeeYear()       { return $this->feeYear; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setId($id)                       { $this->id = $id; }
     public function setUserId($id)                   { $this->userId = $id; }
     public function setShopListingId($id)             { $this->shopListingId = $id; }

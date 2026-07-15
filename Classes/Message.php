@@ -18,9 +18,6 @@ class Message {
         $this->isRead     = 0;
     }
 
-    // ===========================
-    // SEND MESSAGE
-    // ===========================
     public function sendMessage() {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -41,19 +38,10 @@ class Message {
         }
     }
 
-    // ===========================
-    // REPLY TO MESSAGE
-    // Same as sendMessage but semantically a reply
-    // sender and receiver are swapped from the original
-    // ===========================
     public function replyToMessage() {
         return $this->sendMessage();
     }
 
-    // ===========================
-    // GET CONVERSATIONS
-    // Static — fetches all unique conversations for a user
-    // ===========================
     public static function getConversations($userId) {
     $conn = DBconnection::getInstance()->getConnection();
 
@@ -90,10 +78,6 @@ class Message {
     return $conversations;
 }
 
-    // ===========================
-    // GET THREAD
-    // Static — fetches all messages in a conversation
-    // ===========================
     public static function getThread($userId, $otherUserId, $listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -120,9 +104,6 @@ class Message {
         return $thread;
     }
 
-    // ===========================
-    // MARK THREAD AS READ
-    // ===========================
     public static function markThreadAsRead($receiverId, $senderId, $listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -133,9 +114,6 @@ class Message {
         $stmt->execute();
     }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getId()         { return $this->id; }
     public function getSenderId()   { return $this->senderId; }
     public function getReceiverId() { return $this->receiverId; }
@@ -143,9 +121,6 @@ class Message {
     public function getMessage()    { return $this->message; }
     public function getIsRead()     { return $this->isRead; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setId($id)               { $this->id = $id; }
     public function setSenderId($id)         { $this->senderId = $id; }
     public function setReceiverId($id)       { $this->receiverId = $id; }

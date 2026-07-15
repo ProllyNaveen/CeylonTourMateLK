@@ -17,21 +17,15 @@ class ShopListing extends Listing {
         $this->closeTime = $closeTime;
     }
 
-    // ===========================
-    // ADD SHOP LISTING
-    // Inserts parent listing row, then the shop_listings subtype row
-    // ===========================
     public function addShopListing() {
         $conn = DBconnection::getInstance()->getConnection();
 
-        // insert parent listing first
         $listingId = $this->addListing();
 
         if (!$listingId) {
             return "error";
         }
 
-        // insert shop-specific row
         $sql = "INSERT INTO shop_listings (listing_id, shop_type, open_time, close_time)
                 VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
@@ -49,13 +43,9 @@ class ShopListing extends Listing {
         }
     }
 
-    // ===========================
-    // UPDATE SHOP LISTING
-    // ===========================
     public function updateShopListing($listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
-        // update parent listing fields
         $parentResult = $this->updateListing($listingId);
         if ($parentResult != "success") {
             return $parentResult;
@@ -79,13 +69,8 @@ class ShopListing extends Listing {
     }
 	
 	public function deleteShopListing($listingId, $userId) {
-    // soft delete only — bookings, payments, messages, reviews all stay intact
     return $this->deleteListing($listingId, $userId);
 }
-    // ===========================
-    // GET SHOP LISTING DETAILS
-    // Static — fetches listing + shop_listings joined
-    // ===========================
     public static function getShopListingDetails($listingId) {
         $conn = DBconnection::getInstance()->getConnection();
 
@@ -105,16 +90,10 @@ class ShopListing extends Listing {
         }
     }
 
-    // ===========================
-    // GETTERS
-    // ===========================
     public function getShopType()  { return $this->shopType; }
     public function getOpenTime()  { return $this->openTime; }
     public function getCloseTime() { return $this->closeTime; }
 
-    // ===========================
-    // SETTERS
-    // ===========================
     public function setShopType($type)   { $this->shopType = $type; }
     public function setOpenTime($time)   { $this->openTime = $time; }
     public function setCloseTime($time)  { $this->closeTime = $time; }
