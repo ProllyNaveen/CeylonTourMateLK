@@ -1,0 +1,191 @@
+<h1 style="text-align:center; font-size:32px;">CeylonTourMate.lk</h1>
+<h2 style="text-align:center; font-size:22px; color:#444;">File Design Diagram</h2>
+<h3>Table: users</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID for each user (Primary Key)</td></tr>
+<tr><td>firstname</td><td>Text</td><td>50</td><td>User's first name</td></tr>
+<tr><td>lastname</td><td>Text</td><td>50</td><td>User's last name</td></tr>
+<tr><td>username</td><td>Text</td><td>50</td><td>Must be unique</td></tr>
+<tr><td>email</td><td>Text</td><td>100</td><td>Must be unique</td></tr>
+<tr><td>password</td><td>Text</td><td>255</td><td>Encrypted password</td></tr>
+<tr><td>phone</td><td>Text</td><td>15</td><td>Contact number</td></tr>
+<tr><td>profile_pic</td><td>Text</td><td>255</td><td>File path to profile picture (default: default.png)</td></tr>
+<tr><td>role</td><td>Text (fixed options)</td><td>1</td><td>Options: tourist, tour_guide, shop_owner, hotel_owner, experience_provider, admin</td></tr>
+<tr><td>is_suspended</td><td>Yes/No</td><td>1</td><td>Whether the account is suspended by admin</td></tr>
+<tr><td>is_approved</td><td>Yes/No</td><td>1</td><td>Whether the account has been approved</td></tr>
+<tr><td>security_question</td><td>Text</td><td>255</td><td>Used for password recovery</td></tr>
+<tr><td>security_answer</td><td>Text</td><td>255</td><td>Answer to security question</td></tr>
+<tr><td>created_at</td><td>DateTime</td><td>4</td><td>Date and time account was created</td></tr>
+</table>
+
+<h3>Table: listings</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID for each listing (Primary Key)</td></tr>
+<tr><td>user_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Users table (owner of listing)</td></tr>
+<tr><td>title</td><td>Text</td><td>255</td><td>Listing title</td></tr>
+<tr><td>description</td><td>Text (Long)</td><td>Variable</td><td>Full description of the listing</td></tr>
+<tr><td>location</td><td>Text</td><td>255</td><td>Specific address/area</td></tr>
+<tr><td>city</td><td>Text</td><td>100</td><td>City name</td></tr>
+<tr><td>price</td><td>Currency</td><td>5</td><td>Base price of listing</td></tr>
+<tr><td>status</td><td>Text (fixed options)</td><td>1</td><td>Options: pending, approved, rejected</td></tr>
+<tr><td>type</td><td>Text (fixed options)</td><td>1</td><td>Options: tour_guide, shop, hotel, experience</td></tr>
+<tr><td>created_at</td><td>DateTime</td><td>4</td><td>Date and time listing was created</td></tr>
+<tr><td>is_deleted</td><td>Yes/No</td><td>1</td><td>Soft-delete flag (1 = hidden, not permanently removed)</td></tr>
+</table>
+
+<h3>Table: listing_images</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID for each image (Primary Key)</td></tr>
+<tr><td>listing_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Listings table</td></tr>
+<tr><td>image_path</td><td>Text</td><td>255</td><td>File path to image, not the image itself</td></tr>
+</table>
+
+<h3>Table: hotel_listings</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID (Primary Key)</td></tr>
+<tr><td>listing_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Listings table</td></tr>
+<tr><td>star_rating</td><td>Number</td><td>4</td><td>Hotel rating from 1 to 5 stars</td></tr>
+<tr><td>amenities</td><td>Text (Long)</td><td>Variable</td><td>Comma-separated list of hotel amenities</td></tr>
+<tr><td>total_rooms</td><td>Number</td><td>4</td><td>Total number of rooms in the hotel</td></tr>
+<tr><td>check_in_time</td><td>DateTime (Time only)</td><td>3</td><td>Standard check-in time</td></tr>
+<tr><td>check_out_time</td><td>DateTime (Time only)</td><td>3</td><td>Standard check-out time</td></tr>
+</table>
+
+<h3>Table: rooms</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID (Primary Key)</td></tr>
+<tr><td>hotel_listing_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Hotel Listings table</td></tr>
+<tr><td>description</td><td>Text (Long)</td><td>Variable</td><td>Room description</td></tr>
+<tr><td>room_type</td><td>Text (fixed options)</td><td>1</td><td>Options: single, double, suite, family</td></tr>
+<tr><td>price_per_night</td><td>Currency</td><td>5</td><td>Price for one night</td></tr>
+<tr><td>capacity</td><td>Number</td><td>4</td><td>Maximum number of guests</td></tr>
+<tr><td>is_available</td><td>Yes/No</td><td>1</td><td>Whether the room is currently available</td></tr>
+</table>
+
+<h3>Table: shop_listings</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID (Primary Key)</td></tr>
+<tr><td>listing_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Listings table</td></tr>
+<tr><td>shop_type</td><td>Text</td><td>100</td><td>e.g. Jewellery, Souvenir</td></tr>
+<tr><td>open_time</td><td>DateTime (Time only)</td><td>3</td><td>Shop opening time</td></tr>
+<tr><td>close_time</td><td>DateTime (Time only)</td><td>3</td><td>Shop closing time</td></tr>
+</table>
+
+<h3>Table: experience_listings</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID (Primary Key)</td></tr>
+<tr><td>listing_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Listings table</td></tr>
+<tr><td>experience_type</td><td>Text</td><td>100</td><td>e.g. Historical, Photography</td></tr>
+<tr><td>duration</td><td>Text</td><td>100</td><td>e.g. "2 hours"</td></tr>
+<tr><td>max_group_size</td><td>Number</td><td>4</td><td>Maximum people allowed per group</td></tr>
+<tr><td>availability</td><td>Text</td><td>255</td><td>e.g. "Daily", "Weekends only"</td></tr>
+</table>
+
+<h3>Table: tourguide_listings</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID (Primary Key)</td></tr>
+<tr><td>listing_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Listings table</td></tr>
+<tr><td>languages</td><td>Text</td><td>255</td><td>Languages spoken by the guide</td></tr>
+<tr><td>specialization</td><td>Text</td><td>255</td><td>e.g. Historical, Adventure</td></tr>
+<tr><td>experience_years</td><td>Number</td><td>4</td><td>Years of guiding experience</td></tr>
+<tr><td>availability</td><td>Text</td><td>255</td><td>e.g. "Daily", "Weekdays only"</td></tr>
+</table>
+
+<h3>Table: tourguide_licenses</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID (Primary Key)</td></tr>
+<tr><td>user_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Users table</td></tr>
+<tr><td>license_number</td><td>Text</td><td>100</td><td>Official tour guide license number</td></tr>
+<tr><td>license_image</td><td>Text</td><td>255</td><td>File path to uploaded license image</td></tr>
+</table>
+
+<h3>Table: bookings</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID (Primary Key)</td></tr>
+<tr><td>tourist_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Users table (tourist who booked)</td></tr>
+<tr><td>listing_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Listings table</td></tr>
+<tr><td>status</td><td>Text (fixed options)</td><td>1</td><td>Options: pending, confirmed, cancelled, completed</td></tr>
+<tr><td>start_datetime</td><td>DateTime</td><td>8</td><td>Booking start date and time</td></tr>
+<tr><td>end_datetime</td><td>DateTime</td><td>8</td><td>Booking end date and time</td></tr>
+<tr><td>guest_count</td><td>Number</td><td>4</td><td>Number of guests included in booking</td></tr>
+<tr><td>total_price</td><td>Currency</td><td>5</td><td>Total price of the booking</td></tr>
+<tr><td>commission_amount</td><td>Currency</td><td>5</td><td>Platform's commission earned from this booking</td></tr>
+<tr><td>created_at</td><td>DateTime</td><td>4</td><td>Date and time booking was made</td></tr>
+</table>
+
+<h3>Table: booking_rooms</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>booking_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Bookings table (part of Composite Primary Key)</td></tr>
+<tr><td>room_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Rooms table (part of Composite Primary Key)</td></tr>
+</table>
+
+<h3>Table: payments</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID (Primary Key)</td></tr>
+<tr><td>user_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Users table</td></tr>
+<tr><td>shop_listing_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Shop Listings table (used for listing fee payments)</td></tr>
+<tr><td>booking_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Bookings table (used for booking payments)</td></tr>
+<tr><td>type</td><td>Text (fixed options)</td><td>1</td><td>Options: booking, listing_fee</td></tr>
+<tr><td>amount</td><td>Currency</td><td>5</td><td>Payment amount</td></tr>
+<tr><td>payment_status</td><td>Text (fixed options)</td><td>1</td><td>Options: pending, completed, failed</td></tr>
+<tr><td>fee_month</td><td>Number</td><td>4</td><td>Month number, used only for listing fee payments</td></tr>
+<tr><td>fee_year</td><td>Number</td><td>4</td><td>Year, used only for listing fee payments</td></tr>
+<tr><td>payment_date</td><td>DateTime</td><td>4</td><td>Date and time payment was made</td></tr>
+</table>
+
+<h3>Table: reviews</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID (Primary Key)</td></tr>
+<tr><td>tourist_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Users table</td></tr>
+<tr><td>listing_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Listings table</td></tr>
+<tr><td>booking_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Bookings table</td></tr>
+<tr><td>rating</td><td>Number</td><td>4</td><td>Rating score, restricted to 1–5</td></tr>
+<tr><td>comment</td><td>Text (Long)</td><td>Variable</td><td>Reviewer's written comment</td></tr>
+<tr><td>created_at</td><td>DateTime</td><td>4</td><td>Date and time review was posted</td></tr>
+</table>
+
+<h3>Table: messages</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID (Primary Key)</td></tr>
+<tr><td>sender_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Users table</td></tr>
+<tr><td>receiver_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Users table</td></tr>
+<tr><td>listing_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Listings table (message relates to this listing)</td></tr>
+<tr><td>message</td><td>Text (Long)</td><td>Variable</td><td>Message content</td></tr>
+<tr><td>is_read</td><td>Yes/No</td><td>1</td><td>Whether the message has been read</td></tr>
+<tr><td>created_at</td><td>DateTime</td><td>4</td><td>Date and time message was sent</td></tr>
+</table>
+
+<h3>Table: notifications</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID (Primary Key)</td></tr>
+<tr><td>sender_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Users table (usually admin/system)</td></tr>
+<tr><td>receiver_id</td><td>Number</td><td>4</td><td>Foreign Key → links to Users table</td></tr>
+<tr><td>message</td><td>Text (Long)</td><td>Variable</td><td>Notification content</td></tr>
+<tr><td>is_read</td><td>Yes/No</td><td>1</td><td>Whether the notification has been read</td></tr>
+<tr><td>created_at</td><td>DateTime</td><td>4</td><td>Date and time notification was created</td></tr>
+</table>
+
+<h3>Table: commission</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Field Name</th><th>Data Type</th><th>Size (bytes)</th><th>Remarks</th></tr>
+<tr><td>id</td><td>Number</td><td>4</td><td>Unique ID (Primary Key)</td></tr>
+<tr><td>rate</td><td>Currency</td><td>3</td><td>Commission rate value (percentage or fixed fee)</td></tr>
+<tr><td>type</td><td>Text (fixed options)</td><td>1</td><td>Options: booking_commission, listing_fee</td></tr>
+<tr><td>updated_by</td><td>Number</td><td>4</td><td>Foreign Key → links to Users table (admin who made the change)</td></tr>
+<tr><td>updated_at</td><td>DateTime</td><td>4</td><td>Date and time rate was last updated</td></tr>
+</table>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 11, 2026 at 09:06 PM
+-- Generation Time: Jul 21, 2026 at 07:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -49,7 +49,13 @@ INSERT INTO `bookings` (`id`, `tourist_id`, `listing_id`, `status`, `start_datet
 (2, 9, 4, 'cancelled', '2026-07-07 21:00:00', '2026-07-08 07:00:00', 2, 1500.00, 75.00, '2026-07-06 17:23:05'),
 (3, 9, 4, 'cancelled', '2026-07-08 21:22:00', '2026-07-08 22:22:00', 2, 1500.00, 75.00, '2026-07-06 17:25:15'),
 (4, 9, 4, 'completed', '2026-07-07 21:00:00', '2026-07-08 07:00:00', 2, 1500.00, 75.00, '2026-07-06 17:27:43'),
-(5, 9, 2, 'completed', '2026-07-09 13:00:00', '2026-07-09 14:00:00', 1, 12121.00, 606.05, '2026-07-08 06:37:29');
+(5, 9, 2, 'completed', '2026-07-09 13:00:00', '2026-07-09 14:00:00', 1, 12121.00, 606.05, '2026-07-08 06:37:29'),
+(6, 9, 17, 'cancelled', '2026-07-14 07:00:00', '2026-07-16 21:00:00', 4, 44000.00, 2200.00, '2026-07-13 10:17:51'),
+(7, 9, 17, 'cancelled', '2026-07-14 07:00:00', '2026-07-18 21:00:00', 4, 44000.00, 2200.00, '2026-07-13 10:25:50'),
+(8, 9, 17, 'cancelled', '2026-07-15 07:00:00', '2026-07-15 20:00:00', 3, 11000.00, 550.00, '2026-07-13 10:34:43'),
+(9, 9, 17, 'cancelled', '2026-07-14 07:00:00', '2026-07-18 20:00:00', 2, 44000.00, 2200.00, '2026-07-13 10:35:34'),
+(10, 9, 17, 'completed', '2026-07-14 07:00:00', '2026-07-18 20:00:00', 2, 55000.00, 2750.00, '2026-07-13 10:38:29'),
+(11, 14, 15, 'completed', '2026-07-14 07:00:00', '2026-07-15 10:00:00', 2, 30000.00, 1500.00, '2026-07-13 11:33:25');
 
 -- --------------------------------------------------------
 
@@ -70,7 +76,8 @@ INSERT INTO `booking_rooms` (`booking_id`, `room_id`) VALUES
 (1, 1),
 (2, 1),
 (3, 1),
-(4, 1);
+(4, 1),
+(11, 3);
 
 -- --------------------------------------------------------
 
@@ -115,7 +122,9 @@ CREATE TABLE `experience_listings` (
 --
 
 INSERT INTO `experience_listings` (`id`, `listing_id`, `experience_type`, `duration`, `max_group_size`, `availability`) VALUES
-(1, 2, 'Historical', '1 hour', 10, 'Weekdays only');
+(1, 2, 'Historical', '1 hour', 10, 'Weekdays only'),
+(2, 14, 'Photography', '2 hours', 1, 'Daily'),
+(3, 16, 'Historical', '2 hours', 20, 'Weekends only');
 
 -- --------------------------------------------------------
 
@@ -138,7 +147,8 @@ CREATE TABLE `hotel_listings` (
 --
 
 INSERT INTO `hotel_listings` (`id`, `listing_id`, `star_rating`, `amenities`, `total_rooms`, `check_in_time`, `check_out_time`) VALUES
-(1, 4, 4, 'asdasd', 12, '08:00:00', '18:00:00');
+(1, 4, 4, 'asdasd', 12, '08:00:00', '18:00:00'),
+(3, 15, 5, 'Secured parking,Free High Speed Internet (WiFi),Yoga classes,Pool,Restaurant,Bicycle rental,Bicycles available,Airport transportation', 2, '11:00:00', '12:00:00');
 
 -- --------------------------------------------------------
 
@@ -156,20 +166,26 @@ CREATE TABLE `listings` (
   `price` decimal(10,2) DEFAULT NULL,
   `status` enum('pending','approved','rejected') DEFAULT 'pending',
   `type` enum('tour_guide','shop','hotel','experience') DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `listings`
 --
 
-INSERT INTO `listings` (`id`, `user_id`, `title`, `description`, `location`, `city`, `price`, `status`, `type`, `created_at`) VALUES
-(1, 6, 'test', 'test', 'galle', NULL, NULL, 'approved', 'shop', '2026-07-05 09:33:43'),
-(2, 7, 'testexp', 'asdasd', 'galle fort', 'Ratnapura', 1800.00, 'approved', 'experience', '2026-07-06 08:11:20'),
-(3, 2, 'sdad', 'asda', 'asd', 'Anuradhapura', 1400.00, 'approved', 'tour_guide', '2026-07-06 09:41:57'),
-(4, 8, 'hotel1', 'asdasd', 'asdasd', 'Batticaloa', 15000.00, 'approved', 'hotel', '2026-07-06 15:41:01'),
-(5, 6, 'Lucky Jewellery', 'nsdnalksdnlas', 'Galle Fort', NULL, NULL, 'approved', 'shop', '2026-07-08 07:05:02'),
-(11, 6, 'Mahinda Jewellers', 'Jewelry store', 'Habaraduwa', 'Galle', 500.00, 'approved', 'shop', '2026-07-11 16:38:49');
+INSERT INTO `listings` (`id`, `user_id`, `title`, `description`, `location`, `city`, `price`, `status`, `type`, `created_at`, `is_deleted`) VALUES
+(1, 6, 'test', 'test', 'galle', NULL, NULL, 'approved', 'shop', '2026-07-05 09:33:43', 1),
+(2, 7, 'testexp', 'asdasd', 'galle fort', 'Ratnapura', 1800.00, 'approved', 'experience', '2026-07-06 08:11:20', 1),
+(3, 2, 'sdad', 'asda', 'asd', 'Anuradhapura', 1400.00, 'approved', 'tour_guide', '2026-07-06 09:41:57', 1),
+(4, 8, 'hotel1', 'asdasd', 'asdasd', 'Batticaloa', 15000.00, 'approved', 'hotel', '2026-07-06 15:41:01', 1),
+(5, 6, 'Lucky Jewellery', 'nsdnalksdnlas', 'Galle Fort', NULL, NULL, 'approved', 'shop', '2026-07-08 07:05:02', 1),
+(11, 6, 'Mahinda Jewellers', 'Jewelry store', 'Habaraduwa', 'Galle', 500.00, 'approved', 'shop', '2026-07-11 16:38:49', 0),
+(13, 6, 'asda', 'asda', 'kkk', 'Galle', 5000.00, 'approved', 'shop', '2026-07-12 07:35:42', 1),
+(14, 7, 'sda', 'asda', 'ada', 'Polonnaruwa', 4444.00, 'pending', 'experience', '2026-07-12 09:25:12', 1),
+(15, 8, 'KK Hotel', 'Set high up above a tea estate, and yet within easy reach of the stunning beaches for which Sri Lanka is well know, Kahanda Kanda is the perfect hideaway. With 17 stunning individual villas that afford privacy and space, 13 of which have their own private plunge pools, combined with sensational views, the cuisine is superb, and the service is first class', 'Thiththagalla West', 'Galle', 30000.00, 'approved', 'hotel', '2026-07-12 18:23:25', 0),
+(16, 7, 'Galle Fort Walk', 'Recognized by UNESCO as a World Heritage Site, Galle Fort is a place imbued with historical and cultural significance. Learning about this without spending a lot of time in museums isn’t easy, unless you take a private guided tour with a Certified Heritage Interpreter who can reveal it to you. Discover the history of Galle Fort through its most important landmarks on this walking tour of the district', 'Galle Fort Ambalama, 26H9+5JC, Galle 80000, Sri Lanka', 'Galle', 5500.00, 'approved', 'experience', '2026-07-12 18:47:21', 0),
+(17, 2, 'Galle Area Guide', 'Hi, I’m Kalum, a 34-year-old local tour guide from Galle. I love sharing the history, culture, and hidden gems of Galle with visitors and making your trip memorable', 'Galle Fort', 'Galle', 11000.00, 'approved', 'tour_guide', '2026-07-12 19:03:55', 0);
 
 -- --------------------------------------------------------
 
@@ -192,7 +208,18 @@ INSERT INTO `listing_images` (`id`, `listing_id`, `image_path`) VALUES
 (15, 11, 'uploads/listingimages/1783787929_1_unnamesasd.jpg'),
 (16, 11, 'uploads/listingimages/1783787929_2_unnameasasad.jpg'),
 (17, 11, 'uploads/listingimages/1783787929_3_unnamesaasd.jpg'),
-(18, 11, 'uploads/listingimages/1783787929_4_unnamed.jpg');
+(18, 11, 'uploads/listingimages/1783787929_4_unnamed.jpg'),
+(19, 15, 'uploads/listingimages/1783880605_0_tea-suite.jpg'),
+(20, 15, 'uploads/listingimages/1783880605_1_peacock-suite.jpg'),
+(21, 15, 'uploads/listingimages/1783880605_2_dubu-suite.jpg'),
+(22, 15, 'uploads/listingimages/1783880605_3_hibiscus-suite-pool-view.jpg'),
+(23, 15, 'uploads/listingimages/1783880605_4_kahanda-kanda.jpg'),
+(24, 16, 'uploads/listingimages/1783882041_0_ac.jpg'),
+(25, 16, 'uploads/listingimages/1783882041_1_galle-fortsas-walks.jpg'),
+(26, 16, 'uploads/listingimages/1783882041_2_captsasaion.jpg'),
+(27, 16, 'uploads/listingimages/1783882041_3_captisasaon.jpg'),
+(28, 16, 'uploads/listingimages/1783882041_4_caption.jpg'),
+(29, 17, 'uploads/listingimages/1783883035_0_e5f272f89b02de3e5bda4e9f48483594.jpg');
 
 -- --------------------------------------------------------
 
@@ -221,7 +248,14 @@ INSERT INTO `messages` (`id`, `sender_id`, `receiver_id`, `listing_id`, `message
 (4, 9, 6, 1, 'hi im doing good', 1, '2026-07-08 08:05:25'),
 (5, 9, 6, 5, 'hi', 1, '2026-07-08 08:05:34'),
 (6, 9, 8, 4, 'hi', 1, '2026-07-08 08:24:34'),
-(7, 8, 9, 4, 'hi', 0, '2026-07-08 09:34:09');
+(7, 8, 9, 4, 'hi', 1, '2026-07-08 09:34:09'),
+(8, 9, 6, 11, 'hi what kind of jewellery do you guys have?', 1, '2026-07-12 07:13:07'),
+(9, 9, 6, 13, 'asda', 1, '2026-07-12 07:36:36'),
+(10, 2, 9, 17, 'Hi! I\'m reaching out about your booking.', 1, '2026-07-13 11:05:57'),
+(11, 2, 9, 17, 'Hi! I\'m reaching out about your booking.', 1, '2026-07-13 11:08:05'),
+(12, 8, 14, 15, 'Hi! I\'m reaching out about your booking.', 1, '2026-07-13 11:35:22'),
+(13, 9, 6, 11, 'hey', 1, '2026-07-13 11:37:07'),
+(14, 9, 7, 16, 'hey im interested in your service', 1, '2026-07-14 12:39:02');
 
 -- --------------------------------------------------------
 
@@ -269,7 +303,16 @@ INSERT INTO `notifications` (`id`, `sender_id`, `receiver_id`, `message`, `is_re
 (24, 4, 12, 'Welcome to CeylonTourMate.lk, naveenn! 🎉 Your Shop owner account has been approved. You can now log in and start adding your listings!', 0, '2026-07-10 15:19:44'),
 (25, 4, 6, 'Your listing \"test2\" has been approved and is now live on CeylonTourMate.lk!', 1, '2026-07-11 16:13:25'),
 (26, 4, 6, 'Your listing \"Lucky Jewellery\" has been approved and is now live on CeylonTourMate.lk!', 1, '2026-07-11 16:22:47'),
-(27, 4, 6, 'Your listing \"Mahinda Jewellers\" has been approved and is now live on CeylonTourMate.lk!', 1, '2026-07-11 16:40:35');
+(27, 4, 6, 'Your listing \"Mahinda Jewellers\" has been approved and is now live on CeylonTourMate.lk!', 1, '2026-07-11 16:40:35'),
+(28, 4, 6, 'Your listing \"delete this\" has been approved and is now live on CeylonTourMate.lk!', 1, '2026-07-12 07:17:01'),
+(29, 4, 6, 'Your listing \"asda\" has been approved and is now live on CeylonTourMate.lk!', 1, '2026-07-12 07:36:00'),
+(30, 4, 8, 'Your listing \"KK Hotel\" has been approved and is now live on CeylonTourMate.lk!', 1, '2026-07-12 18:28:42'),
+(31, 4, 7, 'Your listing \"Galle Fort Walk\" has been approved and is now live on CeylonTourMate.lk!', 1, '2026-07-12 18:47:49'),
+(32, 4, 2, 'Your listing \"Galle Area Guide\" has been approved and is now live on CeylonTourMate.lk!', 1, '2026-07-12 19:05:30'),
+(33, 2, 9, 'Your booking for \"Galle Area Guide\" has been confirmed! Please proceed to payment from My Bookings.', 1, '2026-07-13 10:18:14'),
+(34, 2, 9, 'Your booking for \"Galle Area Guide\" has been confirmed! Please proceed to payment from My Bookings.', 1, '2026-07-13 10:26:08'),
+(35, 2, 9, 'Your booking for \"Galle Area Guide\" has been confirmed! Please proceed to payment from My Bookings.', 1, '2026-07-13 10:39:17'),
+(36, 8, 14, 'Your booking for \"KK Hotel\" has been confirmed! Please proceed to payment from My Bookings.', 1, '2026-07-13 11:34:32');
 
 -- --------------------------------------------------------
 
@@ -297,7 +340,10 @@ CREATE TABLE `payments` (
 INSERT INTO `payments` (`id`, `user_id`, `shop_listing_id`, `booking_id`, `type`, `amount`, `payment_status`, `fee_month`, `fee_year`, `payment_date`) VALUES
 (1, 9, NULL, 4, 'booking', 1500.00, 'completed', NULL, NULL, '2026-07-06 17:35:28'),
 (2, 9, NULL, 4, 'booking', 1500.00, 'completed', NULL, NULL, '2026-07-06 17:35:46'),
-(3, 9, NULL, 5, 'booking', 12121.00, 'completed', NULL, NULL, '2026-07-08 06:39:08');
+(3, 9, NULL, 5, 'booking', 12121.00, 'completed', NULL, NULL, '2026-07-08 06:39:08'),
+(4, 9, NULL, 10, 'booking', 55000.00, 'completed', NULL, NULL, '2026-07-13 10:39:54'),
+(5, 14, NULL, 11, 'booking', 30000.00, 'completed', NULL, NULL, '2026-07-13 11:35:08'),
+(6, 6, 7, NULL, 'listing_fee', 700.00, 'completed', 7, 2026, '2026-07-14 08:55:03');
 
 -- --------------------------------------------------------
 
@@ -314,6 +360,14 @@ CREATE TABLE `reviews` (
   `comment` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`id`, `tourist_id`, `listing_id`, `booking_id`, `rating`, `comment`, `created_at`) VALUES
+(1, 9, 2, 5, 5, 'good', '2026-07-12 18:06:22'),
+(2, 9, 17, 10, 5, 'superb', '2026-07-13 12:04:45');
 
 -- --------------------------------------------------------
 
@@ -337,7 +391,9 @@ CREATE TABLE `rooms` (
 
 INSERT INTO `rooms` (`id`, `hotel_listing_id`, `description`, `room_type`, `price_per_night`, `capacity`, `is_available`) VALUES
 (1, 1, 'asdasd', 'single', 1500.00, 2, 1),
-(2, 1, 'dasdsa', 'suite', 5000.00, 4, 1);
+(2, 1, 'dasdsa', 'suite', 5000.00, 4, 1),
+(3, 3, 'Cozy single room with good space, natural light, and a comfortable setup', 'single', 30000.00, 2, 1),
+(4, 3, 'Nice double room with enough space for a comfortable stay', 'double', 41000.00, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -358,7 +414,8 @@ CREATE TABLE `shop_listings` (
 --
 
 INSERT INTO `shop_listings` (`id`, `listing_id`, `shop_type`, `open_time`, `close_time`) VALUES
-(7, 11, 'Jewellery', '08:00:00', '20:00:00');
+(7, 11, 'Jewellery', '08:00:00', '20:00:00'),
+(9, 13, 'Souvenir', '14:08:00', '15:06:00');
 
 -- --------------------------------------------------------
 
@@ -379,7 +436,7 @@ CREATE TABLE `tourguide_licenses` (
 
 INSERT INTO `tourguide_licenses` (`id`, `user_id`, `license_number`, `license_image`) VALUES
 (1, 2, '1212121312', 'uploads/licenses/1782902941_4061de0ecf5fae6d78263fed37220143.jpg'),
-(2, 13, '1243124124', 'uploads/licenses/1783699560_728606755_18379079686160101_2895611704345153244_n.jpg');
+(2, 13, '1243124124', 'uploads/licenses/license.jpg');
 
 -- --------------------------------------------------------
 
@@ -401,7 +458,8 @@ CREATE TABLE `tourguide_listings` (
 --
 
 INSERT INTO `tourguide_listings` (`id`, `listing_id`, `languages`, `specialization`, `experience_years`, `availability`) VALUES
-(1, 3, 'asd', 'Historical', 111, 'Weekdays only');
+(1, 3, 'asd', 'Historical', 111, 'Weekdays only'),
+(2, 17, 'English,Sinhala,Tamil,Spanish', 'Adventure', 4, 'Daily');
 
 -- --------------------------------------------------------
 
@@ -431,17 +489,18 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `username`, `email`, `password`, `phone`, `profile_pic`, `role`, `is_suspended`, `is_approved`, `security_question`, `security_answer`, `created_at`) VALUES
-(2, 'Tguide yasun', 'Guide', 'tourguide', 'tourguide@gmail.com', '$2y$10$U9zdWDhqF2yX7.sHjfA2veMXfA/bbGXIDuEXrozInNYyKfBw7cP/a', '0772494821', 'uploads/profiles/default.png', 'tour_guide', 0, 1, 'What is your pet\'s name?', 'kuku', '2026-07-01 10:49:01'),
+(2, 'Kalum', 'Sampath', 'tourguide', 'tourguide@gmail.com', '$2y$10$U9zdWDhqF2yX7.sHjfA2veMXfA/bbGXIDuEXrozInNYyKfBw7cP/a', '0772494821', 'uploads/profiles/default.png', 'tour_guide', 0, 1, 'What is your pet\'s name?', 'kuku', '2026-07-01 10:49:01'),
 (4, 'Naveen', 'admin', 'admin', 'admin@gmail.com', '$2y$10$b7rHjYFQAK0.y1ZpJy4Myui5Eb1U2nNBGuQH8YNG54HtIexA4IMpu', '0771233232', 'uploads/profiles/1783000555_4061de0ecf5fae6d78263fed37220143.jpg', 'admin', 0, 1, 'What is your registered email address on this platform?', 'admin@gmail.com', '2026-07-02 12:32:27'),
 (5, 'admin2', 'admin', 'admin2', 'admin2@gmail.com', '$2y$10$tHpxGkUuisgeMei8wIrHuO12WLa8MszLK56hrqe1u.RHwkPxJI2YW', '0771291298', 'uploads/profiles/default.png', 'admin', 0, 1, 'What is your registered email address on this platform?', 'admin2@gmail.com', '2026-07-02 13:55:00'),
 (6, 'shoppiyal', 'owner', 'shopowner', 'shopowner@gmail.com', '$2y$10$OvAjzlJEMN9JXAuyTazDuuT7h3c97zGlhmlZ7p5Ax4RbN3HmKR/8S', '0772494822', 'uploads/profiles/default.png', 'shop_owner', 0, 1, 'What is your pet\'s name?', 'kuku', '2026-07-03 08:00:38'),
 (7, 'sunimal', 'provider', 'experienceprovider', 'experienceprovider@gmail.com', '$2y$10$4macWmzMl.nz6v2EUz5NoeQXisVt9a8.1eh8/l1/2VskLUWeRgZ/i', '0772494811', 'uploads/profiles/default.png', 'experience_provider', 0, 1, 'What is your pet\'s name?', 'kuku', '2026-07-03 08:01:41'),
 (8, 'hotel kasun', 'owner', 'hotelowner', 'hotelowner@gmail.com', '$2y$10$uhYh/LkHiWy0qR/.WJhEhe.bQzh8RdEYwkBID67xqwcNw/E7ftF9e', '0772494212', 'uploads/profiles/default.png', 'hotel_owner', 0, 1, 'What is your pet\'s name?', 'kuku', '2026-07-03 08:02:22'),
-(9, 'tourist sanath', 'ist', 'tourist', 'tourist@gmail.com', '$2y$10$9gEmSJJLFttu296QRsBU3ebCPrnNlqaNk6toVH6j4gLNuQQo9EZSG', '0771291212', 'uploads/profiles/default.png', 'tourist', 0, 1, 'What is your pet\'s name?', 'kuku', '2026-07-03 08:03:38'),
+(9, 'Lily', 'James', 'tourist', 'tourist@gmail.com', '$2y$10$9gEmSJJLFttu296QRsBU3ebCPrnNlqaNk6toVH6j4gLNuQQo9EZSG', '0771291212', 'uploads/profiles/1783883363_imaasasges.jpg', 'tourist', 0, 1, 'What is your pet\'s name?', 'kuku', '2026-07-03 08:03:38'),
 (10, 'shop', 'owner', 'shopowner2', 'naveen2@gmail.com', '$2y$10$CWuEP7Hx/BCmqYTKBiAJAuQMUmjhLt2ixOQmB6vQOcOdyIcsP35Hu', '0772494822', 'uploads/profiles/default.png', 'shop_owner', 0, 1, 'What is your pet\'s name?', 'kuku', '2026-07-08 10:32:59'),
 (11, 'Minon', 'Yenula', 'minon', 'minon@gmail.com', '$2y$10$7dyHHizLdRRdROYmsUeNEukRl9LwRWGMVSikm1KFsq073Fhr84Z62', '0772494212', 'uploads/profiles/default.png', 'tourist', 0, 1, 'What is your pet\'s name?', 'kuku', '2026-07-10 15:13:11'),
 (12, 'naveenn', 'Rashmika', 'naveen2', 'naveenrash@gmail.com', '$2y$10$kT4pdyJEPWTOG2TZKHoHEOb1UABuHwR7osjfDFFuHOLEsUPru4r72', '0771291111', 'uploads/profiles/default.png', 'shop_owner', 0, 1, 'What is your pet\'s name?', 'kuku', '2026-07-10 15:14:23'),
-(13, 'tourrr', 'guide', 'tourguide2', 'tourguide2@gmail.com', '$2y$10$LLbjA9d45QVatwMI/Y.mTeXvojWunn8s4D0Y0wb/vgR1329XOxxE6', '0772491212', 'uploads/profiles/default.png', 'tour_guide', 0, 0, 'What is your pet\'s name?', 'kuku', '2026-07-10 16:06:00');
+(13, 'tourrr', 'guide', 'tourguide2', 'tourguide2@gmail.com', '$2y$10$LLbjA9d45QVatwMI/Y.mTeXvojWunn8s4D0Y0wb/vgR1329XOxxE6', '0772491212', 'uploads/profiles/default.png', 'tour_guide', 0, 0, 'What is your pet\'s name?', 'kuku', '2026-07-10 16:06:00'),
+(14, 'Ana', 'DeArmas', 'tourist2', 'ana@gmail.com', '$2y$10$ZDUKFfg1ta961mvGi7vEpuWIaxmQNZFTKwXuoEGNkFGbkfG/uBsJm', '0971213273', 'uploads/profiles/1783942332_imagasdaes.jpg', 'tourist', 0, 1, 'What is your pet\'s name?', 'kuku', '2026-07-13 11:31:56');
 
 --
 -- Indexes for dumped tables
@@ -578,7 +637,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `commission`
@@ -590,61 +649,61 @@ ALTER TABLE `commission`
 -- AUTO_INCREMENT for table `experience_listings`
 --
 ALTER TABLE `experience_listings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `hotel_listings`
 --
 ALTER TABLE `hotel_listings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `listings`
 --
 ALTER TABLE `listings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `listing_images`
 --
 ALTER TABLE `listing_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `rooms`
 --
 ALTER TABLE `rooms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `shop_listings`
 --
 ALTER TABLE `shop_listings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tourguide_licenses`
@@ -656,13 +715,13 @@ ALTER TABLE `tourguide_licenses`
 -- AUTO_INCREMENT for table `tourguide_listings`
 --
 ALTER TABLE `tourguide_listings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
