@@ -1,0 +1,7 @@
+class diagram heading
+
+booking - commission
+booking - shoplisting
+msg notification one line
+
+should name ids specifically
